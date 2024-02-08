@@ -1,4 +1,4 @@
-# 💪:heavy_plus_sign::heavy_plus_sign: ECSE321 FitnessPlusPlus Project: Team 4
+# 💪➕➕ ECSE321 FitnessPlusPlus Project: Team 4
 
 _(Edit this file as needed, then remove this sentence)._
 
