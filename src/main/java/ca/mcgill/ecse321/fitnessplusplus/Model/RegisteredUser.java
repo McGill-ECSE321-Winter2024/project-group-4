@@ -1,11 +1,14 @@
 package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 
-import java.util.*;
+
 
 public class RegisteredUser
 {
 
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
 
   //RegisteredUser Attributes
   private int userId;
@@ -14,8 +17,24 @@ public class RegisteredUser
   private String email;
 
   //RegisteredUser Associations
-  private List<AccountRole> accountRoles;
+  private AccountRole accountRole;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
+
+  public RegisteredUser(int aUserId, String aUsername, String aPassword, String aEmail, AccountRole aAccountRole)
+  {
+    userId = aUserId;
+    username = aUsername;
+    password = aPassword;
+    email = aEmail;
+    if (aAccountRole == null || aAccountRole.getRegisteredUser() != null)
+    {
+      throw new RuntimeException("Unable to create RegisteredUser due to aAccountRole. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    accountRole = aAccountRole;
+  }
 
   public RegisteredUser(int aUserId, String aUsername, String aPassword, String aEmail)
   {
@@ -23,7 +42,8 @@ public class RegisteredUser
     username = aUsername;
     password = aPassword;
     email = aEmail;
-    accountRoles = new ArrayList<AccountRole>();
+    // default set to Client. 
+    accountRole = new Client(this);
   }
 
 
@@ -78,151 +98,19 @@ public class RegisteredUser
   {
     return email;
   }
-  /* Code from template association_GetMany */
-  public AccountRole getAccountRole(int index)
+  /* Code from template association_GetOne */
+  public AccountRole getAccountRole()
   {
-    AccountRole aAccountRole = accountRoles.get(index);
-    return aAccountRole;
-  }
-
-  public List<AccountRole> getAccountRoles()
-  {
-    List<AccountRole> newAccountRoles = Collections.unmodifiableList(accountRoles);
-    return newAccountRoles;
-  }
-
-  public int numberOfAccountRoles()
-  {
-    int number = accountRoles.size();
-    return number;
-  }
-
-  public boolean hasAccountRoles()
-  {
-    boolean has = accountRoles.size() > 0;
-    return has;
-  }
-
-  public int indexOfAccountRole(AccountRole aAccountRole)
-  {
-    int index = accountRoles.indexOf(aAccountRole);
-    return index;
-  }
-  /* Code from template association_IsNumberOfValidMethod */
-  public boolean isNumberOfAccountRolesValid()
-  {
-    boolean isValid = numberOfAccountRoles() >= minimumNumberOfAccountRoles() && numberOfAccountRoles() <= maximumNumberOfAccountRoles();
-    return isValid;
-  }
-  /* Code from template association_MinimumNumberOfMethod */
-  public static int minimumNumberOfAccountRoles()
-  {
-    return 1;
-  }
-  /* Code from template association_MaximumNumberOfMethod */
-  public static int maximumNumberOfAccountRoles()
-  {
-    return 3;
-  }
-  /* Code from template association_AddMNToOnlyOne */
-  public AccountRole addAccountRole()
-  {
-    if (numberOfAccountRoles() >= maximumNumberOfAccountRoles())
-    {
-      return null;
-    }
-    else
-    {
-      return new AccountRole(this);
-    }
-  }
-
-  public boolean addAccountRole(AccountRole aAccountRole)
-  {
-    boolean wasAdded = false;
-    if (accountRoles.contains(aAccountRole)) { return false; }
-    if (numberOfAccountRoles() >= maximumNumberOfAccountRoles())
-    {
-      return wasAdded;
-    }
-
-    RegisteredUser existingRegisteredUser = aAccountRole.getRegisteredUser();
-    boolean isNewRegisteredUser = existingRegisteredUser != null && !this.equals(existingRegisteredUser);
-
-    if (isNewRegisteredUser && existingRegisteredUser.numberOfAccountRoles() <= minimumNumberOfAccountRoles())
-    {
-      return wasAdded;
-    }
-
-    if (isNewRegisteredUser)
-    {
-      aAccountRole.setRegisteredUser(this);
-    }
-    else
-    {
-      accountRoles.add(aAccountRole);
-    }
-    wasAdded = true;
-    return wasAdded;
-  }
-
-  public boolean removeAccountRole(AccountRole aAccountRole)
-  {
-    boolean wasRemoved = false;
-    //Unable to remove aAccountRole, as it must always have a registeredUser
-    if (this.equals(aAccountRole.getRegisteredUser()))
-    {
-      return wasRemoved;
-    }
-
-    //registeredUser already at minimum (1)
-    if (numberOfAccountRoles() <= minimumNumberOfAccountRoles())
-    {
-      return wasRemoved;
-    }
-    accountRoles.remove(aAccountRole);
-    wasRemoved = true;
-    return wasRemoved;
-  }
-  /* Code from template association_AddIndexControlFunctions */
-  public boolean addAccountRoleAt(AccountRole aAccountRole, int index)
-  {  
-    boolean wasAdded = false;
-    if(addAccountRole(aAccountRole))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAccountRoles()) { index = numberOfAccountRoles() - 1; }
-      accountRoles.remove(aAccountRole);
-      accountRoles.add(index, aAccountRole);
-      wasAdded = true;
-    }
-    return wasAdded;
-  }
-
-  public boolean addOrMoveAccountRoleAt(AccountRole aAccountRole, int index)
-  {
-    boolean wasAdded = false;
-    if(accountRoles.contains(aAccountRole))
-    {
-      if(index < 0 ) { index = 0; }
-      if(index > numberOfAccountRoles()) { index = numberOfAccountRoles() - 1; }
-      accountRoles.remove(aAccountRole);
-      accountRoles.add(index, aAccountRole);
-      wasAdded = true;
-    } 
-    else 
-    {
-      wasAdded = addAccountRoleAt(aAccountRole, index);
-    }
-    return wasAdded;
+    return accountRole;
   }
 
   public void delete()
   {
-    for(int i=accountRoles.size(); i > 0; i--)
+    AccountRole existingAccountRole = accountRole;
+    accountRole = null;
+    if (existingAccountRole != null)
     {
-      AccountRole aAccountRole = accountRoles.get(i - 1);
-      aAccountRole.delete();
+      existingAccountRole.delete();
     }
   }
 
@@ -233,6 +121,7 @@ public class RegisteredUser
             "userId" + ":" + getUserId()+ "," +
             "username" + ":" + getUsername()+ "," +
             "password" + ":" + getPassword()+ "," +
-            "email" + ":" + getEmail()+ "]";
+            "email" + ":" + getEmail()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "accountRole = "+(getAccountRole()!=null?Integer.toHexString(System.identityHashCode(getAccountRole())):"null");
   }
 }

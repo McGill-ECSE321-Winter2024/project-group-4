@@ -1,4 +1,5 @@
-package ca.mcgill.ecse321.fitnessplusplus.Model; 
+package ca.mcgill.ecse321.fitnessplusplus.Model;
+
 
 import java.sql.Time;
 import java.sql.Date;
@@ -7,22 +8,29 @@ import java.sql.Date;
 public class ScheduledClass
 {
 
-  //ScheduledClass Attributes
+
   private int scheduledClassId;
   private Time startTime;
   private Time endTime;
   private Date date;
 
-  //ScheduledClass Associations
+
+  private Staff staff;
   private OfferedClass offeredClass;
 
 
-  public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass)
+
+  public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, Staff aStaff, OfferedClass aOfferedClass)
   {
     scheduledClassId = aScheduledClassId;
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;
+    boolean didAddStaff = setStaff(aStaff);
+    if (!didAddStaff)
+    {
+      throw new RuntimeException("Unable to create scheduledClass due to staff. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
     boolean didAddOfferedClass = setOfferedClass(aOfferedClass);
     if (!didAddOfferedClass)
     {
@@ -83,9 +91,33 @@ public class ScheduledClass
     return date;
   }
   /* Code from template association_GetOne */
+  public Staff getStaff()
+  {
+    return staff;
+  }
+  /* Code from template association_GetOne */
   public OfferedClass getOfferedClass()
   {
     return offeredClass;
+  }
+  /* Code from template association_SetOneToMany */
+  public boolean setStaff(Staff aStaff)
+  {
+    boolean wasSet = false;
+    if (aStaff == null)
+    {
+      return wasSet;
+    }
+
+    Staff existingStaff = staff;
+    staff = aStaff;
+    if (existingStaff != null && !existingStaff.equals(aStaff))
+    {
+      existingStaff.removeScheduledClass(this);
+    }
+    staff.addScheduledClass(this);
+    wasSet = true;
+    return wasSet;
   }
   /* Code from template association_SetOneToMany */
   public boolean setOfferedClass(OfferedClass aOfferedClass)
@@ -109,6 +141,12 @@ public class ScheduledClass
 
   public void delete()
   {
+    Staff placeholderStaff = staff;
+    this.staff = null;
+    if(placeholderStaff != null)
+    {
+      placeholderStaff.removeScheduledClass(this);
+    }
     OfferedClass placeholderOfferedClass = offeredClass;
     this.offeredClass = null;
     if(placeholderOfferedClass != null)
@@ -125,6 +163,7 @@ public class ScheduledClass
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "staff = "+(getStaff()!=null?Integer.toHexString(System.identityHashCode(getStaff())):"null") + System.getProperties().getProperty("line.separator") +
             "  " + "offeredClass = "+(getOfferedClass()!=null?Integer.toHexString(System.identityHashCode(getOfferedClass())):"null");
   }
 }

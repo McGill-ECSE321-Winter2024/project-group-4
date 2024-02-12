@@ -3,14 +3,14 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 import java.sql.Date;
 
+
 public class Registration
 {
-
 
   private int registrationId;
   private Date dateOfRegistration;
 
-  //Registration Associations
+
   private Client client;
   private ScheduledClass scheduledClass;
 
@@ -28,6 +28,7 @@ public class Registration
       throw new RuntimeException("Unable to create Registration due to aScheduledClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
+
 
   public boolean setRegistrationId(int aRegistrationId)
   {
@@ -93,4 +94,13 @@ public class Registration
     scheduledClass = null;
   }
 
+
+  public String toString()
+  {
+    return super.toString() + "["+
+            "registrationId" + ":" + getRegistrationId()+ "]" + System.getProperties().getProperty("line.separator") +
+            "  " + "dateOfRegistration" + "=" + (getDateOfRegistration() != null ? !getDateOfRegistration().equals(this)  ? getDateOfRegistration().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
+            "  " + "client = "+(getClient()!=null?Integer.toHexString(System.identityHashCode(getClient())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "scheduledClass = "+(getScheduledClass()!=null?Integer.toHexString(System.identityHashCode(getScheduledClass())):"null");
+  }
 }

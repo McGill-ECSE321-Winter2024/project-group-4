@@ -5,37 +5,23 @@ import java.util.*;
 import java.sql.Time;
 import java.sql.Date;
 
-
 public class OfferedClass
 {
 
-
-  //OfferedClass Attributes
-  private int classId;
   private String classType;
   private String description;
 
-  //OfferedClass Associations
+
   private List<ScheduledClass> scheduledClasses;
 
 
-
-  public OfferedClass(int aClassId, String aClassType, String aDescription)
+  public OfferedClass(String aClassType, String aDescription)
   {
-    classId = aClassId;
     classType = aClassType;
     description = aDescription;
     scheduledClasses = new ArrayList<ScheduledClass>();
   }
 
-
-  public boolean setClassId(int aClassId)
-  {
-    boolean wasSet = false;
-    classId = aClassId;
-    wasSet = true;
-    return wasSet;
-  }
 
   public boolean setClassType(String aClassType)
   {
@@ -53,11 +39,6 @@ public class OfferedClass
     return wasSet;
   }
 
-  public int getClassId()
-  {
-    return classId;
-  }
-
   public String getClassType()
   {
     return classType;
@@ -67,7 +48,7 @@ public class OfferedClass
   {
     return description;
   }
-  /* Code from template association_GetMany */
+
   public ScheduledClass getScheduledClass(int index)
   {
     ScheduledClass aScheduledClass = scheduledClasses.get(index);
@@ -97,15 +78,15 @@ public class OfferedClass
     int index = scheduledClasses.indexOf(aScheduledClass);
     return index;
   }
-  /* Code from template association_MinimumNumberOfMethod */
+
   public static int minimumNumberOfScheduledClasses()
   {
     return 0;
   }
-  /* Code from template association_AddManyToOne */
-  public ScheduledClass addScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate)
+
+  public ScheduledClass addScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, Staff aStaff)
   {
-    return new ScheduledClass(aScheduledClassId, aStartTime, aEndTime, aDate, this);
+    return new ScheduledClass(aScheduledClassId, aStartTime, aEndTime, aDate, aStaff, this);
   }
 
   public boolean addScheduledClass(ScheduledClass aScheduledClass)
@@ -183,7 +164,6 @@ public class OfferedClass
   public String toString()
   {
     return super.toString() + "["+
-            "classId" + ":" + getClassId()+ "," +
             "classType" + ":" + getClassType()+ "," +
             "description" + ":" + getDescription()+ "]";
   }
