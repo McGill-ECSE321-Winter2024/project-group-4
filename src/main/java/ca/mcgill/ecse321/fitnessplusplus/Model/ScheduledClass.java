@@ -4,6 +4,7 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 import java.sql.Time;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.sql.Date;
@@ -19,6 +20,7 @@ public class ScheduledClass
 
   //ScheduledClass Attributes
   @Id
+  @GeneratedValue
   private int scheduledClassId;
   private Time startTime;
   private Time endTime;
