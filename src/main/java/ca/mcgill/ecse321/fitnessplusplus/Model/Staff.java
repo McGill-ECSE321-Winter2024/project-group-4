@@ -2,16 +2,29 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 
 import java.util.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+
 import java.sql.Time;
 import java.sql.Date;
 
-
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Staff extends AccountRole
 {
 
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
 
+  //Staff Associations
   private List<ScheduledClass> scheduledClasses;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
 
   public Staff(RegisteredUser aRegisteredUser)
   {
@@ -19,7 +32,10 @@ public abstract class Staff extends AccountRole
     scheduledClasses = new ArrayList<ScheduledClass>();
   }
 
-
+  //------------------------
+  // INTERFACE
+  //------------------------
+  /* Code from template association_GetMany */
   public ScheduledClass getScheduledClass(int index)
   {
     ScheduledClass aScheduledClass = scheduledClasses.get(index);

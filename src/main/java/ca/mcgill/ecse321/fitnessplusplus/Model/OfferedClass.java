@@ -2,18 +2,32 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 
 import java.util.*;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.sql.Time;
 import java.sql.Date;
 
+@Entity
 public class OfferedClass
 {
 
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //OfferedClass Attributes
+  @Id
   private String classType;
   private String description;
 
-
+  //OfferedClass Associations
   private List<ScheduledClass> scheduledClasses;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
 
   public OfferedClass(String aClassType, String aDescription)
   {
@@ -22,6 +36,9 @@ public class OfferedClass
     scheduledClasses = new ArrayList<ScheduledClass>();
   }
 
+  //------------------------
+  // INTERFACE
+  //------------------------
 
   public boolean setClassType(String aClassType)
   {
@@ -48,7 +65,7 @@ public class OfferedClass
   {
     return description;
   }
-
+  /* Code from template association_GetMany */
   public ScheduledClass getScheduledClass(int index)
   {
     ScheduledClass aScheduledClass = scheduledClasses.get(index);
@@ -78,12 +95,12 @@ public class OfferedClass
     int index = scheduledClasses.indexOf(aScheduledClass);
     return index;
   }
-
+  /* Code from template association_MinimumNumberOfMethod */
   public static int minimumNumberOfScheduledClasses()
   {
     return 0;
   }
-
+  /* Code from template association_AddManyToOne */
   public ScheduledClass addScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, Staff aStaff)
   {
     return new ScheduledClass(aScheduledClassId, aStartTime, aEndTime, aDate, aStaff, this);

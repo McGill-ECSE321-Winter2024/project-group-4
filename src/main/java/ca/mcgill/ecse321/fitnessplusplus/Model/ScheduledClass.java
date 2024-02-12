@@ -2,23 +2,35 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 
 import java.sql.Time;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
 import java.sql.Date;
 
 
+@Entity
 public class ScheduledClass
 {
 
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
 
+  //ScheduledClass Attributes
+  @Id
   private int scheduledClassId;
   private Time startTime;
   private Time endTime;
   private Date date;
 
-
+  //ScheduledClass Associations
   private Staff staff;
   private OfferedClass offeredClass;
 
-
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
 
   public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, Staff aStaff, OfferedClass aOfferedClass)
   {
@@ -38,6 +50,9 @@ public class ScheduledClass
     }
   }
 
+  //------------------------
+  // INTERFACE
+  //------------------------
 
   public boolean setScheduledClassId(int aScheduledClassId)
   {

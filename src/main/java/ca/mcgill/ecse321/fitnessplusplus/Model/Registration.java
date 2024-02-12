@@ -3,17 +3,31 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 import java.sql.Date;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
 
+
+@Entity
 public class Registration
 {
 
+  //------------------------
+  // MEMBER VARIABLES
+  //------------------------
+
+  //Registration Attributes
+  
+  @Id
   private int registrationId;
   private Date dateOfRegistration;
 
-
+  //Registration Associations
   private Client client;
   private ScheduledClass scheduledClass;
 
+  //------------------------
+  // CONSTRUCTOR
+  //------------------------
 
   public Registration(int aRegistrationId, Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass)
   {
@@ -29,6 +43,9 @@ public class Registration
     }
   }
 
+  //------------------------
+  // INTERFACE
+  //------------------------
 
   public boolean setRegistrationId(int aRegistrationId)
   {
