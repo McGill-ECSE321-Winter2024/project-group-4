@@ -4,6 +4,8 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 import java.sql.Time;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 import java.sql.Date;
@@ -18,32 +20,33 @@ public class ScheduledClass
 
   //ScheduledClass Attributes
   @Id
+  @GeneratedValue (strategy = GenerationType.IDENTITY)
   private int scheduledClassId;
   private Time startTime;
   private Time endTime;
   private Date date;
 
   //ScheduledClass Associations
-  private Staff staff;
   private OfferedClass offeredClass;
+  private Staff staff;
 
   //------------------------
   // CONSTRUCTOR
   //------------------------
 
-  public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, Staff aStaff, OfferedClass aOfferedClass)
+  public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass, Staff aStaff)
   {
     scheduledClassId = aScheduledClassId;
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;
-    if (!setStaff(aStaff))
-    {
-      throw new RuntimeException("Unable to create ScheduledClass due to aStaff. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
-    }
     if (!setOfferedClass(aOfferedClass))
     {
       throw new RuntimeException("Unable to create ScheduledClass due to aOfferedClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    }
+    if (!setStaff(aStaff))
+    {
+      throw new RuntimeException("Unable to create ScheduledClass due to aStaff. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -103,25 +106,14 @@ public class ScheduledClass
     return date;
   }
   /* Code from template association_GetOne */
-  public Staff getStaff()
-  {
-    return staff;
-  }
-  /* Code from template association_GetOne */
   public OfferedClass getOfferedClass()
   {
     return offeredClass;
   }
-  /* Code from template association_SetUnidirectionalOne */
-  public boolean setStaff(Staff aNewStaff)
+  /* Code from template association_GetOne */
+  public Staff getStaff()
   {
-    boolean wasSet = false;
-    if (aNewStaff != null)
-    {
-      staff = aNewStaff;
-      wasSet = true;
-    }
-    return wasSet;
+    return staff;
   }
   /* Code from template association_SetUnidirectionalOne */
   public boolean setOfferedClass(OfferedClass aNewOfferedClass)
@@ -134,11 +126,22 @@ public class ScheduledClass
     }
     return wasSet;
   }
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setStaff(Staff aNewStaff)
+  {
+    boolean wasSet = false;
+    if (aNewStaff != null)
+    {
+      staff = aNewStaff;
+      wasSet = true;
+    }
+    return wasSet;
+  }
 
   public void delete()
   {
-    staff = null;
     offeredClass = null;
+    staff = null;
   }
 
 
@@ -149,7 +152,7 @@ public class ScheduledClass
             "  " + "startTime" + "=" + (getStartTime() != null ? !getStartTime().equals(this)  ? getStartTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "endTime" + "=" + (getEndTime() != null ? !getEndTime().equals(this)  ? getEndTime().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
             "  " + "date" + "=" + (getDate() != null ? !getDate().equals(this)  ? getDate().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "staff = "+(getStaff()!=null?Integer.toHexString(System.identityHashCode(getStaff())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "offeredClass = "+(getOfferedClass()!=null?Integer.toHexString(System.identityHashCode(getOfferedClass())):"null");
+            "  " + "offeredClass = "+(getOfferedClass()!=null?Integer.toHexString(System.identityHashCode(getOfferedClass())):"null") + System.getProperties().getProperty("line.separator") +
+            "  " + "staff = "+(getStaff()!=null?Integer.toHexString(System.identityHashCode(getStaff())):"null");
   }
 }

@@ -11,7 +11,7 @@ public class OfferedClass
   // MEMBER VARIABLES
   //------------------------
 
-  //OfferedClass Attributesi
+  //OfferedClass Attributes
   @Id
   private String classType;
   private String description;
@@ -56,14 +56,4 @@ public class OfferedClass
     return description;
   }
 
-  public void delete()
-  {}
-
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "classType" + ":" + getClassType()+ "," +
-            "description" + ":" + getDescription()+ "]";
-  }
 }

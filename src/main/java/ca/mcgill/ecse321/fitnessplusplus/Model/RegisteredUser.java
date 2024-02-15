@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
@@ -14,7 +15,7 @@ public class RegisteredUser
 
   //RegisteredUser Attributes
   @Id
-  @GeneratedValue
+  @GeneratedValue (strategy = GenerationType.IDENTITY)
   private int userId;
   private String username;
   private String password;

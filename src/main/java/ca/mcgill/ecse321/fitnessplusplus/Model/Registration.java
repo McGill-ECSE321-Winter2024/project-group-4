@@ -4,6 +4,8 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
@@ -16,6 +18,7 @@ public class Registration
 
   //Registration Attributes
   @Id
+  @GeneratedValue (strategy = GenerationType.IDENTITY)
   private int registrationId;
   private Date dateOfRegistration;
 

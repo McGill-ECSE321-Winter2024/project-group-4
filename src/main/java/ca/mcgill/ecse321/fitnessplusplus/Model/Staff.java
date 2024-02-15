@@ -14,9 +14,9 @@ public abstract class Staff extends AccountRole
   // CONSTRUCTOR
   //------------------------
 
-  public Staff(RegisteredUser aRegisteredUser)
+  public Staff()
   {
-    super(aRegisteredUser);
+    super();
   }
 
   //------------------------
