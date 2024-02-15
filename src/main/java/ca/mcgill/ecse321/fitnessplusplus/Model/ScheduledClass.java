@@ -4,11 +4,9 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 import java.sql.Time;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 import java.sql.Date;
-
 
 @Entity
 public class ScheduledClass
@@ -20,7 +18,6 @@ public class ScheduledClass
 
   //ScheduledClass Attributes
   @Id
-  @GeneratedValue
   private int scheduledClassId;
   private Time startTime;
   private Time endTime;
@@ -40,15 +37,13 @@ public class ScheduledClass
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;
-    boolean didAddStaff = setStaff(aStaff);
-    if (!didAddStaff)
+    if (!setStaff(aStaff))
     {
-      throw new RuntimeException("Unable to create scheduledClass due to staff. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create ScheduledClass due to aStaff. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    boolean didAddOfferedClass = setOfferedClass(aOfferedClass);
-    if (!didAddOfferedClass)
+    if (!setOfferedClass(aOfferedClass))
     {
-      throw new RuntimeException("Unable to create scheduledClass due to offeredClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create ScheduledClass due to aOfferedClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -117,59 +112,33 @@ public class ScheduledClass
   {
     return offeredClass;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setStaff(Staff aStaff)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setStaff(Staff aNewStaff)
   {
     boolean wasSet = false;
-    if (aStaff == null)
+    if (aNewStaff != null)
     {
-      return wasSet;
+      staff = aNewStaff;
+      wasSet = true;
     }
-
-    Staff existingStaff = staff;
-    staff = aStaff;
-    if (existingStaff != null && !existingStaff.equals(aStaff))
-    {
-      existingStaff.removeScheduledClass(this);
-    }
-    staff.addScheduledClass(this);
-    wasSet = true;
     return wasSet;
   }
-  /* Code from template association_SetOneToMany */
-  public boolean setOfferedClass(OfferedClass aOfferedClass)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setOfferedClass(OfferedClass aNewOfferedClass)
   {
     boolean wasSet = false;
-    if (aOfferedClass == null)
+    if (aNewOfferedClass != null)
     {
-      return wasSet;
+      offeredClass = aNewOfferedClass;
+      wasSet = true;
     }
-
-    OfferedClass existingOfferedClass = offeredClass;
-    offeredClass = aOfferedClass;
-    if (existingOfferedClass != null && !existingOfferedClass.equals(aOfferedClass))
-    {
-      existingOfferedClass.removeScheduledClass(this);
-    }
-    offeredClass.addScheduledClass(this);
-    wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    Staff placeholderStaff = staff;
-    this.staff = null;
-    if(placeholderStaff != null)
-    {
-      placeholderStaff.removeScheduledClass(this);
-    }
-    OfferedClass placeholderOfferedClass = offeredClass;
-    this.offeredClass = null;
-    if(placeholderOfferedClass != null)
-    {
-      placeholderOfferedClass.removeScheduledClass(this);
-    }
+    staff = null;
+    offeredClass = null;
   }
 
 

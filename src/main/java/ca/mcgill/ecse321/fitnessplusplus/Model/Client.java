@@ -2,7 +2,6 @@ package ca.mcgill.ecse321.fitnessplusplus.Model;
 
 import jakarta.persistence.Entity;
 
-
 @Entity
 public class Client extends AccountRole
 {

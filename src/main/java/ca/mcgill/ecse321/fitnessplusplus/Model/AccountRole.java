@@ -1,11 +1,8 @@
 package ca.mcgill.ecse321.fitnessplusplus.Model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.MappedSuperclass;
 
-@Entity
-@Inheritance(strategy=InheritanceType.JOINED)
+@MappedSuperclass
 public abstract class AccountRole
 {
 
@@ -22,10 +19,9 @@ public abstract class AccountRole
 
   public AccountRole(RegisteredUser aRegisteredUser)
   {
-    boolean didAddRegisteredUser = setRegisteredUser(aRegisteredUser);
-    if (!didAddRegisteredUser)
+    if (!setRegisteredUser(aRegisteredUser))
     {
-      throw new RuntimeException("Unable to create accountRole due to registeredUser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+      throw new RuntimeException("Unable to create AccountRole due to aRegisteredUser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -37,46 +33,21 @@ public abstract class AccountRole
   {
     return registeredUser;
   }
-  /* Code from template association_SetOneToAtMostN */
-  public boolean setRegisteredUser(RegisteredUser aRegisteredUser)
+  /* Code from template association_SetUnidirectionalOne */
+  public boolean setRegisteredUser(RegisteredUser aNewRegisteredUser)
   {
     boolean wasSet = false;
-    //Must provide registeredUser to accountRole
-    if (aRegisteredUser == null)
+    if (aNewRegisteredUser != null)
     {
-      return wasSet;
+      registeredUser = aNewRegisteredUser;
+      wasSet = true;
     }
-
-    //registeredUser already at maximum (2)
-    if (aRegisteredUser.numberOfAccountRoles() >= RegisteredUser.maximumNumberOfAccountRoles())
-    {
-      return wasSet;
-    }
-    
-    RegisteredUser existingRegisteredUser = registeredUser;
-    registeredUser = aRegisteredUser;
-    if (existingRegisteredUser != null && !existingRegisteredUser.equals(aRegisteredUser))
-    {
-      boolean didRemove = existingRegisteredUser.removeAccountRole(this);
-      if (!didRemove)
-      {
-        registeredUser = existingRegisteredUser;
-        return wasSet;
-      }
-    }
-    registeredUser.addAccountRole(this);
-    wasSet = true;
     return wasSet;
   }
 
   public void delete()
   {
-    RegisteredUser placeholderRegisteredUser = registeredUser;
-    this.registeredUser = null;
-    if(placeholderRegisteredUser != null)
-    {
-      placeholderRegisteredUser.removeAccountRole(this);
-    }
+    registeredUser = null;
   }
 
 }
