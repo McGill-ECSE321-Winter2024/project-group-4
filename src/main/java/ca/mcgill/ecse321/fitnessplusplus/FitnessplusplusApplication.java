@@ -16,6 +16,7 @@ public class FitnessplusplusApplication {
 	@RequestMapping("/")
 	public String greeting() {
 		return "Hello world!";
+	}
 	
 
 }
