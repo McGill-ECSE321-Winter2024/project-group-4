@@ -1,4 +1,4 @@
-package ca.mcgill.ecse321.fitnessplusplus.Model;
+package ca.mcgill.ecse321.fitnessplusplus.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
