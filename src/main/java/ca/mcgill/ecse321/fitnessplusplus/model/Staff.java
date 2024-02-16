@@ -3,28 +3,25 @@ package ca.mcgill.ecse321.fitnessplusplus.model;
 import jakarta.persistence.MappedSuperclass;
 
 @MappedSuperclass
-public abstract class Staff extends AccountRole
-{
+public abstract class Staff extends AccountRole {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
 
-  public Staff()
-  {
+  public Staff() {
     super();
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public void delete()
-  {
+  public void delete() {
     super.delete();
   }
 

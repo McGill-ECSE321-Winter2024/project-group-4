@@ -3,51 +3,46 @@ package ca.mcgill.ecse321.fitnessplusplus.model;
 import jakarta.persistence.Entity;
 
 @Entity
-public class Client extends AccountRole
-{
+public class Client extends AccountRole {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //Client Associations
+  // Client Associations
   private RegisteredUser registeredUser;
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
 
-  public Client(RegisteredUser aRegisteredUser)
-  {
+  public Client(RegisteredUser aRegisteredUser) {
     super();
-    if (!setRegisteredUser(aRegisteredUser))
-    {
-      throw new RuntimeException("Unable to create Client due to aRegisteredUser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setRegisteredUser(aRegisteredUser)) {
+      throw new RuntimeException(
+          "Unable to create Client due to aRegisteredUser. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
   /* Code from template association_GetOne */
-  public RegisteredUser getRegisteredUser()
-  {
+  public RegisteredUser getRegisteredUser() {
     return registeredUser;
   }
+
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setRegisteredUser(RegisteredUser aNewRegisteredUser)
-  {
+  public boolean setRegisteredUser(RegisteredUser aNewRegisteredUser) {
     boolean wasSet = false;
-    if (aNewRegisteredUser != null)
-    {
+    if (aNewRegisteredUser != null) {
       registeredUser = aNewRegisteredUser;
       wasSet = true;
     }
     return wasSet;
   }
 
-  public void delete()
-  {
+  public void delete() {
     registeredUser = null;
     super.delete();
   }

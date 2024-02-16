@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.model;
 
-
 import java.sql.Date;
 
 import jakarta.persistence.Entity;
@@ -9,116 +8,112 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 
 @Entity
-public class Registration
-{
+public class Registration {
 
-  //------------------------
+  // ------------------------
   // MEMBER VARIABLES
-  //------------------------
+  // ------------------------
 
-  //Registration Attributes
+  // Registration Attributes
   @Id
-  @GeneratedValue (strategy = GenerationType.IDENTITY)
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
   private int registrationId;
   private Date dateOfRegistration;
 
-  //Registration Associations
+  // Registration Associations
   private Client client;
   private ScheduledClass scheduledClass;
 
-  //------------------------
+  // ------------------------
   // CONSTRUCTOR
-  //------------------------
+  // ------------------------
 
-  public Registration(int aRegistrationId, Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass)
-  {
+  public Registration(int aRegistrationId, Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
     registrationId = aRegistrationId;
     dateOfRegistration = aDateOfRegistration;
-    if (!setClient(aClient))
-    {
-      throw new RuntimeException("Unable to create Registration due to aClient. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setClient(aClient)) {
+      throw new RuntimeException(
+          "Unable to create Registration due to aClient. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    if (!setScheduledClass(aScheduledClass))
-    {
-      throw new RuntimeException("Unable to create Registration due to aScheduledClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setScheduledClass(aScheduledClass)) {
+      throw new RuntimeException(
+          "Unable to create Registration due to aScheduledClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
-  //------------------------
+  // ------------------------
   // INTERFACE
-  //------------------------
+  // ------------------------
 
-  public boolean setRegistrationId(int aRegistrationId)
-  {
+  public boolean setRegistrationId(int aRegistrationId) {
     boolean wasSet = false;
     registrationId = aRegistrationId;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setDateOfRegistration(Date aDateOfRegistration)
-  {
+  public boolean setDateOfRegistration(Date aDateOfRegistration) {
     boolean wasSet = false;
     dateOfRegistration = aDateOfRegistration;
     wasSet = true;
     return wasSet;
   }
 
-  public int getRegistrationId()
-  {
+  public int getRegistrationId() {
     return registrationId;
   }
 
-  public Date getDateOfRegistration()
-  {
+  public Date getDateOfRegistration() {
     return dateOfRegistration;
   }
+
   /* Code from template association_GetOne */
-  public Client getClient()
-  {
+  public Client getClient() {
     return client;
   }
+
   /* Code from template association_GetOne */
-  public ScheduledClass getScheduledClass()
-  {
+  public ScheduledClass getScheduledClass() {
     return scheduledClass;
   }
+
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setClient(Client aNewClient)
-  {
+  public boolean setClient(Client aNewClient) {
     boolean wasSet = false;
-    if (aNewClient != null)
-    {
+    if (aNewClient != null) {
       client = aNewClient;
       wasSet = true;
     }
     return wasSet;
   }
+
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setScheduledClass(ScheduledClass aNewScheduledClass)
-  {
+  public boolean setScheduledClass(ScheduledClass aNewScheduledClass) {
     boolean wasSet = false;
-    if (aNewScheduledClass != null)
-    {
+    if (aNewScheduledClass != null) {
       scheduledClass = aNewScheduledClass;
       wasSet = true;
     }
     return wasSet;
   }
 
-  public void delete()
-  {
+  public void delete() {
     client = null;
     scheduledClass = null;
   }
 
-
-  public String toString()
-  {
-    return super.toString() + "["+
-            "registrationId" + ":" + getRegistrationId()+ "]" + System.getProperties().getProperty("line.separator") +
-            "  " + "dateOfRegistration" + "=" + (getDateOfRegistration() != null ? !getDateOfRegistration().equals(this)  ? getDateOfRegistration().toString().replaceAll("  ","    ") : "this" : "null") + System.getProperties().getProperty("line.separator") +
-            "  " + "client = "+(getClient()!=null?Integer.toHexString(System.identityHashCode(getClient())):"null") + System.getProperties().getProperty("line.separator") +
-            "  " + "scheduledClass = "+(getScheduledClass()!=null?Integer.toHexString(System.identityHashCode(getScheduledClass())):"null");
+  public String toString() {
+    return super.toString() + "[" +
+        "registrationId" + ":" + getRegistrationId() + "]" + System.getProperties().getProperty("line.separator") +
+        "  " + "dateOfRegistration" + "="
+        + (getDateOfRegistration() != null
+            ? !getDateOfRegistration().equals(this) ? getDateOfRegistration().toString().replaceAll("  ", "    ")
+                : "this"
+            : "null")
+        + System.getProperties().getProperty("line.separator") +
+        "  " + "client = " + (getClient() != null ? Integer.toHexString(System.identityHashCode(getClient())) : "null")
+        + System.getProperties().getProperty("line.separator") +
+        "  " + "scheduledClass = "
+        + (getScheduledClass() != null ? Integer.toHexString(System.identityHashCode(getScheduledClass())) : "null");
   }
 }
