@@ -4,5 +4,5 @@ import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import org.springframework.data.repository.CrudRepository;
 
 public interface RegistrationRepository extends CrudRepository<Registration, Integer> {
-    public Registration findRegistrationById(int id);
+    public Registration findRegistrationByregistrationId(int id);
 }
