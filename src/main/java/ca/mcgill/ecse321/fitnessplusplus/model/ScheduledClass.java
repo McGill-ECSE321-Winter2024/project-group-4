@@ -4,11 +4,13 @@ import java.sql.Time;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 import java.sql.Date;
 
+// line 31 "model.ump"
+// line 89 "model.ump"
 @Entity
 public class ScheduledClass {
 
@@ -18,22 +20,24 @@ public class ScheduledClass {
 
   // ScheduledClass Attributes
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private int scheduledClassId;
   private Time startTime;
   private Time endTime;
   private Date date;
 
   // ScheduledClass Associations
+  @ManyToOne
   private OfferedClass offeredClass;
-  private Staff staff;
+  @ManyToOne
+  private Instructor instructor;
 
   // ------------------------
   // CONSTRUCTOR
   // ------------------------
 
   public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass,
-      Staff aStaff) {
+      Instructor aInstructor) {
     scheduledClassId = aScheduledClassId;
     startTime = aStartTime;
     endTime = aEndTime;
@@ -42,9 +46,9 @@ public class ScheduledClass {
       throw new RuntimeException(
           "Unable to create ScheduledClass due to aOfferedClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
-    if (!setStaff(aStaff)) {
+    if (!setInstructor(aInstructor)) {
       throw new RuntimeException(
-          "Unable to create ScheduledClass due to aStaff. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+          "Unable to create ScheduledClass due to aInstructor. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -102,8 +106,8 @@ public class ScheduledClass {
   }
 
   /* Code from template association_GetOne */
-  public Staff getStaff() {
-    return staff;
+  public Instructor getInstructor() {
+    return instructor;
   }
 
   /* Code from template association_SetUnidirectionalOne */
@@ -117,10 +121,10 @@ public class ScheduledClass {
   }
 
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setStaff(Staff aNewStaff) {
+  public boolean setInstructor(Instructor aNewInstructor) {
     boolean wasSet = false;
-    if (aNewStaff != null) {
-      staff = aNewStaff;
+    if (aNewInstructor != null) {
+      instructor = aNewInstructor;
       wasSet = true;
     }
     return wasSet;
@@ -128,7 +132,7 @@ public class ScheduledClass {
 
   public void delete() {
     offeredClass = null;
-    staff = null;
+    instructor = null;
   }
 
   public String toString() {
@@ -150,6 +154,7 @@ public class ScheduledClass {
         "  " + "offeredClass = "
         + (getOfferedClass() != null ? Integer.toHexString(System.identityHashCode(getOfferedClass())) : "null")
         + System.getProperties().getProperty("line.separator") +
-        "  " + "staff = " + (getStaff() != null ? Integer.toHexString(System.identityHashCode(getStaff())) : "null");
+        "  " + "instructor = "
+        + (getInstructor() != null ? Integer.toHexString(System.identityHashCode(getInstructor())) : "null");
   }
 }

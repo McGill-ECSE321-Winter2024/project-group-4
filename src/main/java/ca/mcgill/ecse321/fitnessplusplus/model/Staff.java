@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.fitnessplusplus.model;
 
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.Entity;
 
-@MappedSuperclass
+@Entity
 public abstract class Staff extends AccountRole {
 
   // ------------------------
@@ -13,8 +13,8 @@ public abstract class Staff extends AccountRole {
   // CONSTRUCTOR
   // ------------------------
 
-  public Staff() {
-    super();
+  public Staff(int aRoleId) {
+    super(aRoleId);
   }
 
   // ------------------------

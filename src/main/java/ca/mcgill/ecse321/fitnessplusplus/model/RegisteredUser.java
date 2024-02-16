@@ -2,8 +2,8 @@ package ca.mcgill.ecse321.fitnessplusplus.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class RegisteredUser {
@@ -14,11 +14,15 @@ public class RegisteredUser {
 
   // RegisteredUser Attributes
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private int userId;
   private String username;
   private String password;
   private String email;
+
+  // RegisteredUser Associations
+  @OneToOne
+  private AccountRole accountRole;
 
   // ------------------------
   // CONSTRUCTOR
@@ -79,7 +83,26 @@ public class RegisteredUser {
     return email;
   }
 
+  /* Code from template association_GetOne */
+  public AccountRole getAccountRole() {
+    return accountRole;
+  }
+
+  public boolean hasAccountRole() {
+    boolean has = accountRole != null;
+    return has;
+  }
+
+  /* Code from template association_SetUnidirectionalOptionalOne */
+  public boolean setAccountRole(AccountRole aNewAccountRole) {
+    boolean wasSet = false;
+    accountRole = aNewAccountRole;
+    wasSet = true;
+    return wasSet;
+  }
+
   public void delete() {
+    accountRole = null;
   }
 
   public String toString() {
@@ -87,6 +110,8 @@ public class RegisteredUser {
         "userId" + ":" + getUserId() + "," +
         "username" + ":" + getUsername() + "," +
         "password" + ":" + getPassword() + "," +
-        "email" + ":" + getEmail() + "]";
+        "email" + ":" + getEmail() + "]" + System.getProperties().getProperty("line.separator") +
+        "  " + "accountRole = "
+        + (getAccountRole() != null ? Integer.toHexString(System.identityHashCode(getAccountRole())) : "null");
   }
 }

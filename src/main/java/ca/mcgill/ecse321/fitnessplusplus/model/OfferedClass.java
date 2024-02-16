@@ -50,4 +50,12 @@ public class OfferedClass {
     return description;
   }
 
+  public void delete() {
+  }
+
+  public String toString() {
+    return super.toString() + "[" +
+        "classType" + ":" + getClassType() + "," +
+        "description" + ":" + getDescription() + "]";
+  }
 }

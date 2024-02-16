@@ -4,8 +4,8 @@ import java.sql.Date;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Registration {
@@ -16,12 +16,14 @@ public class Registration {
 
   // Registration Attributes
   @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @GeneratedValue
   private int registrationId;
   private Date dateOfRegistration;
 
   // Registration Associations
+  @ManyToOne
   private Client client;
+  @ManyToOne
   private ScheduledClass scheduledClass;
 
   // ------------------------
