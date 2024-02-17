@@ -1,5 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.repository;
 
-public class RegisteredUserRepository {
+public class RegisteredUserRepositoryTest {
     
 }
