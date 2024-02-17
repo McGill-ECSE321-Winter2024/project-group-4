@@ -17,6 +17,10 @@ public class Client extends AccountRole {
     super(aRoleId);
   }
 
+  public Client() {
+    super();
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------

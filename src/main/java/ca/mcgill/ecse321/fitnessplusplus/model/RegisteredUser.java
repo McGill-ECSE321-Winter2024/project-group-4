@@ -28,11 +28,14 @@ public class RegisteredUser {
   // CONSTRUCTOR
   // ------------------------
 
-  public RegisteredUser(int aUserId, String aUsername, String aPassword, String aEmail) {
-    userId = aUserId;
+  public RegisteredUser(String aUsername, String aPassword, String aEmail) {
     username = aUsername;
     password = aPassword;
     email = aEmail;
+  }
+
+  public RegisteredUser() {
+
   }
 
   // ------------------------

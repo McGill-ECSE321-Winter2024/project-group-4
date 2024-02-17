@@ -1,10 +1,6 @@
 package ca.mcgill.ecse321.fitnessplusplus.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.Inheritance;
-import jakarta.persistence.InheritanceType;
+import jakarta.persistence.*;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -16,7 +12,7 @@ public abstract class AccountRole {
 
   // AccountRole Attributes
   @Id
-  @GeneratedValue
+  @GeneratedValue(strategy = GenerationType.AUTO)
   private int roleId;
 
   // ------------------------
@@ -25,6 +21,10 @@ public abstract class AccountRole {
 
   public AccountRole(int aRoleId) {
     roleId = aRoleId;
+  }
+
+  public AccountRole() {
+
   }
 
   // ------------------------

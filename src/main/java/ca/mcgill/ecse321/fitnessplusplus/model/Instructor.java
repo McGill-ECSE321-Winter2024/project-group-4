@@ -17,6 +17,10 @@ public class Instructor extends Staff {
     super(aRoleId);
   }
 
+  public Instructor() {
+    super();
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------

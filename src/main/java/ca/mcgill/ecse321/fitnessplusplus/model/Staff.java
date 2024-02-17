@@ -17,6 +17,10 @@ public abstract class Staff extends AccountRole {
     super(aRoleId);
   }
 
+  public Staff() {
+
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------

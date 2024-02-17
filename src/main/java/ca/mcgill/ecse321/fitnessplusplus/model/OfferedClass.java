@@ -24,6 +24,10 @@ public class OfferedClass {
     description = aDescription;
   }
 
+  public OfferedClass() {
+
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------

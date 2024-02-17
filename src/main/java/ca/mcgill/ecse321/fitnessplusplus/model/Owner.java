@@ -17,6 +17,10 @@ public class Owner extends Staff {
     super(aRoleId);
   }
 
+  public Owner() {
+    super();
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------

@@ -52,6 +52,10 @@ public class ScheduledClass {
     }
   }
 
+  public ScheduledClass() {
+
+  }
+
   // ------------------------
   // INTERFACE
   // ------------------------
