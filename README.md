@@ -12,7 +12,7 @@ For more information about the FitnessPlusPlus application, please consult the [
 
 | GitHub Username |  Name             | 
 | --------------- |  ---------------  |
-| Team Member A   | Bensimon, Yonatan |
+| yonatanbensimon  | Bensimon, Yonatan |
 | Yazzeee         | Drissi, Yasmine   |
 | Team Member C   | Gott, Xander      |
 | Team Member D   | Islam, Isbat-ul   |
