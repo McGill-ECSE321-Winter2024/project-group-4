@@ -1,0 +1,53 @@
+class RegisteredUser {
+  Integer userId;
+  String  username;
+  String  password;
+  String  email;
+}
+
+class AccountRole {
+  abstract;
+  Integer roleId;
+}
+
+class Staff {
+  abstract;
+  isA AccountRole;
+}
+
+class Owner { 
+  isA Staff;
+}
+
+class Instructor {
+  isA Staff;
+}
+
+class Client {
+  isA AccountRole;
+}
+
+class ScheduledClass {
+  Integer scheduledClassId;
+  Time startTime;
+  Time endTime;
+  Date date;
+}
+
+class OfferedClass {
+  String  classType;
+  String  description;
+}
+
+class Registration {
+  Integer registrationId;
+  Date dateOfRegistration;
+}
+
+association {
+ 0..1 AccountRole <- 1 RegisteredUser; 
+ 1 OfferedClass <- * ScheduledClass;
+ * Registration -> 1 Client;
+ * Registration -> 1 ScheduledClass;
+ 1 Instructor <- * ScheduledClass;
+}
