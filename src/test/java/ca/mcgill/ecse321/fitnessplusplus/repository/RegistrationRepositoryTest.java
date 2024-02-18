@@ -34,12 +34,14 @@ public class RegistrationRepositoryTest {
     @Autowired private  ClientRepository clientRepositoryTest;
     @Autowired private ScheduledClassRepository scheduledClassRepositoryTest;
     @Autowired private InstructorRepository instructorRepositoryTest;
+    @Autowired private  OfferedClassRepository offeredClassRepositorTest;
     @AfterEach
     public void clearDatabase() {
         registrationRepositoryTest.deleteAll();
         clientRepositoryTest.deleteAll();
         scheduledClassRepositoryTest.deleteAll();
         instructorRepositoryTest.deleteAll();
+        offeredClassRepositorTest.deleteAll();
     }
 
     @Test
@@ -52,6 +54,7 @@ public class RegistrationRepositoryTest {
         OfferedClass offeredClass = new OfferedClass();
         offeredClass.setClassType("Strength");
         offeredClass.setDescription("A super duper crazy fun class!");
+        offeredClassRepositorTest.save(offeredClass);
 
         Instructor instructor = new Instructor();
         instructorRepositoryTest.save(instructor);
@@ -84,5 +87,14 @@ public class RegistrationRepositoryTest {
 
         //Asserts a registration exists
         assertNotNull(registration);
+        assertNotNull(registration.getRegistrationId());
+        assertEquals(client.getRoleId(), registration.getClient().getRoleId());
+        assertEquals(registrationDate, registration.getDateOfRegistration());
+        assertEquals(scheduledClass.getScheduledClassId(), registration.getScheduledClass().getScheduledClassId());
+       // assertEquals(scheduledClass.getOfferedClass().getClassType(), registration.getScheduledClass().getOfferedClass().);
+        assertEquals(scheduledClass.getDate(), registration.getScheduledClass().getDate());
+        assertEquals(scheduledClass.getInstructor().getRoleId(), registration.getScheduledClass().getInstructor().getRoleId());
+        assertEquals(scheduledClass.getStartTime(), registration.getScheduledClass().getStartTime());
+        assertEquals(scheduledClass.getEndTime(), registration.getScheduledClass().getEndTime());
     }
 }
