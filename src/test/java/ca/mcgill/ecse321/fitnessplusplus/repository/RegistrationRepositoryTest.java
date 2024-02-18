@@ -162,8 +162,9 @@ public class RegistrationRepositoryTest {
         //Set new attributes
         Date newRegistrationDate = Date.valueOf("2023-02-18");
         registration.setDateOfRegistration(newRegistrationDate);
+        registrationRepositoryTest.save(registration);
 
-        registration = registrationRepositoryTest.findByClientAndScheduledClass(client, scheduledClass);
-        assertEquals(newRegistrationDate, registration.getDateOfRegistration());
+        Registration retrievedRegistration = registrationRepositoryTest.findByClientAndScheduledClass(client, scheduledClass);
+        assertEquals(newRegistrationDate, retrievedRegistration.getDateOfRegistration());
     }
 }
