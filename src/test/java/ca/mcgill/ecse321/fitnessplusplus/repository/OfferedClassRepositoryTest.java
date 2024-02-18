@@ -24,7 +24,7 @@ public class OfferedClassRepositoryTest {
         offeredClassRepository.save(offeredClass);
         int classId = offeredClass.getId();
 
-        offeredClass = offeredClassRepository.findOfferedClassByclassId(classId);
+        offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
 
         assertNotNull(offeredClass);
         assertEquals(classId, offeredClass.getClassType());

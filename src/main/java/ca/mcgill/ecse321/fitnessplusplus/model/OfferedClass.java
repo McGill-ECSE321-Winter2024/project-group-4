@@ -1,6 +1,7 @@
 package ca.mcgill.ecse321.fitnessplusplus.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 
 @Entity
@@ -12,6 +13,7 @@ public class OfferedClass {
 
   // OfferedClass Attributes
   @Id
+  @GeneratedValue
   private int offeredClassId;
   private String classType;
   private String description;
@@ -20,7 +22,8 @@ public class OfferedClass {
   // CONSTRUCTOR
   // ------------------------
 
-  public OfferedClass(String aClassType, String aDescription) {
+  public OfferedClass(int aClassId, String aClassType, String aDescription) {
+    offeredClassId = aClassId;
     classType = aClassType;
     description = aDescription;
   }
@@ -33,6 +36,12 @@ public class OfferedClass {
   // INTERFACE
   // ------------------------
 
+  public boolean setOfferedClassId(int anOfferedClassId) {
+    boolean wasSet = false;
+    offeredClassId = anOfferedClassId;
+    wasSet = true;
+    return wasSet;
+  }
   public boolean setClassType(String aClassType) {
     boolean wasSet = false;
     classType = aClassType;
