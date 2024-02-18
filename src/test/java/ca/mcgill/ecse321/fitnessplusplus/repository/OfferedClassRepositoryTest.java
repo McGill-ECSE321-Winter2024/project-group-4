@@ -20,15 +20,13 @@ public class OfferedClassRepositoryTest {
 
     @Test
     public void testPersistAndLoadOfferedClass1() {
-        /*
         OfferedClass offeredClass = new OfferedClass();
         offeredClassRepository.save(offeredClass);
         int classId = offeredClass.getId();
 
-        offeredClass = offeredClassRepository.findOfferedClassByclassType(classId);
+        offeredClass = offeredClassRepository.findOfferedClassByclassId(classId);
 
         assertNotNull(offeredClass);
-        assertEquals(classType, offeredClass.getClassType());
-         */
+        assertEquals(classId, offeredClass.getClassType());
     }
 }
