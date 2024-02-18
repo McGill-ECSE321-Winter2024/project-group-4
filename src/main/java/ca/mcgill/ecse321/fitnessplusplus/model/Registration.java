@@ -30,8 +30,7 @@ public class Registration {
   // CONSTRUCTOR
   // ------------------------
 
-  public Registration(int aRegistrationId, Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
-    registrationId = aRegistrationId;
+  public Registration(Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
     dateOfRegistration = aDateOfRegistration;
     if (!setClient(aClient)) {
       throw new RuntimeException(
