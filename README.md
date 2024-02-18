@@ -23,14 +23,18 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 
 # Deliverable 1
 
-| Name            | Individual Efforts |                Team Roles                 |
-| --------------- | ------------------ | ----------------------------------------- |
-| Yasmine Drissi  |      16 hours      | * Development of the CRUD Repository      |
-|                 |                    | * Development and Formatting of the Wiki  | 
-| Isbat-ul Islam  |                    |                                           |
-| Xander Gott     |                    |                                           |
-| Neil Joe George |                    |                                           |
-| Yonatan Bensimon|                    |                                           |
-| Mathieu Pestel  |                    |                                           |
+| Name            | Individual Efforts |                Team Roles                                    |
+| --------------- | ------------------ | ------------------------------------------------------------ |
+| Yasmine Drissi  |      18 hours      | Development and Creation of the CRUD Repository              |             
+|                 |                    | Development and Formatting of the Wiki                       |
+|                 |                    | Development of the functional and non-functional requirements|
+|                 |                    | Drawing and development of the use case diagrams             | 
+|                 |                    | Writing the Meeting Minutes                                  |
+|                 |                    | Helping the development of the Domain Model                  |
+| Isbat-ul Islam  |                    |                                                              |
+| Xander Gott     |                    |                                                              |
+| Neil Joe George |                    |                                                              |
+| Yonatan Bensimon|                    |                                                              |
+| Mathieu Pestel  |                    |                                                              |
 
 Deliverable 1 can be found by clicking [here](../../wiki/Deliverable-1).
