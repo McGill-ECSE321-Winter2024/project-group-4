@@ -71,6 +71,7 @@ public class OfferedClass {
 
   public String toString() {
     return super.toString() + "[" +
+        "classId" + ":" + getId() + "," +
         "classType" + ":" + getClassType() + "," +
         "description" + ":" + getDescription() + "]";
   }
