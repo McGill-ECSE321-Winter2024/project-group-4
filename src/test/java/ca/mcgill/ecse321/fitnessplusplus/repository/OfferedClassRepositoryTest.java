@@ -11,7 +11,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class OfferedClassRepositoryTest {
-    @Autowired private OfferedClassRepository offeredClassRepository;
+    @Autowired
+    private OfferedClassRepository offeredClassRepository;
 
     @AfterEach
     public void clearDatabase() {
@@ -23,12 +24,31 @@ public class OfferedClassRepositoryTest {
         OfferedClass offeredClass = new OfferedClass();
         offeredClassRepository.save(offeredClass);
         int classId = offeredClass.getId();
-        System.out.println(offeredClass);
 
         offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
-        System.out.println(offeredClass);
 
         assertNotNull(offeredClass);
         assertEquals(classId, offeredClass.getId());
+    }
+
+    @Test
+    public void testPersistAndLoadOfferedClass2() {
+        OfferedClass offeredClass = new OfferedClass();
+        offeredClassRepository.save(offeredClass);
+        int classId = offeredClass.getId();
+
+        offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+
+        String classType = "Strength";
+        offeredClass.setClassType(classType);
+        String description = "Strength class";
+        offeredClass.setDescription(description);
+
+        offeredClassRepository.save(offeredClass);
+
+        OfferedClass updatedOfferedClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+
+        assertEquals(classType, updatedOfferedClass.getClassType());
+        assertEquals(description, updatedOfferedClass.getDescription());
     }
 }
