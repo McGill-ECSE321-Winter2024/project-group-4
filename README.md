@@ -26,7 +26,7 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 | Name            | Individual Efforts |                Team Roles                                      |
 | --------------- | ------------------ | -------------------------------------------------------------- |
 | Yasmine Drissi  |       18 hours     |   Development and Creation of the CRUD Repository,             |             
-|                 |                        Development and Formatting of the Wiki                       |
+|                 |                    |   Development and Formatting of the Wiki                       |
 |                 |                    |   Development of the functional and non-functional requirements|
 |                 |                    |   Drawing and development of the use case diagrams             | 
 |                 |                    |   Writing the Meeting Minutes                                  |
