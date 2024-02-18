@@ -11,7 +11,12 @@ Test suite demonstrates that application can read and write - references
 Database contents cleared / reverted after test method
  */
 
-import ca.mcgill.ecse321.fitnessplusplus.model.*;
+import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
+import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
+import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
+import ca.mcgill.ecse321.fitnessplusplus.model.Client;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,5 +60,16 @@ public class RegistrationRepositoryTest {
         scheduledClass.setStartTime(classStart);
         scheduledClass.setEndTime(classEnd);
         scheduledClassRepositoryTest.save(scheduledClass);
+
+        //Create Registration
+
+        Registration registration = new Registration();
+        Date registrationDate = Date.valueOf("2024-02-18");
+        registration.setClient(client);
+        registration.setScheduledClass(scheduledClass);
+        registration.setDateOfRegistration(registrationDate);
+
+        //Save Registration
+        registrationRepositoryTest.save(registration);
     }
 }
