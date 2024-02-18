@@ -36,9 +36,8 @@ public class ScheduledClass {
   // CONSTRUCTOR
   // ------------------------
 
-  public ScheduledClass(int aScheduledClassId, Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass,
+  public ScheduledClass(Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass,
       Instructor aInstructor) {
-    scheduledClassId = aScheduledClassId;
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;

@@ -35,5 +35,7 @@ public class RegistrationRepositoryTest {
         //Create and persist a Client
         Client client = new Client();
         clientRepositoryTest.save(client);
+
+        //Create and persist a ScheduledClass
     }
 }
