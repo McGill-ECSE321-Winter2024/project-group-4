@@ -38,7 +38,7 @@ public class RegisteredUserRepositoryTest {
 
         registeredUserRepository.save(registeredUser);
 
-        RegisteredUser retrievedUser = registeredUserRepository.findRegisteredUserByUsername("john_doe");
+        RegisteredUser retrievedUser = registeredUserRepository.findRegisteredUserByUsername("John_Doe");
 
         // Assert there exists a user with that username
         assertNotNull(retrievedUser);
@@ -64,7 +64,7 @@ public class RegisteredUserRepositoryTest {
 
         registeredUserRepository.save(registeredUser);
 
-        RegisteredUser retrievedUser = registeredUserRepository.findRegisteredUserByUsername("john_doe");
+        RegisteredUser retrievedUser = registeredUserRepository.findRegisteredUserByUsername("John_Doe");
 
         // Assert there exists a user with that username
         assertNotNull(retrievedUser);
@@ -76,7 +76,7 @@ public class RegisteredUserRepositoryTest {
         retrievedUser.setEmail(newEmail);
         retrievedUser.setPassword(newPassword);
 
-        RegisteredUser retrievedUpdatedUser = registeredUserRepository.findRegisteredUserByUsername("john_doe");
+        RegisteredUser retrievedUpdatedUser = registeredUserRepository.findRegisteredUserByUsername("John_Doe");
 
         // Assert attributes of the retrieved user match the original user
         assertEquals(newEmail, retrievedUpdatedUser.getEmail());
