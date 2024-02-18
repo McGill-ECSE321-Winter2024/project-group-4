@@ -4,9 +4,9 @@ _(Edit this file as needed, then remove this sentence)._
 
 ## Project Overview
 
-The FitnessPlusPlus application has a main goal of digitalizing the organization of a fitness centre. This application allows users such as instructors, session attendees and owners to manage their weekly session schedule to make exercising easy and fun!
+The FitnessPlusPlus application has a main goal of digitalizing the organization of a fitness centre. This application allows users such as instructors, clients and owners to manage their weekly session schedule.
 
-For more information about the FitnessPlusPlus application, please consult the [wiki](../../wiki).
+The FitnessPlusPlus application aims to enhance the experiemce of instructors, clients and owners by providing a comprehensive suite of web-based functionalities tailored to their specific needs. All specific features will be accessible through a responsive, accessible web interface, designed for ease of use across devices. Functionalities and user scenarios are detailed in our documuentation [wiki](../../wiki).
 
 ## Team Members
 
@@ -23,13 +23,19 @@ For more information about the FitnessPlusPlus application, please consult the [
 
 # Deliverable 1
 
-| Name            | Team Role  | Individual Efforts |
-| --------------- | ---------- | ------------------ |
-| Yasmine Drissi  |            |                    |
-| Isbat-ul Islam  |            |                    |
-| Xander Gott     |            |                    |
-| Neil Joe George |            |                    |
-| Yonatan Bensimon|            |                    |
-| Mathieu Pestel  |            |                    |
+| Name            | Individual Efforts |     Team Roles     |
+| --------------- | ------------------ | ------------------ |
+| Yasmine Drissi  |                    | * Development of   |
+|                 |                    |    the CRUD        |
+|                 |                    |    Repository      |
+|                 |                    |  * Development     | 
+|                 |                    |    and Formatting  |
+|                 |                    |     of the Wiki    |
+|                 |                    |                    |
+| Isbat-ul Islam  |                    |                    |
+| Xander Gott     |                    |                    |
+| Neil Joe George |                    |                    |
+| Yonatan Bensimon|                    |                    |
+| Mathieu Pestel  |                    |                    |
 
 Deliverable 1 can be found by clicking [here](../../wiki/Deliverable-1).
