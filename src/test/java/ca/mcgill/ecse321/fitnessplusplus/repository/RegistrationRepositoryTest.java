@@ -71,5 +71,8 @@ public class RegistrationRepositoryTest {
 
         //Save Registration
         registrationRepositoryTest.save(registration);
+
+        //Read registration
+        registration = registrationRepositoryTest.findByClientAndCLass(client, scheduledClass);
     }
 }
