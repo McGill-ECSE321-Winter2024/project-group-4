@@ -31,7 +31,11 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 |                 |                    |   Drawing and development of the use case diagrams             | 
 |                 |                    |   Writing the Meeting Minutes                                  |
 |                 |                    |   Helping the development of the Domain Model                  |
-| Isbat-ul Islam  |                    |                                                                |
+| Isbat-ul Islam  |  15 hours          |   Development of the domain model                              |
+|                 |                    |   Maintained backlog and assigned issues                       |
+|                 |                    |   Development of the functional and non-functional requirements|
+|                 |                    |   Specified Use Case diagrams                                  |
+|                 |                    |   Setup the database and do the JPA tagging on model           |
 | Xander Gott     |                    |                                                                |
 | Neil Joe George |                    |                                                                |
 | Yonatan Bensimon|                    |                                                                |
