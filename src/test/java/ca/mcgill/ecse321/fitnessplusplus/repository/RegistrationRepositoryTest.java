@@ -76,7 +76,7 @@ public class RegistrationRepositoryTest {
         registrationRepositoryTest.save(registration);
 
         //Read registration
-        registration = registrationRepositoryTest.findByClientAndCLass(client, scheduledClass);
+        registration = registrationRepositoryTest.findByClientAndScheduledClass(client, scheduledClass);
 
         //Asserts a registration exists
         assertNotNull(registration);

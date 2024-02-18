@@ -7,5 +7,7 @@ import org.springframework.data.repository.CrudRepository;
 
 public interface RegistrationRepository extends CrudRepository<Registration, Integer> {
     public Registration findRegistrationByregistrationId(int id);
-    public Registration findByClientAndCLass(Client client, ScheduledClass scheduledClass);
+    public Registration findByClientAndScheduledClass(Client client, ScheduledClass scheduledClass);
+
+
 }
