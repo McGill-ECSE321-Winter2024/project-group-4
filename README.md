@@ -12,7 +12,7 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 
 | GitHub Username |  Name             | 
 | --------------- |  ---------------  |
-| yonatanbensimon  | Bensimon, Yonatan |
+| yonatanbensimon | Bensimon, Yonatan |
 | Yazzeee         | Drissi, Yasmine   |
 | Team Member C   | Gott, Xander      |
 | Team Member D   | Islam, Isbat-ul   |
@@ -23,19 +23,14 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 
 # Deliverable 1
 
-| Name            | Individual Efforts |     Team Roles     |
-| --------------- | ------------------ | ------------------ |
-| Yasmine Drissi  |                    | * Development of   |
-|                 |                    |    the CRUD        |
-|                 |                    |    Repository      |
-|                 |                    |  * Development     | 
-|                 |                    |    and Formatting  |
-|                 |                    |     of the Wiki    |
-|                 |                    |                    |
-| Isbat-ul Islam  |                    |                    |
-| Xander Gott     |                    |                    |
-| Neil Joe George |                    |                    |
-| Yonatan Bensimon|                    |                    |
-| Mathieu Pestel  |                    |                    |
+| Name            | Individual Efforts |                Team Roles                 |
+| --------------- | ------------------ | ----------------------------------------- |
+| Yasmine Drissi  |      16 hours      | * Development of the CRUD Repository      |
+|                 |                    | * Development and Formatting of the Wiki  | 
+| Isbat-ul Islam  |                    |                                           |
+| Xander Gott     |                    |                                           |
+| Neil Joe George |                    |                                           |
+| Yonatan Bensimon|                    |                                           |
+| Mathieu Pestel  |                    |                                           |
 
 Deliverable 1 can be found by clicking [here](../../wiki/Deliverable-1).
