@@ -23,10 +23,12 @@ public class OfferedClassRepositoryTest {
         OfferedClass offeredClass = new OfferedClass();
         offeredClassRepository.save(offeredClass);
         int classId = offeredClass.getId();
+        System.out.println(offeredClass);
 
         offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+        System.out.println(offeredClass);
 
         assertNotNull(offeredClass);
-        assertEquals(classId, offeredClass.getClassType());
+        assertEquals(classId, offeredClass.getId());
     }
 }
