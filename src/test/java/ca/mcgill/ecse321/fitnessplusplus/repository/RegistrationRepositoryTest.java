@@ -25,6 +25,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import java.sql.Date;
 import java.sql.Time;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 @SpringBootTest
 public class RegistrationRepositoryTest {
     @Autowired private RegistrationRepository registrationRepositoryTest;
@@ -74,5 +77,8 @@ public class RegistrationRepositoryTest {
 
         //Read registration
         registration = registrationRepositoryTest.findByClientAndCLass(client, scheduledClass);
+
+        //Asserts a registration exists
+        assertNotNull(registration);
     }
 }
