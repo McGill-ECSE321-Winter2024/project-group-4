@@ -12,6 +12,7 @@ public class OfferedClass {
 
   // OfferedClass Attributes
   @Id
+  private int offeredClassId;
   private String classType;
   private String description;
 
@@ -53,6 +54,8 @@ public class OfferedClass {
   public String getDescription() {
     return description;
   }
+
+  public int getId() { return offeredClassId; }
 
   public void delete() {
   }
