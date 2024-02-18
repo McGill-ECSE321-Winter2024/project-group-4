@@ -50,7 +50,7 @@ public class InstructorRepositoryTest {
   /**
    * Test 2 for persistence of the Instructor class<br>
    * Gets the Instructor from the RegisteredUser (while this also tests the persistence of
-   * RegisteredUser, this test makes sure the client is also appropriately saved).
+   * RegisteredUser, this test makes sure the instructor is also appropriately saved).
    *
    * @author Mathieu Pestel
    */
