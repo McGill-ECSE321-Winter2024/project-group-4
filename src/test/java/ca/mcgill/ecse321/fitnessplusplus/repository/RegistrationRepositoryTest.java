@@ -33,11 +33,13 @@ public class RegistrationRepositoryTest {
     @Autowired private RegistrationRepository registrationRepositoryTest;
     @Autowired private  ClientRepository clientRepositoryTest;
     @Autowired private ScheduledClassRepository scheduledClassRepositoryTest;
+    @Autowired private InstructorRepository instructorRepositoryTest;
     @AfterEach
     public void clearDatabase() {
         registrationRepositoryTest.deleteAll();
         clientRepositoryTest.deleteAll();
         scheduledClassRepositoryTest.deleteAll();
+        instructorRepositoryTest.deleteAll();
     }
 
     @Test
@@ -52,6 +54,8 @@ public class RegistrationRepositoryTest {
         offeredClass.setDescription("A super duper crazy fun class!");
 
         Instructor instructor = new Instructor();
+        instructorRepositoryTest.save(instructor);
+
         Date classDate = Date.valueOf("2024-02-29");
         Time classStart = Time.valueOf("22:11:23");
         Time classEnd = Time.valueOf("23:59:59");
