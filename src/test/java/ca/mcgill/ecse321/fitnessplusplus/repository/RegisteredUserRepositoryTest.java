@@ -76,9 +76,8 @@ public class RegisteredUserRepositoryTest {
         // Setting new password and email to the user
         retrievedUser.setEmail(newEmail);
         retrievedUser.setPassword(newPassword);
-
+        registeredUserRepository.save(retrievedUser);
         RegisteredUser retrievedUpdatedUser = registeredUserRepository.findRegisteredUserByUsername("John_Doe");
-
         // Assert attributes of the retrieved user match the original user
         assertEquals(newEmail, retrievedUpdatedUser.getEmail());
         assertEquals(newPassword, retrievedUpdatedUser.getPassword());
