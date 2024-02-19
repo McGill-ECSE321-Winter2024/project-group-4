@@ -41,9 +41,10 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 |                 |                    | Develpment of domain model                                    |
 |                 |                    | Writing out use case                                          |
 |                 |                    | Writing repository tests                                     |
-| Neil Joe George | 12 Hours           | Development of the domain model
-|                  |                  |  Writing use case|
-| | | Setting up the database|
+| Neil Joe George | 12 Hours           | Development of the domain model                                |
+|                 |                    | Writing use case                                              |
+|                 |                    | Helped during the database setup|
+|                 |                    | Helped with JPA tagging|
 | | | Writing repository tests|
 | Yonatan Bensimon| 12 hours           | Development of the domain model                               |
 |                 |                    | Writing out use case                                          |
