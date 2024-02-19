@@ -15,7 +15,7 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 | yonatanbensimon | Bensimon, Yonatan |
 | Yazzeee         | Drissi, Yasmine   |
 | Team Member C   | Gott, Xander      |
-| Team Member D   | Islam, Isbat-ul   |
+| Isbat-ulIslam   | Islam, Isbat-ul   |
 | Team Member E   | Joe George, Neil  |
 | Team Member F   | Pestel, Mathieu   |
 
