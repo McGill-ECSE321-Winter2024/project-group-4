@@ -42,7 +42,10 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 |                 |                    | Writing out use case                                          |
 |                 |                    | Wiriting repository tests                                     |
 | Neil Joe George |                    |                                                               |
-| Yonatan Bensimon|                    |                                                               |
+| Yonatan Bensimon| 12 hours           | Development of the domain model                               |
+|                 |                    | Writing out use case                                          |
+|                 |                    | Writing repository tests                                      |
+|                 |                    | Helping in the development of requirementents
 | Mathieu Pestel  |                    |                                                               |
 
 Deliverable 1 can be found by clicking [here](../../wiki/Deliverable-1).
