@@ -11,10 +11,10 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 ## Team Members
 
 | GitHub Username |  Name             | 
-| --------------- |  ---------------  |
+|-----------------|  ---------------  |
 | yonatanbensimon | Bensimon, Yonatan |
 | Yazzeee         | Drissi, Yasmine   |
-| Team Member C   | Gott, Xander      |
+| XanderG0        | Gott, Xander      |
 | Isbat-ulIslam   | Islam, Isbat-ul   |
 | Team Member E   | Joe George, Neil  |
 | Team Member F   | Pestel, Mathieu   |
@@ -23,22 +23,26 @@ The FitnessPlusPlus application aims to enhance the experiemce of instructors, c
 
 # Deliverable 1
 
-| Name            | Individual Efforts |                Team Roles                                      |
-| --------------- | ------------------ | -------------------------------------------------------------- |
-| Yasmine Drissi  |       14 hours     |   Development and Creation of the CRUD Repository,             |             
-|                 |                    |   Development and Formatting of the Wiki                       |
-|                 |                    |   Development of the functional and non-functional requirements|
-|                 |                    |   Drawing and development of the use case diagrams             | 
-|                 |                    |   Writing the Meeting Minutes                                  |
-|                 |                    |   Helping the development of the Domain Model                  |
-| Isbat-ul Islam  |  15 hours          |   Development of the domain model                              |
-|                 |                    |   Maintained backlog and assigned issues                       |
-|                 |                    |   Development of the functional and non-functional requirements|
-|                 |                    |   Specified Use Case diagrams                                  |
-|                 |                    |   Setup the database and do the JPA tagging on model           |
-| Xander Gott     |                    |                                                                |
-| Neil Joe George |                    |                                                                |
-| Yonatan Bensimon|                    |                                                                |
-| Mathieu Pestel  |                    |                                                                |
+| Name            | Individual Efforts | Team Roles                                                    |
+| --------------- |--------------------|---------------------------------------------------------------|
+| Yasmine Drissi  | 14 hours           | Development and Creation of the CRUD Repository,              |             
+|                 |                    | Development and Formatting of the Wiki                        |
+|                 |                    | Development of the functional and non-functional requirements |
+|                 |                    | Drawing and development of the use case diagrams              | 
+|                 |                    | Writing the Meeting Minutes                                   |
+|                 |                    | Helping the development of the Domain Model                   |
+| Isbat-ul Islam  | 15 hours           | Development of the domain model                               |
+|                 |                    | Maintained backlog and assigned issues                        |
+|                 |                    | Development of the functional and non-functional requirements |
+|                 |                    | Specified Use Case diagrams                                   |
+|                 |                    | Setup the database and do the JPA tagging on model            |
+| Xander Gott     | 10 hours           | Setting up the database                                       |
+|                 |                    | Development of requirements                                   |
+|                 |                    | Develpment of domain model                                    |
+|                 |                    | Writing out use case                                          |
+|                 |                    | Wiriting repository tests                                     |
+| Neil Joe George |                    |                                                               |
+| Yonatan Bensimon|                    |                                                               |
+| Mathieu Pestel  |                    |                                                               |
 
 Deliverable 1 can be found by clicking [here](../../wiki/Deliverable-1).
