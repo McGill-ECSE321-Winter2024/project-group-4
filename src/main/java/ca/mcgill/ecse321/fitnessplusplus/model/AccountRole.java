@@ -23,9 +23,7 @@ public abstract class AccountRole {
     roleId = aRoleId;
   }
 
-  public AccountRole() {
-
-  }
+  public AccountRole() {}
 
   // ------------------------
   // INTERFACE
@@ -42,11 +40,9 @@ public abstract class AccountRole {
     return roleId;
   }
 
-  public void delete() {
-  }
+  public void delete() {}
 
   public String toString() {
-    return super.toString() + "[" +
-        "roleId" + ":" + getRoleId() + "]";
+    return super.toString() + "[" + "roleId" + ":" + getRoleId() + "]";
   }
 }

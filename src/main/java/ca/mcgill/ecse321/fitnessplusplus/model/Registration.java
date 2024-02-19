@@ -1,11 +1,10 @@
 package ca.mcgill.ecse321.fitnessplusplus.model;
 
-import java.sql.Date;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import java.sql.Date;
 
 @Entity
 public class Registration {
@@ -15,16 +14,12 @@ public class Registration {
   // ------------------------
 
   // Registration Attributes
-  @Id
-  @GeneratedValue
-  private int registrationId;
+  @Id @GeneratedValue private int registrationId;
   private Date dateOfRegistration;
 
   // Registration Associations
-  @ManyToOne
-  private Client client;
-  @ManyToOne
-  private ScheduledClass scheduledClass;
+  @ManyToOne private Client client;
+  @ManyToOne private ScheduledClass scheduledClass;
 
   // ------------------------
   // CONSTRUCTOR
@@ -42,9 +37,7 @@ public class Registration {
     }
   }
 
-  public Registration() {
-
-  }
+  public Registration() {}
 
   // ------------------------
   // INTERFACE
@@ -108,17 +101,30 @@ public class Registration {
   }
 
   public String toString() {
-    return super.toString() + "[" +
-        "registrationId" + ":" + getRegistrationId() + "]" + System.getProperties().getProperty("line.separator") +
-        "  " + "dateOfRegistration" + "="
+    return super.toString()
+        + "["
+        + "registrationId"
+        + ":"
+        + getRegistrationId()
+        + "]"
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "dateOfRegistration"
+        + "="
         + (getDateOfRegistration() != null
-            ? !getDateOfRegistration().equals(this) ? getDateOfRegistration().toString().replaceAll("  ", "    ")
+            ? !getDateOfRegistration().equals(this)
+                ? getDateOfRegistration().toString().replaceAll("  ", "    ")
                 : "this"
             : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "client = " + (getClient() != null ? Integer.toHexString(System.identityHashCode(getClient())) : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "scheduledClass = "
-        + (getScheduledClass() != null ? Integer.toHexString(System.identityHashCode(getScheduledClass())) : "null");
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "client = "
+        + (getClient() != null ? Integer.toHexString(System.identityHashCode(getClient())) : "null")
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "scheduledClass = "
+        + (getScheduledClass() != null
+            ? Integer.toHexString(System.identityHashCode(getScheduledClass()))
+            : "null");
   }
 }

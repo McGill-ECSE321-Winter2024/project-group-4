@@ -9,14 +9,12 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class FitnessplusplusApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FitnessplusplusApplication.class, args);
-	}
+  public static void main(String[] args) {
+    SpringApplication.run(FitnessplusplusApplication.class, args);
+  }
 
-	@RequestMapping("/")
-	public String greeting() {
-		return "Hello world!";
-	}
-	
-
+  @RequestMapping("/")
+  public String greeting() {
+    return "Hello world!";
+  }
 }

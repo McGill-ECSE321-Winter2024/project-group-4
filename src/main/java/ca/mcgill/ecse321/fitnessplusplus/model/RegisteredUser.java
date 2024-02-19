@@ -13,16 +13,13 @@ public class RegisteredUser {
   // ------------------------
 
   // RegisteredUser Attributes
-  @Id
-  @GeneratedValue
-  private int userId;
+  @Id @GeneratedValue private int userId;
   private String username;
   private String password;
   private String email;
 
   // RegisteredUser Associations
-  @OneToOne
-  private AccountRole accountRole;
+  @OneToOne private AccountRole accountRole;
 
   // ------------------------
   // CONSTRUCTOR
@@ -34,9 +31,7 @@ public class RegisteredUser {
     email = aEmail;
   }
 
-  public RegisteredUser() {
-
-  }
+  public RegisteredUser() {}
 
   // ------------------------
   // INTERFACE
@@ -109,12 +104,29 @@ public class RegisteredUser {
   }
 
   public String toString() {
-    return super.toString() + "[" +
-        "userId" + ":" + getUserId() + "," +
-        "username" + ":" + getUsername() + "," +
-        "password" + ":" + getPassword() + "," +
-        "email" + ":" + getEmail() + "]" + System.getProperties().getProperty("line.separator") +
-        "  " + "accountRole = "
-        + (getAccountRole() != null ? Integer.toHexString(System.identityHashCode(getAccountRole())) : "null");
+    return super.toString()
+        + "["
+        + "userId"
+        + ":"
+        + getUserId()
+        + ","
+        + "username"
+        + ":"
+        + getUsername()
+        + ","
+        + "password"
+        + ":"
+        + getPassword()
+        + ","
+        + "email"
+        + ":"
+        + getEmail()
+        + "]"
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "accountRole = "
+        + (getAccountRole() != null
+            ? Integer.toHexString(System.identityHashCode(getAccountRole()))
+            : "null");
   }
 }

@@ -28,5 +28,4 @@ public class Client extends AccountRole {
   public void delete() {
     super.delete();
   }
-
 }

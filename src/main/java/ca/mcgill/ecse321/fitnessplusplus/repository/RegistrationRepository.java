@@ -6,8 +6,7 @@ import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import org.springframework.data.repository.CrudRepository;
 
 public interface RegistrationRepository extends CrudRepository<Registration, Integer> {
-    public Registration findRegistrationByregistrationId(int id);
-    public Registration findByClientAndScheduledClass(Client client, ScheduledClass scheduledClass);
+  public Registration findRegistrationByregistrationId(int id);
 
-
+  public Registration findByClientAndScheduledClass(Client client, ScheduledClass scheduledClass);
 }

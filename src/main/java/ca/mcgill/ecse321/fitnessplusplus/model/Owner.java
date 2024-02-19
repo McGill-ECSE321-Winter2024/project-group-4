@@ -28,5 +28,4 @@ public class Owner extends Staff {
   public void delete() {
     super.delete();
   }
-
 }

@@ -1,13 +1,11 @@
 package ca.mcgill.ecse321.fitnessplusplus.model;
 
-import java.sql.Time;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-
 import java.sql.Date;
+import java.sql.Time;
 
 // line 31 "model.ump"
 // line 89 "model.ump"
@@ -19,24 +17,24 @@ public class ScheduledClass {
   // ------------------------
 
   // ScheduledClass Attributes
-  @Id
-  @GeneratedValue
-  private int scheduledClassId;
+  @Id @GeneratedValue private int scheduledClassId;
   private Time startTime;
   private Time endTime;
   private Date date;
 
   // ScheduledClass Associations
-  @ManyToOne
-  private OfferedClass offeredClass;
-  @ManyToOne
-  private Instructor instructor;
+  @ManyToOne private OfferedClass offeredClass;
+  @ManyToOne private Instructor instructor;
 
   // ------------------------
   // CONSTRUCTOR
   // ------------------------
 
-  public ScheduledClass(Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass,
+  public ScheduledClass(
+      Time aStartTime,
+      Time aEndTime,
+      Date aDate,
+      OfferedClass aOfferedClass,
       Instructor aInstructor) {
     startTime = aStartTime;
     endTime = aEndTime;
@@ -51,9 +49,7 @@ public class ScheduledClass {
     }
   }
 
-  public ScheduledClass() {
-
-  }
+  public ScheduledClass() {}
 
   // ------------------------
   // INTERFACE
@@ -139,25 +135,46 @@ public class ScheduledClass {
   }
 
   public String toString() {
-    return super.toString() + "[" +
-        "scheduledClassId" + ":" + getScheduledClassId() + "]" + System.getProperties().getProperty("line.separator") +
-        "  " + "startTime" + "="
+    return super.toString()
+        + "["
+        + "scheduledClassId"
+        + ":"
+        + getScheduledClassId()
+        + "]"
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "startTime"
+        + "="
         + (getStartTime() != null
-            ? !getStartTime().equals(this) ? getStartTime().toString().replaceAll("  ", "    ") : "this"
+            ? !getStartTime().equals(this)
+                ? getStartTime().toString().replaceAll("  ", "    ")
+                : "this"
             : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "endTime" + "="
-        + (getEndTime() != null ? !getEndTime().equals(this) ? getEndTime().toString().replaceAll("  ", "    ") : "this"
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "endTime"
+        + "="
+        + (getEndTime() != null
+            ? !getEndTime().equals(this) ? getEndTime().toString().replaceAll("  ", "    ") : "this"
             : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "date" + "="
-        + (getDate() != null ? !getDate().equals(this) ? getDate().toString().replaceAll("  ", "    ") : "this"
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "date"
+        + "="
+        + (getDate() != null
+            ? !getDate().equals(this) ? getDate().toString().replaceAll("  ", "    ") : "this"
             : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "offeredClass = "
-        + (getOfferedClass() != null ? Integer.toHexString(System.identityHashCode(getOfferedClass())) : "null")
-        + System.getProperties().getProperty("line.separator") +
-        "  " + "instructor = "
-        + (getInstructor() != null ? Integer.toHexString(System.identityHashCode(getInstructor())) : "null");
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "offeredClass = "
+        + (getOfferedClass() != null
+            ? Integer.toHexString(System.identityHashCode(getOfferedClass()))
+            : "null")
+        + System.getProperties().getProperty("line.separator")
+        + "  "
+        + "instructor = "
+        + (getInstructor() != null
+            ? Integer.toHexString(System.identityHashCode(getInstructor()))
+            : "null");
   }
 }

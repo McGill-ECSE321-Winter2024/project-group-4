@@ -11,44 +11,44 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
 public class OfferedClassRepositoryTest {
-    @Autowired
-    private OfferedClassRepository offeredClassRepository;
+  @Autowired private OfferedClassRepository offeredClassRepository;
 
-    @AfterEach
-    public void clearDatabase() {
-        offeredClassRepository.deleteAll();
-    }
+  @AfterEach
+  public void clearDatabase() {
+    offeredClassRepository.deleteAll();
+  }
 
-    @Test
-    public void testPersistAndLoadOfferedClass1() {
-        OfferedClass offeredClass = new OfferedClass();
-        offeredClassRepository.save(offeredClass);
-        int classId = offeredClass.getId();
+  @Test
+  public void testPersistAndLoadOfferedClass1() {
+    OfferedClass offeredClass = new OfferedClass();
+    offeredClassRepository.save(offeredClass);
+    int classId = offeredClass.getId();
 
-        offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+    offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
 
-        assertNotNull(offeredClass);
-        assertEquals(classId, offeredClass.getId());
-    }
+    assertNotNull(offeredClass);
+    assertEquals(classId, offeredClass.getId());
+  }
 
-    @Test
-    public void testPersistAndLoadOfferedClass2() {
-        OfferedClass offeredClass = new OfferedClass();
-        offeredClassRepository.save(offeredClass);
-        int classId = offeredClass.getId();
+  @Test
+  public void testPersistAndLoadOfferedClass2() {
+    OfferedClass offeredClass = new OfferedClass();
+    offeredClassRepository.save(offeredClass);
+    int classId = offeredClass.getId();
 
-        offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+    offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
 
-        String classType = "Strength";
-        offeredClass.setClassType(classType);
-        String description = "Strength class";
-        offeredClass.setDescription(description);
+    String classType = "Strength";
+    offeredClass.setClassType(classType);
+    String description = "Strength class";
+    offeredClass.setDescription(description);
 
-        offeredClassRepository.save(offeredClass);
+    offeredClassRepository.save(offeredClass);
 
-        OfferedClass updatedOfferedClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+    OfferedClass updatedOfferedClass =
+        offeredClassRepository.findOfferedClassByOfferedClassId(classId);
 
-        assertEquals(classType, updatedOfferedClass.getClassType());
-        assertEquals(description, updatedOfferedClass.getDescription());
-    }
+    assertEquals(classType, updatedOfferedClass.getClassType());
+    assertEquals(description, updatedOfferedClass.getDescription());
+  }
 }

@@ -17,9 +17,7 @@ public abstract class Staff extends AccountRole {
     super(aRoleId);
   }
 
-  public Staff() {
-
-  }
+  public Staff() {}
 
   // ------------------------
   // INTERFACE
@@ -28,5 +26,4 @@ public abstract class Staff extends AccountRole {
   public void delete() {
     super.delete();
   }
-
 }

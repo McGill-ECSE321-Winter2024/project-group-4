@@ -12,9 +12,7 @@ public class OfferedClass {
   // ------------------------
 
   // OfferedClass Attributes
-  @Id
-  @GeneratedValue
-  private int offeredClassId;
+  @Id @GeneratedValue private int offeredClassId;
   private String classType;
   private String description;
 
@@ -28,9 +26,7 @@ public class OfferedClass {
     description = aDescription;
   }
 
-  public OfferedClass() {
-
-  }
+  public OfferedClass() {}
 
   // ------------------------
   // INTERFACE
@@ -42,6 +38,7 @@ public class OfferedClass {
     wasSet = true;
     return wasSet;
   }
+
   public boolean setClassType(String aClassType) {
     boolean wasSet = false;
     classType = aClassType;
@@ -64,15 +61,26 @@ public class OfferedClass {
     return description;
   }
 
-  public int getId() { return offeredClassId; }
-
-  public void delete() {
+  public int getId() {
+    return offeredClassId;
   }
 
+  public void delete() {}
+
   public String toString() {
-    return super.toString() + "[" +
-        "classId" + ":" + getId() + "," +
-        "classType" + ":" + getClassType() + "," +
-        "description" + ":" + getDescription() + "]";
+    return super.toString()
+        + "["
+        + "classId"
+        + ":"
+        + getId()
+        + ","
+        + "classType"
+        + ":"
+        + getClassType()
+        + ","
+        + "description"
+        + ":"
+        + getDescription()
+        + "]";
   }
 }

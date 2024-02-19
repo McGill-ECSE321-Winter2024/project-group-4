@@ -28,5 +28,4 @@ public class Instructor extends Staff {
   public void delete() {
     super.delete();
   }
-
 }
