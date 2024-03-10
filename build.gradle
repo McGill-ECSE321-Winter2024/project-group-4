@@ -27,6 +27,11 @@ tasks.named('test') {
 	useJUnitPlatform()
 	testLogging {
 		exceptionFormat "full"
-		//...other configurations
-	}
+		events "passed", "failed"
+ 	}
+	finalizedBy jacocoTestReport
+}
+
+tasks.named('jacocoTestReport') {
+    dependsOn test // tests are required to run before generating the report
 }
