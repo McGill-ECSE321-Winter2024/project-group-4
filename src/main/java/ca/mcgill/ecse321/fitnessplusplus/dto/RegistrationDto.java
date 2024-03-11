@@ -1,9 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
-import ca.mcgill.ecse321.fitnessplusplus.model.Client;
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
-import jakarta.persistence.ManyToOne;
-
 import java.sql.Date;
 
 public class RegistrationDto {

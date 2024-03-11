@@ -12,5 +12,4 @@ public class AccountRoleDto {
         return roleId;
     }
 
-
 }

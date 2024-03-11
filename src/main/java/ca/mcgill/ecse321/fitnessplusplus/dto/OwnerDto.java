@@ -12,5 +12,4 @@ public class OwnerDto {
         return roleId;
     }
 
-
 }
