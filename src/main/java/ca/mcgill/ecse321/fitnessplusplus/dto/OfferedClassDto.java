@@ -13,15 +13,7 @@ public class OfferedClassDto {
         return classType;
     }
 
-    public void setClassType(String classType) {
-        this.classType = classType;
-    }
-
     public String getDescription() {
         return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 }
