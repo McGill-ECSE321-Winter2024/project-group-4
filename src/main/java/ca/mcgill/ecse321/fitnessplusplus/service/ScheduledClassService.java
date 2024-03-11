@@ -6,10 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
@@ -23,7 +21,7 @@ public class ScheduledClassService {
 
     @Transactional
     public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass,
-            Instructor aInstrcutor) throws Exception {
+            Instructor aInstructor) throws Exception {
 
         // Check if date selected is before.
         if (aDate.before(Date.valueOf(LocalDate.now())) && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
@@ -40,7 +38,7 @@ public class ScheduledClassService {
             }
         }
 
-        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, aOfferedClass, aInstrcutor);
+        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, aOfferedClass, aInstructor);
         scheduledClassRepo.save(scheduledClass);
         return scheduledClass;
 
@@ -55,4 +53,21 @@ public class ScheduledClassService {
         return list;
     }
 
+    @Transactional
+    public ScheduledClass getScheduledClass(int scheduledClassId) {
+        return scheduledClassRepo.findScheduledClassByscheduledClassId(scheduledClassId);
+
+    }
+
+    @Transactional
+    public void removeScheduledClass(int scheduledClassId, Instructor aInstructor) throws Exception {
+        //we get the scheduled class we want to remove
+        ScheduledClass scheduledClass = getScheduledClass(scheduledClassId);
+
+        //we first remove the instructor
+        if (scheduledClass != null && scheduledClass.getInstructor().equals(aInstructor)) {
+            scheduledClassRepo.delete(scheduledClass);
+            scheduledClass.delete();
+        }
+    }
 }
