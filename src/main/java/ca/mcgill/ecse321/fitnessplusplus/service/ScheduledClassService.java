@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.fitnessplusplus.service;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,11 +26,11 @@ public class ScheduledClassService {
             Instructor aInstrcutor) throws Exception {
 
         // Check if date selected is before.
-        if (aDate.before(Date.valueOf(LocalDate.now()))) {
-            throw new Exception("Impossible to schedule a class during past dates.");
+        if (aDate.before(Date.valueOf(LocalDate.now())) && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
+            throw new Exception("Impossible to schedule a class in the past.");
         }
 
-        // Check if the scheduled classes are conflicting
+        // Check if any scheduled class is conflicting
         for (ScheduledClass e : getAllScheduledClass()) {
             // if the dates are same, check if times are same => avoid schedule conflicts
             if (e.getDate().compareTo(aDate) == 0) {
