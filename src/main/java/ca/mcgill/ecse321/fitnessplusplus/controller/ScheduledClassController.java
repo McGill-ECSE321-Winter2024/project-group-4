@@ -2,8 +2,6 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,7 +17,7 @@ public class ScheduledClassController {
     @Autowired
     ScheduledClassService scheduledClassService;
 
-    @GetMapping(value = {"/scheduled-classes", "/scheduled-classes/"})
+    @GetMapping(value = { "/scheduled-classes", "/scheduled-classes/" })
     public List<ScheduledClassDto> getAllSCheduledClasses() {
         List<ScheduledClassDto> dto = new ArrayList<>();
         for (ScheduledClass scheduledClass : scheduledClassService.getAllScheduledClass()) {
