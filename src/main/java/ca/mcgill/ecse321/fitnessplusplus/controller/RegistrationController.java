@@ -7,9 +7,12 @@ import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import java.sql.Date;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -17,6 +20,14 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
 
+    @GetMapping(value={"/registrations", "/registrations/" })
+    public List<RegistrationDto> getAllRegistrations() {
+        List<RegistrationDto> dto = new ArrayList<>();
+        for (Registration r: registrationService.getAllRegistrations()) {
+            dto.add(convertToDto(r));
+        }
+        return dto;
+    }
     private RegistrationDto convertToDto(Registration r) {
          if (r == null) {
              throw new IllegalArgumentException("There is no such registration");
