@@ -20,6 +20,18 @@ public class RegistrationService {
     @Autowired
     RegistrationRepository registrationRepository;
 
+    /**
+     * Method to create a registration, while checking the validity of the parameters
+     *
+     * @param aDateOfRegistration Date of registration
+     * @param aClient Registering Client
+     * @param aScheduledClass Class being registered for
+     *
+     * @return Registration
+     * @throws Exception
+     *
+     * @author Yonatan Bensimon
+     */
     @Transactional
     public Registration createRegistration(Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) throws Exception {
         //We verify if the registration date is before today
@@ -37,6 +49,13 @@ public class RegistrationService {
         return  registration;
     }
 
+    /**
+     * Returns a list of all registrations in the repository
+     *
+     * @return List<Registration>
+     *
+     * @author Yonatan Bensimon
+     */
     @Transactional
     public List<Registration> getAllRegistrations() {
         List<Registration> list = new ArrayList<Registration>();
@@ -48,6 +67,14 @@ public class RegistrationService {
         return list;
     }
 
+    /**
+     * Returns a Registration by its ID
+     *
+     * @param registrationID ID of the desired Registration
+     * @return Registration
+     *
+     * @author Yonatan Bensimon
+     */
     @Transactional
     public Registration getRegistrationByID(int registrationID) {
         return registrationRepository.findRegistrationByregistrationId(registrationID);
@@ -60,6 +87,14 @@ public class RegistrationService {
         return registrationRepository.findByClientAndScheduledClass(aClient, aScheduledClass);
     }*/
 
+    /**
+     * Removes a Registration from the repository by its ID
+     *
+     * @param scheduledClassID Registration ID to be removed
+     * @throws Exception
+     *
+     * @author Yonatan Bensimon
+     */
     @Transactional
     public void removeRegistration(int scheduledClassID) throws Exception {
         Registration registration = registrationRepository.findRegistrationByregistrationId(scheduledClassID);

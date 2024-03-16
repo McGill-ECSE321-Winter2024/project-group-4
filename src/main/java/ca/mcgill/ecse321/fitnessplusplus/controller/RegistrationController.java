@@ -24,6 +24,19 @@ public class RegistrationController {
     @Autowired
     private ScheduledClassService scheduledClassService;
 
+
+    /**
+     * API Post Endpoint to create a registration
+     *
+     * @param date Date of the registration
+     * @param clientDto Client Data Transfer Object
+     * @param scheduledClassDto ScheduledClass Data Transfer Object
+     *
+     * @return RegistrationDto
+     * @throws Exception
+     *
+     * @author Yonatan Bensimon
+     */
     /* Waiting for Mathieu's function
     @PostMapping(value = {"/register", "/register/"})
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
@@ -38,6 +51,12 @@ public class RegistrationController {
 
      */
 
+    /**
+     * API Get Endpoint to get all registrations
+     * @return List<RegistrationDto>
+     *
+     * @author Yonatan Bensimon
+     */
     @GetMapping(value={"/registrations", "/registrations/" })
     public List<RegistrationDto> getAllRegistrations() {
         List<RegistrationDto> dto = new ArrayList<>();
@@ -47,15 +66,39 @@ public class RegistrationController {
         return dto;
     }
 
+    /**
+     * API Get Endpoint to get a registration by its ID
+     *
+     * @param registrationID
+     * @return RegistrationDto
+     *
+     * @author Yonatan Bensimon
+     */
     @GetMapping(value={"/registrations/{id}", "/registrations/{id}/"})
     public RegistrationDto getRegistrationByID(@PathVariable("id") int registrationID) {
         return convertToDto(registrationService.getRegistrationByID(registrationID));
     }
 
+    /**
+     * API Post Endpoint to remove a registration by its ID
+     *
+     * @param registrationID
+     *
+     * @author Yonatan Bensimon
+     */
     @PostMapping(value={"deregister/{id}", "/deregister/{id}"})
     public void removeRegistration(@PathVariable("id") int registrationID) throws Exception {
         registrationService.removeRegistration(registrationID);
     }
+
+    /**
+     * Private method in order to convert a registration object to a registration data transfer object
+     *
+     * @param r Registration object to be converted
+     * @return RegistrationDto
+     *
+     * @author Yonatan Bensimon
+     */
     private RegistrationDto convertToDto(Registration r) {
          if (r == null) {
              throw new IllegalArgumentException("There is no such registration");
