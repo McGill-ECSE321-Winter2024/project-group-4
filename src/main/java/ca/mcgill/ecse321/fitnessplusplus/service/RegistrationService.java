@@ -12,6 +12,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Date;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RegistrationService {
@@ -27,11 +29,48 @@ public class RegistrationService {
 
         //There can only be one registration per client and scheduledClass pair
         if (registrationRepository.findByClientAndScheduledClass(aClient, aScheduledClass) != null) {
-            throw new Exception("IT is not possible for a client to register for the same scheduledCLass once again")
+            throw new Exception("IT is not possible for a client to register for the same scheduledCLass once again");
         }
 
         Registration registration = new Registration(aDateOfRegistration, aClient, aScheduledClass);
         registrationRepository.save(registration);
         return  registration;
+    }
+
+    @Transactional
+    public List<Registration> getAllRegistrations() {
+        List<Registration> list = new ArrayList<Registration>();
+
+        for (Registration r: registrationRepository.findAll()) {
+            list.add(r);
+        }
+
+        return list;
+    }
+
+    @Transactional
+    public Registration getRegistrationByID(int registrationID) {
+        return registrationRepository.findRegistrationByregistrationId(registrationID);
+    }
+
+    @Transactional
+    public Registration getRegistrationByClientAndScheduledClass(Client aClient, ScheduledClass aScheduledClass) {
+        return registrationRepository.findByClientAndScheduledClass(aClient, aScheduledClass);
+    }
+
+    @Transactional
+    public void removeRegistration(Client aClient, ScheduledClass scheduledClass) throws Exception {
+        Registration registration = registrationRepository.findByClientAndScheduledClass(aClient, scheduledClass);
+
+        if (registration == null) {
+            throw new Exception("You cannot remove a registration that does not exist");
+        }
+
+        if (registration.getDateOfRegistration().before(Date.valueOf(LocalDate.now()))) {
+            throw new Exception("YOu cannot remove a registration that has already passed");
+        }
+
+        registrationRepository.delete(registration);
+        registration.delete();
     }
 }
