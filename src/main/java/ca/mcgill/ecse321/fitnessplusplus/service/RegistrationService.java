@@ -53,14 +53,16 @@ public class RegistrationService {
         return registrationRepository.findRegistrationByregistrationId(registrationID);
     }
 
+    //TODO Do i really need this function?
+    /*
     @Transactional
     public Registration getRegistrationByClientAndScheduledClass(Client aClient, ScheduledClass aScheduledClass) {
         return registrationRepository.findByClientAndScheduledClass(aClient, aScheduledClass);
-    }
+    }*/
 
     @Transactional
-    public void removeRegistration(Client aClient, ScheduledClass scheduledClass) throws Exception {
-        Registration registration = registrationRepository.findByClientAndScheduledClass(aClient, scheduledClass);
+    public void removeRegistration(int scheduledClassID) throws Exception {
+        Registration registration = registrationRepository.findRegistrationByregistrationId(scheduledClassID);
 
         if (registration == null) {
             throw new Exception("You cannot remove a registration that does not exist");
