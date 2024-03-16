@@ -16,10 +16,6 @@ import java.time.LocalDate;
 @Service
 public class RegistrationService {
     @Autowired
-    ClientRepository clientRepository;
-    @Autowired
-    ScheduledClassRepository scheduledClassRepository;
-    @Autowired
     RegistrationRepository registrationRepository;
 
     @Transactional
@@ -34,6 +30,8 @@ public class RegistrationService {
             throw new Exception("IT is not possible for a client to register for the same scheduledCLass once again")
         }
 
-        
+        Registration registration = new Registration(aDateOfRegistration, aClient, aScheduledClass);
+        registrationRepository.save(registration);
+        return  registration;
     }
 }
