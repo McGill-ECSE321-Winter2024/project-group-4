@@ -29,11 +29,25 @@ public class ScheduledClassService {
     @Autowired
     InstructorRepository instructorRepo;
 
+    /**
+     * Creates a schedules class
+     * 
+     * @param aStartTime
+     * @param aEndTime
+     * @param aDate
+     * @param aOfferedClassId
+     * @param aInstructorId
+     * @return ScheduledClass
+     * @throws Exception
+     * 
+     * @author Isbat-ul Islam
+     */
     @Transactional
     public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, Integer aOfferedClassId,
             Integer aInstructorId) throws Exception {
 
         // add checks for if instructor and offered class exist.
+        // add checks for opening and closing times of sports centre
 
         // Check if date selected is before.
         if (aDate.before(Date.valueOf(LocalDate.now())) && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
@@ -58,6 +72,13 @@ public class ScheduledClassService {
 
     }
 
+    /**
+     * Returns a list of schedules classes
+     * 
+     * @return List of all ScheduledClass
+     * 
+     * @author Isbat-ul Islam
+     */
     @Transactional
     public List<ScheduledClass> getAllScheduledClass() {
         List<ScheduledClass> list = new ArrayList<>();
@@ -67,6 +88,14 @@ public class ScheduledClassService {
         return list;
     }
 
+    /**
+     * Returns ScheduledClass with Id scheduledClassId
+     * 
+     * @param scheduledClassId
+     * @return ScheduledClass
+     * 
+     * @author Isbat-ul Islam
+     */
     @Transactional
     public ScheduledClass getScheduledClass(int scheduledClassId) {
         return scheduledClassRepo.findScheduledClassByscheduledClassId(scheduledClassId);

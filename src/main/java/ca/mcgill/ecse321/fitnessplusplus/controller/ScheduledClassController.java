@@ -2,11 +2,9 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import java.sql.Date;
 import java.sql.Time;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,6 +21,13 @@ public class ScheduledClassController {
     @Autowired
     ScheduledClassService scheduledClassService;
 
+    /**
+     * API endpoint to get a list of all scheduled classes
+     * 
+     * @return List<ScheduledClassDto>
+     * 
+     * @author Isbat-ul Islam
+     */
     @GetMapping(value = { "/scheduled-classes", "/scheduled-classes/" })
     public List<ScheduledClassDto> getAllSCheduledClasses() {
         List<ScheduledClassDto> dto = new ArrayList<>();
@@ -32,6 +37,19 @@ public class ScheduledClassController {
         return dto;
     }
 
+    /**
+     * Creates a scheduled class.
+     * 
+     * @param aStartTime
+     * @param aEndTime
+     * @param aDay
+     * @param aOfferedClassId
+     * @param anInstructorId
+     * @return ScheduleClassDto
+     * @throws Exception
+     * 
+     * @author Isbat-ul Islam
+     */
     @PostMapping(value = { "/scheduled-class", "/scheduled-class/" })
     public ScheduledClassDto createScheduledClass(
             @RequestParam Time aStartTime,
@@ -41,10 +59,6 @@ public class ScheduledClassController {
         return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId, anInstructorId));
     }
 
-    @GetMapping("/greetings/hello")
-    public String hello() {
-        return "Hello there!";
-    }
 
     private ScheduledClassDto convertToDto(ScheduledClass o) {
         if (o == null) {
