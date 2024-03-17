@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
+import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 
 import jakarta.transaction.Transactional;
@@ -22,10 +24,16 @@ import jakarta.transaction.Transactional;
 public class ScheduledClassService {
     @Autowired
     private ScheduledClassRepository scheduledClassRepo;
+    @Autowired
+    OfferedClassRepository offeredClassRepo;
+    @Autowired
+    InstructorRepository instructorRepo;
 
     @Transactional
-    public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass,
-            Instructor aInstructor) throws Exception {
+    public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, Integer aOfferedClassId,
+            Integer aInstructorId) throws Exception {
+
+        // add checks for if instructor and offered class exist.
 
         // Check if date selected is before.
         if (aDate.before(Date.valueOf(LocalDate.now())) && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
@@ -42,7 +50,9 @@ public class ScheduledClassService {
             }
         }
 
-        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, aOfferedClass, aInstructor);
+        OfferedClass offeredClass = offeredClassRepo.findOfferedClassByOfferedClassId(aOfferedClassId);
+        Instructor instructor = instructorRepo.findInstructorByroleId(aInstructorId);
+        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, instructor);
         scheduledClassRepo.save(scheduledClass);
         return scheduledClass;
 

@@ -1,10 +1,16 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
@@ -24,6 +30,20 @@ public class ScheduledClassController {
             dto.add(convertToDto(scheduledClass));
         }
         return dto;
+    }
+
+    @PostMapping(value = { "/scheduled-class", "/scheduled-class/" })
+    public ScheduledClassDto createScheduledClass(
+            @RequestParam Time aStartTime,
+            @RequestParam Time aEndTime,
+            @RequestParam Date aDay, @RequestParam Integer aOfferedClassId, @RequestParam Integer anInstructorId)
+            throws Exception {
+        return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId, anInstructorId));
+    }
+
+    @GetMapping("/greetings/hello")
+    public String hello() {
+        return "Hello there!";
     }
 
     private ScheduledClassDto convertToDto(ScheduledClass o) {
