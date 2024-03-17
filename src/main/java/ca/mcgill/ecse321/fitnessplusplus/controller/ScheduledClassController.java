@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
@@ -60,6 +62,16 @@ public class ScheduledClassController {
     }
 
 
+    @GetMapping (value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
+    public ScheduledClassDto getScheduledClass(@PathVariable("id") int scheduledClassId) {
+        return convertToDto(scheduledClassService.getScheduledClass(scheduledClassId));
+    }
+
+    @DeleteMapping (value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
+    public void cancelScheduledClass(@PathVariable("id") int scheduledClassId, @RequestParam Integer anInstructorId) {
+        scheduledClassService.cancelScheduledClass(scheduledClassId, anInstructorId);
+    }
+
     private ScheduledClassDto convertToDto(ScheduledClass o) {
         if (o == null) {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
@@ -67,5 +79,7 @@ public class ScheduledClassController {
         return new ScheduledClassDto(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate());
 
     }
+
+
 
 }

@@ -103,12 +103,14 @@ public class ScheduledClassService {
     }
 
     @Transactional
-    public void removeScheduledClass(int scheduledClassId, Instructor aInstructor) throws Exception {
+    public void cancelScheduledClass(int scheduledClassId, Integer aInstructorId) {
         // we get the scheduled class we want to remove
         ScheduledClass scheduledClass = getScheduledClass(scheduledClassId);
+        //get the Instructor
+        Instructor instructor = instructorRepo.findInstructorByroleId(aInstructorId);
 
         // we first remove the instructor
-        if (scheduledClass != null && scheduledClass.getInstructor().equals(aInstructor)) {
+        if (scheduledClass != null && scheduledClass.getInstructor().equals(instructor)) {
             scheduledClassRepo.delete(scheduledClass);
             scheduledClass.delete();
         }
