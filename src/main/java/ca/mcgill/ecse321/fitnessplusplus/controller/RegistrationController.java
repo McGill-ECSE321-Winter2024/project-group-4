@@ -86,7 +86,7 @@ public class RegistrationController {
      *
      * @author Yonatan Bensimon
      */
-    @PostMapping(value={"deregister/{id}", "/deregister/{id}"})
+    @DeleteMapping(value={"registrations/{id}", "/registrations/{id}"})
     public void removeRegistration(@PathVariable("id") int registrationID) throws Exception {
         registrationService.removeRegistration(registrationID);
     }
