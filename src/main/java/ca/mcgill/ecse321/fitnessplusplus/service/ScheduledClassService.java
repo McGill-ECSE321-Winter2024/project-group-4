@@ -110,7 +110,7 @@ public class ScheduledClassService {
     }
 
     @Transactional
-    public void cancelScheduledClass(int scheduledClassId, Integer aInstructorId) {
+    public void deleteScheduledClass(int scheduledClassId, Integer aInstructorId) {
         // we get the scheduled class we want to remove
         ScheduledClass scheduledClass = getScheduledClass(scheduledClassId);
         //get the Instructor
