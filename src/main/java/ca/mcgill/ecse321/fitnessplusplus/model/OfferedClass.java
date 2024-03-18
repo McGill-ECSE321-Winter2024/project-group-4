@@ -20,8 +20,7 @@ public class OfferedClass {
   // CONSTRUCTOR
   // ------------------------
 
-  public OfferedClass(int aClassId, String aClassType, String aDescription) {
-    offeredClassId = aClassId;
+  public OfferedClass(String aClassType, String aDescription) {
     classType = aClassType;
     description = aDescription;
   }
@@ -54,15 +53,15 @@ public class OfferedClass {
   }
 
   public String getClassType() {
-    return classType;
+    return this.classType;
   }
 
   public String getDescription() {
-    return description;
+    return this.description;
   }
 
   public int getId() {
-    return offeredClassId;
+    return this.offeredClassId;
   }
 
   public void delete() {}

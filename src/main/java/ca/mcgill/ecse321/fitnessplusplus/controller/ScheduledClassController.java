@@ -60,7 +60,6 @@ public class ScheduledClassController {
         return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId, anInstructorId));
     }
 
-
     @GetMapping (value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
     public ScheduledClassDto getScheduledClass(@PathVariable("id") int scheduledClassId) {
         return convertToDto(scheduledClassService.getScheduledClass(scheduledClassId));
