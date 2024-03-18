@@ -150,4 +150,18 @@ public class ScheduledClassService {
         }
         return listToDisplay;
     }
+
+    @Transactional
+    public List<ScheduledClass> getScheduledClassesByOfferedClass(OfferedClass offeredClass) {
+        List<ScheduledClass> scheduledClassesToReturn = new ArrayList<>();
+        List<ScheduledClass> scheduledClasses = getAllScheduledClass();
+
+        for (ScheduledClass currentClass : scheduledClasses) {
+            if (currentClass.getOfferedClass().equals(offeredClass)) {
+                scheduledClassesToReturn.add(currentClass);
+            }
+        }
+        return scheduledClassesToReturn;
+
+    }
 }
