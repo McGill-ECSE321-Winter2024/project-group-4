@@ -48,11 +48,17 @@ public class ScheduledClassService {
             Integer aInstructorId) throws Exception {
 
         // add checks for if instructor and offered class exist.
-        // add checks for opening and closing times of sports centre
 
         // Check if date selected is before.
         if (aDate.before(Date.valueOf(LocalDate.now())) && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
             throw new Exception("Impossible to schedule a class in the past.");
+        }
+
+        // checks for opening and closing hours
+        LocalTime openingTime = LocalTime.of(8, 0);
+        LocalTime closingTime = LocalTime.of(20, 0);
+        if (aStartTime.before(Time.valueOf(openingTime)) || aEndTime.after(Time.valueOf(closingTime))) {
+            throw new Exception("Cannot schedule class before and after closing hours");
         }
 
         // Check if any scheduled class is conflicting
