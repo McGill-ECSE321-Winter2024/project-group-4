@@ -29,6 +29,8 @@ public class ScheduledClassService {
     OfferedClassRepository offeredClassRepo;
     @Autowired
     InstructorRepository instructorRepo;
+    @Autowired
+    private OfferedClassService offeredClassService;
 
     /**
      * Creates a schedules class
