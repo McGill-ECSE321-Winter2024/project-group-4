@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
 
+import ca.mcgill.ecse321.fitnessplusplus.dto.AccountRoleDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
@@ -27,6 +28,11 @@ public class AccountService {
         Client client = new Client(ID);
         clientRepository.save(client);
         return  client;
+    }
+
+    @Transactional
+    public Client getIDDTO(int ID){
+        return clientRepository.findClientByroleId(ID);
     }
 
 
