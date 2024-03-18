@@ -72,6 +72,15 @@ public class ScheduledClassController {
         scheduledClassService.cancelScheduledClass(scheduledClassId, anInstructorId);
     }
 
+    @GetMapping (value = { "/scheduled-class", "/scheduled-class/" })
+    public List<ScheduledClassDto> getWeeklyClassSchedule(@RequestParam Date aday) {
+        List<ScheduledClassDto> dto = new ArrayList<>();
+        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyClassSchedule(aday)) {
+            dto.add(convertToDto(scheduledClass));
+        }
+        return dto;
+    }
+
     private ScheduledClassDto convertToDto(ScheduledClass o) {
         if (o == null) {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
