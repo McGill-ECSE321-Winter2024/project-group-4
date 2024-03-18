@@ -33,6 +33,13 @@ public class AccountController {
         return convertToDto(newClient);
     }
 
+    @GetMapping(value = { "/accounts/{ID}", "/accounts/{ID}/"})
+    public AccountRoleDto getAccountDTO(@RequestParam int ID) throws Exception{
+        Client accountRoleDto = accountService.getIDDTO(ID);
+        return convertToDto(accountRoleDto);
+    }
+
+
     private AccountRoleDto convertToDto(AccountRole o) {
         if (o == null) {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
