@@ -1,9 +1,7 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;

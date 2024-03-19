@@ -1,17 +1,11 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.service.OfferedClassService;
-import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.sql.Date;
-import java.sql.Time;
 
 public class OfferedClassController {
     @Autowired

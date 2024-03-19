@@ -57,20 +57,21 @@ public class ScheduledClassController {
             @RequestParam Time aEndTime,
             @RequestParam Date aDay, @RequestParam Integer aOfferedClassId, @RequestParam Integer anInstructorId)
             throws Exception {
-        return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId, anInstructorId));
+        return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId,
+                anInstructorId));
     }
 
-    @GetMapping (value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
+    @GetMapping(value = { "/scheduled-classes/{id}", "/scheduled-classes/{id}/" })
     public ScheduledClassDto getScheduledClass(@PathVariable("id") int scheduledClassId) {
         return convertToDto(scheduledClassService.getScheduledClass(scheduledClassId));
     }
 
-    @DeleteMapping (value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
+    @DeleteMapping(value = { "/scheduled-classes/{id}", "/scheduled-classes/{id}/" })
     public void cancelScheduledClass(@PathVariable("id") int scheduledClassId, @RequestParam Integer anInstructorId) {
         scheduledClassService.deleteScheduledClass(scheduledClassId, anInstructorId);
     }
 
-    @GetMapping (value = { "/scheduled-class", "/scheduled-class/" })
+    @GetMapping(value = { "/scheduled-class", "/scheduled-class/" })
     public List<ScheduledClassDto> getWeeklyClassSchedule(@RequestParam Date aday) {
         List<ScheduledClassDto> dto = new ArrayList<>();
         for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyClassSchedule(aday)) {
@@ -86,7 +87,5 @@ public class ScheduledClassController {
         return new ScheduledClassDto(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate());
 
     }
-
-
 
 }

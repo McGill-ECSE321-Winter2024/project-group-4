@@ -30,10 +30,9 @@ public class ScheduledClassService {
     @Autowired
     OfferedClassRepository offeredClassRepo;
     @Autowired
-    InstructorRepository instructorRepo;
+    private InstructorRepository instructorRepo;
     @Autowired
-    private OfferedClassService offeredClassService;
-    RegistrationRepository registrationRepository;
+    private RegistrationRepository registrationRepository;
 
     /**
      * Creates a schedules class
