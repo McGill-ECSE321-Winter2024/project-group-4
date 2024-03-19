@@ -15,7 +15,7 @@ public class RegisteredUserController {
     AccountService accountService;
 
     @PostMapping(value = { "/register-user", "/register-user/" })
-    public RegisteredUserDto createScheduledClass(
+    public RegisteredUserDto createRegisteredUser(
             @RequestParam String aUsername, @RequestParam String aPassword, @RequestParam String aEmail)
             throws Exception {
         return convertToDto(registeredUserService.createUser(aUsername, aPassword, aEmail));
