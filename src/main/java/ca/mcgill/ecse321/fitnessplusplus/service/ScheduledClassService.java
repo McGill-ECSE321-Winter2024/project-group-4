@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
+import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +33,7 @@ public class ScheduledClassService {
     InstructorRepository instructorRepo;
     @Autowired
     private OfferedClassService offeredClassService;
+    RegistrationRepository registrationRepository;
 
     /**
      * Creates a schedules class
@@ -115,13 +118,20 @@ public class ScheduledClassService {
     public void deleteScheduledClass(int scheduledClassId, Integer aInstructorId) {
         // we get the scheduled class we want to remove
         ScheduledClass scheduledClass = getScheduledClass(scheduledClassId);
-        //get the Instructor
-        Instructor instructor = instructorRepo.findInstructorByroleId(aInstructorId);
-
-        // we first remove the instructor
-        if (scheduledClass != null && scheduledClass.getInstructor().equals(instructor)) {
+        //find the associated registration
+        //loop through registrations
+        Registration registration=null;
+        for (Registration currentRegistration: registrationRepository.findAll()) {
+            if (currentRegistration.getScheduledClass().equals(scheduledClass)) {
+               registration = currentRegistration;
+               break;
+            }
+        }
+        //the associated registration has been found
+        //delete the registration
+        if (registration != null) {
             scheduledClassRepo.delete(scheduledClass);
-            scheduledClass.delete();
+            registrationRepository.delete(registration);
         }
     }
 
