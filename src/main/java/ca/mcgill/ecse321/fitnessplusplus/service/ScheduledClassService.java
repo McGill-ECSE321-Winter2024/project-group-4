@@ -16,10 +16,9 @@ import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
-import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
-import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 
 import jakarta.transaction.Transactional;
@@ -31,9 +30,12 @@ public class ScheduledClassService {
     @Autowired
     OfferedClassRepository offeredClassRepo;
     @Autowired
-    private RegisteredUserRepository registeredUserRepository;
-    @Autowired
     private RegistrationRepository registrationRepository;
+    @Autowired
+    private InstructorRepository instructorRepository;
+
+    public static LocalTime OPENING_TIME = LocalTime.of(8, 0);
+    public static LocalTime CLOSING_TIME = LocalTime.of(20, 0);
 
     /**
      * Creates a schedules class
@@ -59,27 +61,26 @@ public class ScheduledClassService {
             throw new Exception("Impossible to schedule a class in the past.");
         }
 
-        // checks for opening and closing hours
-        LocalTime openingTime = LocalTime.of(8, 0);
-        LocalTime closingTime = LocalTime.of(20, 0);
-        if (aStartTime.before(Time.valueOf(openingTime)) || aEndTime.after(Time.valueOf(closingTime))) {
+        if (aStartTime.before(Time.valueOf(OPENING_TIME)) || aEndTime.after(Time.valueOf(CLOSING_TIME))) {
             throw new Exception("Cannot schedule class before and after closing hours");
         }
 
         // Check if any scheduled class is conflicting
-        for (ScheduledClass e : getAllScheduledClass()) {
+        for (ScheduledClass e : scheduledClassRepo.findAll()) {
             // if the dates are same, check if times are same => avoid schedule conflicts
             if (e.getDate().compareTo(aDate) == 0) {
-                if (aStartTime.compareTo(e.getEndTime()) >= 0 || aEndTime.compareTo(e.getStartTime()) <= 0) {
+                if ((aStartTime.compareTo(e.getStartTime()) >= 0 && aStartTime.compareTo(e.getEndTime()) <= 0)
+                || (aEndTime.compareTo(e.getStartTime()) >= 0 && aEndTime.compareTo(e.getEndTime()) <= 0)) {
                     throw new Exception("There already exists a class scheduled at those times.");
                 }
             }
         }
 
         OfferedClass offeredClass = offeredClassRepo.findOfferedClassByOfferedClassId(aOfferedClassId);
-        // Must be Instructor despite getting regisered user because checks above make sure of it. 
-        RegisteredUser instructor = registeredUserRepository.findRegisteredUserByUserId(aInstructorId);
-        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, (Instructor) instructor.getAccountRole());
+        // Must be Instructor despite getting regisered user because checks above make
+        // sure of it.
+        Instructor instructor = instructorRepository.findInstructorByroleId(aInstructorId);
+        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, instructor);
         scheduledClassRepo.save(scheduledClass);
         return scheduledClass;
 
@@ -101,6 +102,7 @@ public class ScheduledClassService {
         return list;
     }
 
+
     /**
      * Returns ScheduledClass with Id scheduledClassId
      * 
@@ -119,17 +121,17 @@ public class ScheduledClassService {
     public void deleteScheduledClass(int scheduledClassId, Integer aInstructorId) {
         // we get the scheduled class we want to remove
         ScheduledClass scheduledClass = getScheduledClass(scheduledClassId);
-        //find the associated registration
-        //loop through registrations
-        Registration registration=null;
-        for (Registration currentRegistration: registrationRepository.findAll()) {
+        // find the associated registration
+        // loop through registrations
+        Registration registration = null;
+        for (Registration currentRegistration : registrationRepository.findAll()) {
             if (currentRegistration.getScheduledClass().equals(scheduledClass)) {
-               registration = currentRegistration;
-               break;
+                registration = currentRegistration;
+                break;
             }
         }
-        //the associated registration has been found
-        //delete the registration
+        // the associated registration has been found
+        // delete the registration
         if (registration != null) {
             scheduledClassRepo.delete(scheduledClass);
             registrationRepository.delete(registration);
@@ -138,12 +140,13 @@ public class ScheduledClassService {
 
     @Transactional
     public List<ScheduledClass> getWeeklyClassSchedule(Date date) {
-        //first we get all the scheduled classes
-        //we display from that day to the next seven days
-        //Take the date given if it is a sunday, display from sunday to saturday,
-        //if it is not a sunday go to that week's sunday and display from that sunday to saturday
+        // first we get all the scheduled classes
+        // we display from that day to the next seven days
+        // Take the date given if it is a sunday, display from sunday to saturday,
+        // if it is not a sunday go to that week's sunday and display from that sunday
+        // to saturday
         List<ScheduledClass> listToDisplay = new ArrayList<>();
-        
+
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(date);
 
@@ -154,10 +157,10 @@ public class ScheduledClassService {
         calendar.add(Calendar.DATE, 6);
         Date endDate = (Date) calendar.getTime();
 
-        List<ScheduledClass> list = getAllScheduledClass();
+        List<ScheduledClass> list = (List<ScheduledClass>) scheduledClassRepo.findAll();
         for (ScheduledClass currentClass : list) {
-            //check the date
-            if (currentClass.getDate().compareTo(startDate) >= 0 && currentClass.getDate().compareTo(endDate) <= 0 ) {
+            // check the date
+            if (currentClass.getDate().compareTo(startDate) >= 0 && currentClass.getDate().compareTo(endDate) <= 0) {
                 listToDisplay.add(currentClass);
             }
         }
@@ -167,7 +170,7 @@ public class ScheduledClassService {
     @Transactional
     public List<ScheduledClass> getScheduledClassesByOfferedClass(OfferedClass offeredClass) {
         List<ScheduledClass> scheduledClassesToReturn = new ArrayList<>();
-        List<ScheduledClass> scheduledClasses = getAllScheduledClass();
+        List<ScheduledClass> scheduledClasses = (List<ScheduledClass>) scheduledClassRepo.findAll();
 
         for (ScheduledClass currentClass : scheduledClasses) {
             if (currentClass.getOfferedClass().equals(offeredClass)) {
