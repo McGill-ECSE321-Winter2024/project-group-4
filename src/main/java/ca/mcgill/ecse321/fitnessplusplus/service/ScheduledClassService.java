@@ -16,9 +16,10 @@ import org.springframework.stereotype.Service;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
+import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
-import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
+import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 
 import jakarta.transaction.Transactional;
@@ -30,7 +31,7 @@ public class ScheduledClassService {
     @Autowired
     OfferedClassRepository offeredClassRepo;
     @Autowired
-    private InstructorRepository instructorRepo;
+    private RegisteredUserRepository registeredUserRepository;
     @Autowired
     private RegistrationRepository registrationRepository;
 
@@ -76,8 +77,9 @@ public class ScheduledClassService {
         }
 
         OfferedClass offeredClass = offeredClassRepo.findOfferedClassByOfferedClassId(aOfferedClassId);
-        Instructor instructor = instructorRepo.findInstructorByroleId(aInstructorId);
-        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, instructor);
+        // Must be Instructor despite getting regisered user because checks above make sure of it. 
+        RegisteredUser instructor = registeredUserRepository.findRegisteredUserByUserId(aInstructorId);
+        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, (Instructor) instructor.getAccountRole());
         scheduledClassRepo.save(scheduledClass);
         return scheduledClass;
 
