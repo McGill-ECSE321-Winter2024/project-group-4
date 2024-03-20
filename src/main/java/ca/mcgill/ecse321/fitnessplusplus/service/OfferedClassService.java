@@ -17,21 +17,24 @@ public class OfferedClassService {
     @Autowired
     ScheduledClassService scheduledClassService;
 
+    
     @Transactional
-    public OfferedClass requestClass(String classType, String classDescription) throws Exception {
+    public OfferedClass requestClass(String classType, String classDescription) {
         if (classType == null || classDescription == null)
-            throw new Exception("Illegal arguments");
+            throw new IllegalArgumentException("Illegal arguments");
+
         OfferedClass requestedClass = new OfferedClass(classType, classDescription);
         offeredClassRepository.save(requestedClass);
         return requestedClass;
     }
 
     @Transactional
-    public void removeOfferedClass(int offeredClassId) throws Exception {
+    public void removeOfferedClass(int offeredClassId) {
         OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(offeredClassId);
 
-        if (offeredClass == null)
-            throw new Exception("You cannot remove an offered class that does not exist");
+        if (offeredClass == null) {
+            throw new IllegalArgumentException("You cannot remove an offered class that does not exist");
+        }
 
         List<ScheduledClass> scheduledClassList = scheduledClassService.getScheduledClassesByOfferedClass(offeredClass);
 
@@ -41,7 +44,6 @@ public class OfferedClassService {
         }
 
         offeredClassRepository.delete(offeredClass);
-        offeredClass.delete();
     }
 
 }

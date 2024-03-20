@@ -21,7 +21,7 @@ public class AccountController {
 
     @GetMapping(value = { "/accounts/{ID}", "/accounts/{ID}/"})
     public AccountRoleDto getAccountDTO(@RequestParam int ID) throws Exception{
-        Client accountRoleDto = accountService.getIDDTO(ID);
+        Client accountRoleDto = accountService.getClientById(ID);
         return convertToDto(accountRoleDto);
     }
 

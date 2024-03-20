@@ -24,7 +24,7 @@ public class AccountService {
     }
 
     @Transactional
-    public Client getIDDTO(int ID) {
+    public Client getClientById(int ID) {
         return clientRepository.findClientByroleId(ID);
     }
 
