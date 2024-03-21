@@ -18,9 +18,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
@@ -110,5 +108,20 @@ public class testRegistrationService {
         assertEquals(registration.getDateOfRegistration(), aDate);
         assertEquals(registration.getClient().getRoleId(), CLIENT_KEY);
         assertEquals(registration.getScheduledClass().getScheduledClassId(), SCHEDULED_KEY);
+    }
+
+    @Test
+    public void testWrongClientAndScheduledClassUnsuccesfullCreateRegistration() {
+        Date aDate = Date.valueOf(LocalDate.now());
+        Integer WRONG_CLIENT_ID = 666;
+        Integer WRONG_SCHEDULED_CLASS_ID = 666;
+
+        assertThrows(Exception.class, () -> {
+           registrationService.createRegistration(aDate, WRONG_CLIENT_ID, SCHEDULED_KEY);
+        });
+
+        assertThrows(Exception.class, () -> {
+            registrationService.createRegistration(aDate, CLIENT_KEY, WRONG_SCHEDULED_CLASS_ID);
+        });
     }
 }
