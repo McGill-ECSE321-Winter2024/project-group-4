@@ -42,10 +42,8 @@ public class RegistrationController {
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
                                               @RequestParam(name = "clientID") int clientID,
                                               @RequestParam(name = "scheduledClassID") int scheduledClassID) throws Exception {
-        ScheduledClass s = scheduledClassService.getScheduledClass(scheduledClassID);
-        Client c = accountService.getClientById(clientID);
 
-        Registration r = registrationService.createRegistration(date, c, s);
+        Registration r = registrationService.createRegistration(date, clientID, scheduledClassID);
         return convertToDto(r);
     }
 

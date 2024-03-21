@@ -3,7 +3,9 @@ package ca.mcgill.ecse321.fitnessplusplus.service;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
+import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,6 +19,10 @@ import java.util.List;
 public class RegistrationService {
     @Autowired
     RegistrationRepository registrationRepository;
+    @Autowired
+    ClientRepository clientRepository;
+    @Autowired
+    ScheduledClassRepository scheduledClassRepository;
 
     /**
      * Method to create a registration, while checking the validity of the parameters
@@ -31,11 +37,14 @@ public class RegistrationService {
      * @author Yonatan Bensimon
      */
     @Transactional
-    public Registration createRegistration(Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) throws Exception {
+    public Registration createRegistration(Date aDateOfRegistration, Integer aClientID, Integer aScheduledClassID) throws Exception {
         //We verify if the registration date is before today
         if (aDateOfRegistration.before(Date.valueOf(LocalDate.now()))) {
             throw new Exception("It is not possible to register for a class in the past");
         }
+
+        Client aClient = clientRepository.findClientByroleId(aClientID);
+        ScheduledClass aScheduledClass = scheduledClassRepository.findScheduledClassByscheduledClassId(aScheduledClassID);
 
         //There can only be one registration per client and scheduledClass pair
         if (registrationRepository.findByClientAndScheduledClass(aClient, aScheduledClass) != null) {

@@ -5,6 +5,7 @@ import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -57,6 +58,8 @@ public class testRegistrationService {
                                 new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"),
                                 new Instructor(1));
 
+                        scheduledClass.setScheduledClassId(SCHEDULED_KEY);
+
                         return scheduledClass;
                     } else {
                         return null;
@@ -91,5 +94,21 @@ public class testRegistrationService {
                     list.add(r1);
                     return r1;
                 });
+    }
+
+    @Test
+    public void testSuccesfulCreateRegistration() {
+        Date aDate = Date.valueOf(LocalDate.now());
+        Registration registration = null;
+
+        try {
+            registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_KEY);
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(registration.getDateOfRegistration(), aDate);
+        assertEquals(registration.getClient().getRoleId(), CLIENT_KEY);
+        assertEquals(registration.getScheduledClass().getScheduledClassId(), SCHEDULED_KEY);
     }
 }
