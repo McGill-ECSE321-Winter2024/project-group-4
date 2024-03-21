@@ -23,7 +23,7 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
     private ScheduledClassService scheduledClassService;
-    private AccountService accountService
+    private AccountService accountService;
 
 
     /**
