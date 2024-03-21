@@ -30,8 +30,8 @@ public class RegistrationController {
      * API Post Endpoint to create a registration
      *
      * @param date Date of the registration
-     * @param clientDto Client Data Transfer Object
-     * @param scheduledClassDto ScheduledClass Data Transfer Object
+     * @param clientID Client ID
+     * @param scheduledClassID ScheduledClass ID
      *
      * @return RegistrationDto
      * @throws Exception
@@ -40,10 +40,10 @@ public class RegistrationController {
      */
     @PostMapping(value = {"/register", "/register/"})
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
-                                              @RequestParam(name = "client") ClientDto clientDto,
-                                              @RequestParam(name = "scheduledClass") ScheduledClassDto scheduledClassDto) throws Exception {
-        ScheduledClass s = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassId());
-        Client c = accountService.getClientById(clientDto.getRoleId());
+                                              @RequestParam(name = "clientID") int clientID,
+                                              @RequestParam(name = "scheduledClassID") int scheduledClassID) throws Exception {
+        ScheduledClass s = scheduledClassService.getScheduledClass(scheduledClassID);
+        Client c = accountService.getClientById(clientID);
 
         Registration r = registrationService.createRegistration(date, c, s);
         return convertToDto(r);
