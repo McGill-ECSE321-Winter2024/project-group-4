@@ -33,7 +33,6 @@ public class RegistrationController {
      *
      * @author Yonatan Bensimon
      */
-    /* Waiting for Mathieu's function
     @PostMapping(value = {"/register", "/register/"})
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
                                               @RequestParam(name = "client") ClientDto clientDto,
@@ -45,7 +44,7 @@ public class RegistrationController {
         return convertToDto(r);
     }
 
-     */
+
 
     /**
      * API Get Endpoint to get all registrations
