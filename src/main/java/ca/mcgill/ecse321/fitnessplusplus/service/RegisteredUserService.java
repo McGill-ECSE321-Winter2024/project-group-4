@@ -34,10 +34,27 @@ public class RegisteredUserService {
         // Input validation
         if (aUsername == null || aPassword == null || aEmail == null)
             throw new IllegalArgumentException("Illegal arguments");
-
+        if (getUserByEmail(aEmail) != null)
+            throw new IllegalArgumentException("Account Exists");
         RegisteredUser newUser = new RegisteredUser(aUsername, aPassword, aEmail);
         // When new user is created, set as client.
         newUser.setAccountRole(new Client());
+        // Save both inside of AccountRole & RegisteredUser Repositories.
+        Client client = (Client) newUser.getAccountRole();
+        clientRepository.save(client);
+        registeredUserRepository.save(newUser);
+        return newUser;
+    }
+    @Transactional
+    public RegisteredUser createUser(String aUsername, String aPassword, String aEmail, Client aClient) {
+        // Input validation
+        if (aUsername == null || aPassword == null || aEmail == null)
+            throw new IllegalArgumentException("Illegal arguments");
+        if (getUserByEmail(aEmail) != null)
+            throw new IllegalArgumentException("Account Exists");
+        RegisteredUser newUser = new RegisteredUser(aUsername, aPassword, aEmail);
+        // When new user is created, set as client.
+        newUser.setAccountRole(aClient);
         // Save both inside of AccountRole & RegisteredUser Repositories.
         Client client = (Client) newUser.getAccountRole();
         clientRepository.save(client);
@@ -74,5 +91,16 @@ public class RegisteredUserService {
         }
 
         return registeredUser;
+    }
+
+    @Transactional
+    public RegisteredUser getUserByEmail(String email){
+        for (RegisteredUser user : registeredUserRepository.findAll()){
+            if (user.getEmail().equals(email)){
+                return user;
+            }
+        }
+
+        return null;
     }
 }

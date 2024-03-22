@@ -12,13 +12,9 @@ public class AccountService {
     ClientRepository clientRepository;
 
     @Transactional
-    public Client createClient(int ID) throws IllegalArgumentException {
+    public Client createClient() {
         // We verify if the registration date is before today
-        if (clientRepository.existsById(ID)) {
-            throw new IllegalArgumentException("Client already exists.");
-        }
-
-        Client client = new Client(ID);
+        Client client = new Client();
         clientRepository.save(client);
         return client;
     }

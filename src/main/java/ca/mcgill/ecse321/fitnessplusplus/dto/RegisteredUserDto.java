@@ -1,12 +1,14 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
+import ca.mcgill.ecse321.fitnessplusplus.model.AccountRole;
+
 public class RegisteredUserDto {
 
     private String aUsername;
     private String aPassword;
     private String aEmail;
 
-    private AccountRoleDto accountRole;
+    private AccountRole accountRole;
 
     public RegisteredUserDto(String aUsername, String aPassword, String aEmail) {
         this.aUsername = aUsername;
@@ -14,7 +16,7 @@ public class RegisteredUserDto {
         this.aEmail = aEmail;
     }
 
-    public RegisteredUserDto(String aUsername, String aPassword, String aEmail, AccountRoleDto accountRole) {
+    public RegisteredUserDto(String aUsername, String aPassword, String aEmail, AccountRole accountRole) {
         this.aUsername = aUsername;
         this.aPassword = aPassword;
         this.aEmail = aEmail;
@@ -33,11 +35,11 @@ public class RegisteredUserDto {
         return aEmail;
     }
 
-    public AccountRoleDto getAccountRole() {
+    public AccountRole getAccountRole() {
         return accountRole;
     }
 
-    public void setAccountRole(AccountRoleDto accountRole) {
+    public void setAccountRole(AccountRole accountRole) {
         this.accountRole = accountRole;
     }
 }

@@ -1,9 +1,12 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.AccountRoleDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
+import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
 import ca.mcgill.ecse321.fitnessplusplus.model.AccountRole;
+import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,26 +14,29 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class AccountController {
     @Autowired
-    AccountService accountService;
+    RegisteredUserService registeredUserService;
+
 
     @PostMapping(value = { "/accounts", "/accounts/"})
-    public AccountRoleDto createAccount(@RequestParam int ID) throws IllegalArgumentException {
-        Client newClient = accountService.createClient(ID);
+    public RegisteredUserDto createAccount(@RequestParam String aUsername, String aPassword, String aEmail) throws IllegalArgumentException {
+        RegisteredUser newClient = registeredUserService.createUser(aUsername, aPassword, aEmail);
         return convertToDto(newClient);
     }
 
     @GetMapping(value = { "/accounts/{ID}", "/accounts/{ID}/"})
-    public AccountRoleDto getAccountDTO(@RequestParam int ID) throws Exception{
-        Client accountRoleDto = accountService.getClientById(ID);
+    public RegisteredUserDto getAccountDTO(@RequestParam String aEmail) throws Exception{
+        RegisteredUser accountRoleDto = registeredUserService.getUserByEmail(aEmail);
         return convertToDto(accountRoleDto);
     }
 
 
-    private AccountRoleDto convertToDto(AccountRole o) {
+    private RegisteredUserDto convertToDto(RegisteredUser o) {
         if (o == null) {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
         }
-        return new AccountRoleDto(o.getRoleId());
+        if (o.getAccountRole() != null)
+            return new RegisteredUserDto(o.getUsername(), o.getPassword(), o.getEmail(), o.getAccountRole());
+        return new RegisteredUserDto(o.getUsername(), o.getPassword(), o.getEmail());
 
     }
 
