@@ -96,14 +96,14 @@ public class RegistrationService {
     /**
      * Removes a Registration from the repository by its ID
      *
-     * @param scheduledClassID Registration ID to be removed
+     * @param registrationID Registration ID to be removed
      * @throws Exception
      *
      * @author Yonatan Bensimon
      */
     @Transactional
-    public void removeRegistration(int scheduledClassID) throws Exception {
-        Registration registration = registrationRepository.findRegistrationByregistrationId(scheduledClassID);
+    public void removeRegistration(int registrationID) throws Exception {
+        Registration registration = registrationRepository.findRegistrationByregistrationId(registrationID);
 
         if (registration == null) {
             throw new Exception("You cannot remove a registration that does not exist");

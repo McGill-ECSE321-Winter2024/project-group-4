@@ -24,6 +24,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class testRegistrationService {
@@ -107,10 +108,12 @@ public class testRegistrationService {
 		};
         lenient().when(clientRepository.save(any(Client.class))).thenAnswer(returnParameterAsAnswer);
         lenient().when(registeredUserRepository.save(any(RegisteredUser.class))).thenAnswer(returnParameterAsAnswer);
+
+
     }
 
     @Test
-    public void testSuccesfulCreateRegistration() {
+    public void testSuccessfulCreateRegistration() {
         Date aDate = Date.valueOf(LocalDate.now());
         Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
 
@@ -134,9 +137,17 @@ public class testRegistrationService {
         });
     }
 
+    @Test
+    public void testRegistrationDateAfterScheduledClassDate() {
+        Date aRegistrationDate = Date.valueOf(LocalDate.now().plusDays(2));
+
+        assertThrows(Exception.class, () -> {
+            registrationService.createRegistration(aRegistrationDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
+        });
+    }
 
     @Test 
-    public void testRepeatedRegistrationUnsuccesfullCreateRegistration(){
+    public void testRepeatedRegistrationUnsuccessfulCreateRegistration(){
         Client alreadyRegisteredClient = registrationService.getAllRegistrations().get(0).getClient();
         ScheduledClass existingClass = registrationService.getAllRegistrations().get(0).getScheduledClass();
 
@@ -144,6 +155,12 @@ public class testRegistrationService {
             registrationService.createRegistration(Date.valueOf(LocalDate.now()), alreadyRegisteredClient.getRoleId(), existingClass.getScheduledClassId());
         });
         
+    }
+
+    @Test
+    public void testSuccessfulDeleteRegistration() {
+        Date aDate = Date.valueOf(LocalDate.now());
+        Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
     }
 
 }
