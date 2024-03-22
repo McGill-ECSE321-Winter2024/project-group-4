@@ -13,7 +13,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -74,11 +73,25 @@ public class testScheduledClassService {
                 .thenAnswer((InvocationOnMock invocation) -> {
                     Time startTime = Time.valueOf(LocalTime.of(15, 0));
                     Time endTime = Time.valueOf(LocalTime.of(17, 0));
-                    Date aDate = Date.valueOf(LocalDate.now());
-                    ScheduledClass s1 = new ScheduledClass(startTime, endTime, aDate,
-                            new OfferedClass("FireBending", "Fireball"), new Instructor(1));
+                    LocalDate aDate = LocalDate.of(2024,3, 22);
                     ArrayList<ScheduledClass> list = new ArrayList<>();
+
+                    ScheduledClass s1 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate),
+                            new OfferedClass("FireBending", "Fireball"), new Instructor(1));
                     list.add(s1);
+
+                    ScheduledClass s2 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(2)),
+                            new OfferedClass("WaterBending", "Save the ocean"), new Instructor(2));
+                    list.add(s2);
+
+                    ScheduledClass s3 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(20)),
+                            new OfferedClass("AirBending", "Just keep breathing"), new Instructor(2));
+                    list.add(s3);
+
+                    ScheduledClass s4 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(5)),
+                            new OfferedClass("EarthBending", "Rock'n Roll"), new Instructor(2));
+                    list.add(s4);
+
                     return list;
                 });
 
@@ -170,4 +183,14 @@ public class testScheduledClassService {
         });
     }
 
+    @Test
+    public void testGetWeeklyScheduledClasses() {
+        List<ScheduledClass> scheduledClasses = scheduledClassService.getAllScheduledClass();
+        ScheduledClass firstClass = scheduledClasses.get(0);
+        int numberOfClassesBeforeWeeklyFilter = scheduledClasses.size();
+        int numberOfClassesAfterWeeklyFilter = scheduledClassService.getWeeklyScheduledClasses(firstClass.getDate()).size();
+        // Currently march 22nd is Friday. Only acceptable dates are 23 (index 2). The other two go beyond Sunday => bad. 
+        assertEquals(4, numberOfClassesBeforeWeeklyFilter);
+        assertEquals(2, numberOfClassesAfterWeeklyFilter);
+    }
 }
