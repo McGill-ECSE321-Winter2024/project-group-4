@@ -5,9 +5,13 @@ import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
+@CrossOrigin(origins = "*")
+@RestController
 public class RegisteredUserController {
     @Autowired
     RegisteredUserService registeredUserService;

@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.fitnessplusplus.service;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.*;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
+import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,19 +12,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
-import java.io.Console;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.lenient;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class testRegistrationService {
@@ -33,31 +33,33 @@ public class testRegistrationService {
     private ScheduledClassRepository scheduledClassRepository;
     @Mock
     private ClientRepository clientRepository;
+    @Mock
+    private RegisteredUserRepository registeredUserRepository;
 
     @InjectMocks
     private RegistrationService registrationService;
     @InjectMocks
     private ScheduledClassService scheduledClassService;
     @InjectMocks
-    private AccountService accountService;
+    private RegisteredUserService registeredUserService;
 
-    public static final Integer SCHEDULED_KEY = 0;
-    public static final Integer CLIENT_KEY = 0;
+    public static final Integer SCHEDULED_CLASS_KEY = 0;
+    public static final Integer CLIENT_KEY = 3;
 
     @BeforeEach
     public void setMockOutput() {
         lenient().when(scheduledClassRepository.findScheduledClassByscheduledClassId(any(Integer.class)))
                 .thenAnswer((InvocationOnMock invocation) -> {
-                    if (invocation.getArgument(0).equals(SCHEDULED_KEY)) {
-                        Time startTime = Time.valueOf(LocalTime.of(23, 0));
-                        Time endTime = Time.valueOf(LocalTime.of(23, 59));
+                    if (invocation.getArgument(0).equals(SCHEDULED_CLASS_KEY)) {
+                        Time startTime = Time.valueOf(LocalTime.of(13, 0));
+                        Time endTime = Time.valueOf(LocalTime.of(15, 59));
                         Date aDate = Date.valueOf(LocalDate.now().plusDays(1));
 
                         ScheduledClass scheduledClass = new ScheduledClass(startTime, endTime, aDate,
                                 new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"),
                                 new Instructor(1));
 
-                        scheduledClass.setScheduledClassId(SCHEDULED_KEY);
+                        scheduledClass.setScheduledClassId(SCHEDULED_CLASS_KEY);
 
                         return scheduledClass;
                     } else {
@@ -77,38 +79,44 @@ public class testRegistrationService {
         lenient().when(registrationRepository.findAll())
                 .thenAnswer((InvocationOnMock invocation) -> {
                     Date aRegistrationDate = Date.valueOf(LocalDate.now());
-
-                    Time startTime = Time.valueOf(LocalTime.of(23, 0));
-                    Time endTime = Time.valueOf(LocalTime.of(23, 59));
+                    Time startTime = Time.valueOf(LocalTime.of(13, 0));
+                    Time endTime = Time.valueOf(LocalTime.of(15, 59));
                     Date aScheduledDate = Date.valueOf(LocalDate.now());
+
                     ScheduledClass aScheduledClass = new ScheduledClass(startTime, endTime, aScheduledDate,
-                            new OfferedClass("Swimming","A very needed class for some engineers"),
+                            new OfferedClass("Swimming", "A very needed class for some engineers"),
                             new Instructor(1));
 
-                    Client aClient = new Client(1);
+                    List<Registration> registrations = new ArrayList<Registration>();
 
-                    Registration r1 = new Registration(aRegistrationDate, aClient, aScheduledClass);
-                    ArrayList<Registration> list = new ArrayList<>();
+                    RegisteredUser user1 = registeredUserService.createUser("Bob", "Bob Again", "BobLivesOn@gmail.com");
+                    Registration r1 = new Registration(aRegistrationDate, (Client) user1.getAccountRole(),
+                            aScheduledClass);
+                    registrations.add(r1);
 
-                    list.add(r1);
-                    return r1;
+                    RegisteredUser user2 =registeredUserService.createUser("Alice", "Alice Again", "AliceLivesOn@gmail.com");
+                    Registration r2 = new Registration(aRegistrationDate, (Client) user2.getAccountRole(),
+                            aScheduledClass);
+                    registrations.add(r2);
+
+                    return registrations;
+
                 });
+		Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+			return invocation.getArgument(0);
+		};
+        lenient().when(clientRepository.save(any(Client.class))).thenAnswer(returnParameterAsAnswer);
+        lenient().when(registeredUserRepository.save(any(RegisteredUser.class))).thenAnswer(returnParameterAsAnswer);
     }
 
     @Test
     public void testSuccesfulCreateRegistration() {
         Date aDate = Date.valueOf(LocalDate.now());
-        Registration registration = null;
-
-        try {
-            registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_KEY);
-        } catch (Exception e) {
-            fail();
-        }
+        Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
 
         assertEquals(registration.getDateOfRegistration(), aDate);
         assertEquals(registration.getClient().getRoleId(), CLIENT_KEY);
-        assertEquals(registration.getScheduledClass().getScheduledClassId(), SCHEDULED_KEY);
+        assertEquals(registration.getScheduledClass().getScheduledClassId(), SCHEDULED_CLASS_KEY);
     }
 
     @Test
@@ -118,7 +126,7 @@ public class testRegistrationService {
         Integer WRONG_SCHEDULED_CLASS_ID = 666;
 
         assertThrows(Exception.class, () -> {
-           registrationService.createRegistration(aDate, WRONG_CLIENT_ID, SCHEDULED_KEY);
+            registrationService.createRegistration(aDate, WRONG_CLIENT_ID, SCHEDULED_CLASS_KEY);
         });
 
         assertThrows(Exception.class, () -> {
@@ -126,13 +134,16 @@ public class testRegistrationService {
         });
     }
 
-    @Test
-    public void testRegistrationDateAfterScheduledClassDate() {
-        Date aRegistrationDate = Date.valueOf(LocalDate.now().plusDays(2));
+
+    @Test 
+    public void testRepeatedRegistrationUnsuccesfullCreateRegistration(){
+        Client alreadyRegisteredClient = registrationService.getAllRegistrations().get(0).getClient();
+        ScheduledClass existingClass = registrationService.getAllRegistrations().get(0).getScheduledClass();
 
         assertThrows(Exception.class, () -> {
-            registrationService.createRegistration(aRegistrationDate, CLIENT_KEY, SCHEDULED_KEY);
+            registrationService.createRegistration(Date.valueOf(LocalDate.now()), alreadyRegisteredClient.getRoleId(), existingClass.getScheduledClassId());
         });
+        
     }
 
 }

@@ -74,7 +74,7 @@ public class ScheduledClassController {
     @GetMapping(value = { "/scheduled-class", "/scheduled-class/" })
     public List<ScheduledClassDto> getWeeklyClassSchedule(@RequestParam Date aday) {
         List<ScheduledClassDto> dto = new ArrayList<>();
-        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyClassSchedule(aday)) {
+        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(aday)) {
             dto.add(convertToDto(scheduledClass));
         }
         return dto;

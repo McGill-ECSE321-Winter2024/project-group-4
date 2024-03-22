@@ -3,8 +3,12 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ClientDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.RegistrationDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
+import ca.mcgill.ecse321.fitnessplusplus.model.Client;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
+import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegistrationService;
+import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -18,15 +22,16 @@ import java.util.List;
 public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
-
+    private ScheduledClassService scheduledClassService;
+    private AccountService accountService;
 
 
     /**
      * API Post Endpoint to create a registration
      *
      * @param date Date of the registration
-     * @param clientID Client ID
-     * @param scheduledClassID ScheduledClass ID
+     * @param clientDto Client Data Transfer Object
+     * @param scheduledClassDto ScheduledClass Data Transfer Object
      *
      * @return RegistrationDto
      * @throws Exception
@@ -35,10 +40,12 @@ public class RegistrationController {
      */
     @PostMapping(value = {"/register", "/register/"})
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
-                                              @RequestParam(name = "clientID") int clientID,
-                                              @RequestParam(name = "scheduledClassID") int scheduledClassID) throws Exception {
+                                              @RequestParam(name = "client") ClientDto clientDto,
+                                              @RequestParam(name = "scheduledClass") ScheduledClassDto scheduledClassDto) throws Exception {
+        ScheduledClass scheduledClass = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassId());
+        Client client = accountService.getClientById(clientDto.getRoleId());
 
-        Registration r = registrationService.createRegistration(date, clientID, scheduledClassID);
+        Registration r = registrationService.createRegistration(date,client.getRoleId() ,scheduledClass.getScheduledClassId());
         return convertToDto(r);
     }
 
