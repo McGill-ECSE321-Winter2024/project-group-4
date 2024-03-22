@@ -2,11 +2,11 @@ package ca.mcgill.ecse321.fitnessplusplus.service;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalTime;
-
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
@@ -57,7 +57,8 @@ public class ScheduledClassService {
         // add checks for if instructor and offered class exist.
 
         // Check if date selected is before.
-        if (aDate.before(Date.valueOf(LocalDate.now())) && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
+        if (aDate.before(Date.valueOf(LocalDate.now())) || aDate.compareTo(Date.valueOf(LocalDate.now())) == 0
+                && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
             throw new Exception("Impossible to schedule a class in the past.");
         }
 
@@ -70,7 +71,7 @@ public class ScheduledClassService {
             // if the dates are same, check if times are same => avoid schedule conflicts
             if (e.getDate().compareTo(aDate) == 0) {
                 if ((aStartTime.compareTo(e.getStartTime()) >= 0 && aStartTime.compareTo(e.getEndTime()) <= 0)
-                || (aEndTime.compareTo(e.getStartTime()) >= 0 && aEndTime.compareTo(e.getEndTime()) <= 0)) {
+                        || (aEndTime.compareTo(e.getStartTime()) >= 0 && aEndTime.compareTo(e.getEndTime()) <= 0)) {
                     throw new Exception("There already exists a class scheduled at those times.");
                 }
             }
@@ -101,7 +102,6 @@ public class ScheduledClassService {
         }
         return list;
     }
-
 
     /**
      * Returns ScheduledClass with Id scheduledClassId
@@ -138,6 +138,7 @@ public class ScheduledClassService {
         }
     }
 
+    /*
     @Transactional
     public List<ScheduledClass> getWeeklyClassSchedule(Date date) {
         // first we get all the scheduled classes
@@ -165,6 +166,23 @@ public class ScheduledClassService {
             }
         }
         return listToDisplay;
+    }
+    */
+
+    @Transactional
+    public ArrayList<ScheduledClass> getWeeklyScheduledClasses(Date aDate){
+        Date startOfWeek = Date.valueOf(aDate.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)));
+        Date endOfWeek = Date.valueOf(startOfWeek.toLocalDate().plusDays(6));
+        ArrayList<ScheduledClass> scheduledClasses = new ArrayList<>();
+
+        for(ScheduledClass scheduledClass : scheduledClassRepo.findAll()){
+            Date date = scheduledClass.getDate();
+            if(date.compareTo(startOfWeek) >= 0 && date.compareTo(endOfWeek) <= 0){
+                scheduledClasses.add(scheduledClass);
+            }
+        }
+
+        return scheduledClasses;
     }
 
     @Transactional
