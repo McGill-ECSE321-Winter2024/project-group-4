@@ -57,8 +57,7 @@ public class ScheduledClassService {
         // add checks for if instructor and offered class exist.
 
         // Check if date selected is before.
-        if (aDate.before(Date.valueOf(LocalDate.now())) || aDate.compareTo(Date.valueOf(LocalDate.now())) == 0
-                && aStartTime.compareTo(Time.valueOf(LocalTime.now())) <= 0) {
+        if (aDate.compareTo(Date.valueOf(LocalDate.now())) < 0 ) {
             throw new Exception("Impossible to schedule a class in the past.");
         }
 
@@ -138,46 +137,16 @@ public class ScheduledClassService {
         }
     }
 
-    /*
-    @Transactional
-    public List<ScheduledClass> getWeeklyClassSchedule(Date date) {
-        // first we get all the scheduled classes
-        // we display from that day to the next seven days
-        // Take the date given if it is a sunday, display from sunday to saturday,
-        // if it is not a sunday go to that week's sunday and display from that sunday
-        // to saturday
-        List<ScheduledClass> listToDisplay = new ArrayList<>();
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date);
-
-        while (calendar.get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY) {
-            calendar.add(Calendar.DATE, -1);
-        }
-        Date startDate = (Date) calendar.getTime();
-        calendar.add(Calendar.DATE, 6);
-        Date endDate = (Date) calendar.getTime();
-
-        List<ScheduledClass> list = (List<ScheduledClass>) scheduledClassRepo.findAll();
-        for (ScheduledClass currentClass : list) {
-            // check the date
-            if (currentClass.getDate().compareTo(startDate) >= 0 && currentClass.getDate().compareTo(endDate) <= 0) {
-                listToDisplay.add(currentClass);
-            }
-        }
-        return listToDisplay;
-    }
-    */
 
     @Transactional
-    public ArrayList<ScheduledClass> getWeeklyScheduledClasses(Date aDate){
+    public ArrayList<ScheduledClass> getWeeklyScheduledClasses(Date aDate) {
         Date startOfWeek = Date.valueOf(aDate.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)));
         Date endOfWeek = Date.valueOf(startOfWeek.toLocalDate().plusDays(6));
         ArrayList<ScheduledClass> scheduledClasses = new ArrayList<>();
 
-        for(ScheduledClass scheduledClass : scheduledClassRepo.findAll()){
+        for (ScheduledClass scheduledClass : scheduledClassRepo.findAll()) {
             Date date = scheduledClass.getDate();
-            if(date.compareTo(startOfWeek) >= 0 && date.compareTo(endOfWeek) <= 0){
+            if (date.compareTo(startOfWeek) >= 0 && date.compareTo(endOfWeek) <= 0) {
                 scheduledClasses.add(scheduledClass);
             }
         }

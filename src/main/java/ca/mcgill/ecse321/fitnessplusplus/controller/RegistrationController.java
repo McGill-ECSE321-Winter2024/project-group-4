@@ -42,10 +42,10 @@ public class RegistrationController {
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
                                               @RequestParam(name = "client") ClientDto clientDto,
                                               @RequestParam(name = "scheduledClass") ScheduledClassDto scheduledClassDto) throws Exception {
-        ScheduledClass s = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassId());
-        Client c = accountService.getClientById(clientDto.getRoleId());
+        ScheduledClass scheduledClass = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassId());
+        Client client = accountService.getClientById(clientDto.getRoleId());
 
-        Registration r = registrationService.createRegistration(date, c, s);
+        Registration r = registrationService.createRegistration(date,client.getRoleId() ,scheduledClass.getScheduledClassId());
         return convertToDto(r);
     }
 
