@@ -36,9 +36,40 @@ public class testOfferedClassService {
     private OfferedClassRepository offeredClassRepository;
     @InjectMocks
     private OfferedClassService offeredClassService;
+    public static final Integer OFFERED_CLASS_KEY = 0;
+
 
     @BeforeEach
     public void setMockOutput() {
+        lenient().when(offeredClassRepository.findOfferedClassByOfferedClassId(any(Integer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (invocation.getArgument(0).equals(OFFERED_CLASS_KEY)) {
+                        OfferedClass offeredClass = new OfferedClass("Boxing", "Make em bleed");
+                        offeredClass.setOfferedClassId(OFFERED_CLASS_KEY);
+                        return offeredClass;
+                    } else {
+                        return null;
+                    }
+                });
+    }
 
+    @Test
+    public void testSuccessfulRequestClass() {
+        String classType = "strength";
+        String description = "Strength training class";
+        int classId = OFFERED_CLASS_KEY;
+
+        OfferedClass offeredClass = null;
+        OfferedClassService offeredClassService1 = new OfferedClassService();
+
+        try{
+            offeredClass = offeredClassService1.requestClass(classType, description, OFFERED_CLASS_KEY);
+        } catch (Exception e) {
+            fail();
+        }
+
+        assertEquals(offeredClass.getClassType(), classType);
+        assertEquals(offeredClass.getDescription(), description);
+        assertEquals(offeredClass.getId(), classId);
     }
 }

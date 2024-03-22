@@ -19,6 +19,17 @@ public class OfferedClassService {
 
     
     @Transactional
+    public OfferedClass requestClass(String classType, String classDescription, int classId) {
+        if (classType == null || classDescription == null)
+            throw new IllegalArgumentException("Illegal arguments");
+
+        OfferedClass requestedClass = new OfferedClass(classType, classDescription);
+        requestedClass.setOfferedClassId(classId);
+        offeredClassRepository.save(requestedClass);
+        return requestedClass;
+    }
+
+    @Transactional
     public OfferedClass requestClass(String classType, String classDescription) {
         if (classType == null || classDescription == null)
             throw new IllegalArgumentException("Illegal arguments");
