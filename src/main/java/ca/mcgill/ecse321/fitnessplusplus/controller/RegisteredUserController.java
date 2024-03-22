@@ -5,9 +5,10 @@ import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
+@CrossOrigin(origins = "*")
+@RestController
 public class RegisteredUserController {
     @Autowired
     RegisteredUserService registeredUserService;
@@ -19,6 +20,11 @@ public class RegisteredUserController {
             @RequestParam String aUsername, @RequestParam String aPassword, @RequestParam String aEmail)
             throws Exception {
         return convertToDto(registeredUserService.createUser(aUsername, aPassword, aEmail));
+    }
+
+    @PostMapping(value = {"/promote", "/promote/"})
+    public RegisteredUserDto promoteRegisteredUser(@RequestParam(name = "id") int registeredUserId) throws Exception {
+        return convertToDto(registeredUserService.promoteUser(registeredUserId));
     }
 
     private RegisteredUserDto convertToDto(RegisteredUser o) {

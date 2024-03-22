@@ -46,7 +46,8 @@ public class RegisteredUserService {
     }
 
     @Transactional
-    public RegisteredUser promoteUser(RegisteredUser registeredUser) {
+    public RegisteredUser promoteUser(int registeredUserId) {
+        RegisteredUser registeredUser = registeredUserRepository.findRegisteredUserByUserId(registeredUserId);
         if (registeredUser.getAccountRole().getClass() == Client.class) {
             // Delete client account role -> change to instructor
             clientRepository.delete((Client) registeredUser.getAccountRole());
