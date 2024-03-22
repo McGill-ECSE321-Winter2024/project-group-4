@@ -12,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.Console;
 import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
@@ -50,7 +51,7 @@ public class testRegistrationService {
                     if (invocation.getArgument(0).equals(SCHEDULED_KEY)) {
                         Time startTime = Time.valueOf(LocalTime.of(23, 0));
                         Time endTime = Time.valueOf(LocalTime.of(23, 59));
-                        Date aDate = Date.valueOf(LocalDate.now());
+                        Date aDate = Date.valueOf(LocalDate.now().plusDays(1));
 
                         ScheduledClass scheduledClass = new ScheduledClass(startTime, endTime, aDate,
                                 new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"),
@@ -124,4 +125,14 @@ public class testRegistrationService {
             registrationService.createRegistration(aDate, CLIENT_KEY, WRONG_SCHEDULED_CLASS_ID);
         });
     }
+
+    @Test
+    public void testRegistrationDateAfterScheduledClassDate() {
+        Date aRegistrationDate = Date.valueOf(LocalDate.now().plusDays(2));
+
+        assertThrows(Exception.class, () -> {
+            registrationService.createRegistration(aRegistrationDate, CLIENT_KEY, SCHEDULED_KEY);
+        });
+    }
+
 }

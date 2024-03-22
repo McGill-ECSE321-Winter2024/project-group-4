@@ -3,12 +3,8 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ClientDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.RegistrationDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
-import ca.mcgill.ecse321.fitnessplusplus.model.Client;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
-import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegistrationService;
-import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +18,7 @@ import java.util.List;
 public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
-    private ScheduledClassService scheduledClassService;
-    private AccountService accountService;
+
 
 
     /**

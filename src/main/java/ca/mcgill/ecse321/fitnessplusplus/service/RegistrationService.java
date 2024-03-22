@@ -40,7 +40,7 @@ public class RegistrationService {
     public Registration createRegistration(Date aDateOfRegistration, Integer aClientID, Integer aScheduledClassID) throws Exception {
         //We verify if the registration date is before today
         if (aDateOfRegistration.before(Date.valueOf(LocalDate.now()))) {
-            throw new Exception("It is not possible to register for a class in the past");
+            throw new Exception("It is not possible to register in the past");
         }
 
         Client aClient = clientRepository.findClientByroleId(aClientID);
@@ -48,7 +48,11 @@ public class RegistrationService {
 
         //There can only be one registration per client and scheduledClass pair
         if (registrationRepository.findByClientAndScheduledClass(aClient, aScheduledClass) != null) {
-            throw new Exception("IT is not possible for a client to register for the same scheduledCLass once again");
+            throw new Exception("It is not possible for a client to register for the same scheduledCLass once again");
+        }
+
+        if (aScheduledClass.getDate().before(aDateOfRegistration)) {
+            throw new Exception("It is not possible to register for a class that already happened");
         }
 
         Registration registration = new Registration(aDateOfRegistration, aClient, aScheduledClass);
