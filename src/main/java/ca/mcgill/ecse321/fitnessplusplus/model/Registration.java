@@ -100,31 +100,4 @@ public class Registration {
     scheduledClass = null;
   }
 
-  public String toString() {
-    return super.toString()
-        + "["
-        + "registrationId"
-        + ":"
-        + getRegistrationId()
-        + "]"
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "dateOfRegistration"
-        + "="
-        + (getDateOfRegistration() != null
-            ? !getDateOfRegistration().equals(this)
-                ? getDateOfRegistration().toString().replaceAll("  ", "    ")
-                : "this"
-            : "null")
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "client = "
-        + (getClient() != null ? Integer.toHexString(System.identityHashCode(getClient())) : "null")
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "scheduledClass = "
-        + (getScheduledClass() != null
-            ? Integer.toHexString(System.identityHashCode(getScheduledClass()))
-            : "null");
-  }
 }

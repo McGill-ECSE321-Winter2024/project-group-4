@@ -102,31 +102,4 @@ public class RegisteredUser {
   public void delete() {
     accountRole = null;
   }
-
-  public String toString() {
-    return super.toString()
-        + "["
-        + "userId"
-        + ":"
-        + getUserId()
-        + ","
-        + "username"
-        + ":"
-        + getUsername()
-        + ","
-        + "password"
-        + ":"
-        + getPassword()
-        + ","
-        + "email"
-        + ":"
-        + getEmail()
-        + "]"
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "accountRole = "
-        + (getAccountRole() != null
-            ? Integer.toHexString(System.identityHashCode(getAccountRole()))
-            : "null");
-  }
-}
+} 

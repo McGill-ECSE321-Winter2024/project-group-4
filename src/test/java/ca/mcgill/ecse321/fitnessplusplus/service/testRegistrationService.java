@@ -23,7 +23,9 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
+
 import static org.mockito.Mockito.lenient;
+
 
 @ExtendWith(MockitoExtension.class)
 public class testRegistrationService {
@@ -92,11 +94,13 @@ public class testRegistrationService {
                     RegisteredUser user1 = registeredUserService.createUser("Bob", "Bob Again", "BobLivesOn@gmail.com");
                     Registration r1 = new Registration(aRegistrationDate, (Client) user1.getAccountRole(),
                             aScheduledClass);
+                    r1.setRegistrationId(1);
                     registrations.add(r1);
 
                     RegisteredUser user2 =registeredUserService.createUser("Alice", "Alice Again", "AliceLivesOn@gmail.com");
                     Registration r2 = new Registration(aRegistrationDate, (Client) user2.getAccountRole(),
                             aScheduledClass);
+                    r2.setRegistrationId(2);
                     registrations.add(r2);
 
                     return registrations;
@@ -142,6 +146,41 @@ public class testRegistrationService {
 
         assertThrows(Exception.class, () -> {
             registrationService.createRegistration(Date.valueOf(LocalDate.now()), alreadyRegisteredClient.getRoleId(), existingClass.getScheduledClassId());
+        });
+        
+    }
+
+    @Test
+    public void testSuccessfulDeleteRegistration() {
+        Date aDate = Date.valueOf(LocalDate.now());
+        Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
+        int id = registration.getRegistrationId();
+
+        try {
+            Registration deletedRegistration = registrationService.removeRegistration(registration);
+            assertNotNull(deletedRegistration);
+            assertEquals(id, deletedRegistration.getRegistrationId());
+        } catch (Exception e) {
+            fail();
+        }
+    }
+
+    @Test
+    public void testUnsuccessfulDeleteRegistrationInvalidRegistration() {
+        Registration registration = null;
+
+        assertThrows(Exception.class, () -> {
+            registrationService.removeRegistration(registration);
+        });
+    }
+
+    @Test
+    public void testUnsuccessfulDeleteRegistrationPassedRegistration() {
+        Date aDate = Date.valueOf(LocalDate.now().minusDays(1));
+        Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
+
+        assertThrows(Exception.class, () -> {
+            registrationService.removeRegistration(registration);
         });
         
     }

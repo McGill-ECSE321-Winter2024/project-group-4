@@ -66,20 +66,4 @@ public class OfferedClass {
 
   public void delete() {}
 
-  public String toString() {
-    return super.toString()
-        + "["
-        + "classId"
-        + ":"
-        + getId()
-        + ","
-        + "classType"
-        + ":"
-        + getClassType()
-        + ","
-        + "description"
-        + ":"
-        + getDescription()
-        + "]";
-  }
 }

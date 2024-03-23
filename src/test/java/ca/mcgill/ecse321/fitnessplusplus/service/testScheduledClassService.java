@@ -76,10 +76,12 @@ public class testScheduledClassService {
                 .thenAnswer((InvocationOnMock invocation) -> {
                     Time startTime = Time.valueOf(LocalTime.of(15, 0));
                     Time endTime = Time.valueOf(LocalTime.of(17, 0));
+                    Date localDate = Date.valueOf(LocalDate.now());
+                    
                     LocalDate aDate = LocalDate.of(2024,3, 22);
                     ArrayList<ScheduledClass> list = new ArrayList<>();
 
-                    ScheduledClass s1 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate),
+                    ScheduledClass s1 = new ScheduledClass(startTime, endTime, localDate,
                             new OfferedClass("FireBending", "Fireball"), new Instructor(1));
                     list.add(s1);
                     ScheduledClass s2 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(2)),
