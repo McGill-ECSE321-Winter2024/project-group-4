@@ -22,7 +22,8 @@ public class OfferedClassController {
 
     @DeleteMapping(value = { "/offered-classes/{id}", "/offered-classes/{id}/" })
     public void removeOfferedClass(@PathVariable("id") int offeredClassId) {
-        offeredClassService.removeOfferedClass(offeredClassId);
+        OfferedClass offeredClass = offeredClassService.getOfferedClassById(offeredClassId);
+        offeredClassService.removeOfferedClass(offeredClass);
     }
 
     private OfferedClassDto convertToDto(OfferedClass o) {
