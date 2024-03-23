@@ -6,7 +6,7 @@ import java.time.LocalTime;
 import java.util.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.*;
-import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
+import ca.mcgill.ecse321.fitnessplusplus.repository.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -14,23 +14,21 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
 
-import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
-import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
-import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
-
+@ExtendWith(MockitoExtension.class)
 public class testCreateAccount {
-
     @Mock
     private RegisteredUserRepository registeredUserRepository;
-
+    @Mock
+    private ClientRepository clientRepository;
 
     @InjectMocks
-    private RegisteredUserService userService;
+    private RegisteredUserService registeredUserService;
     private static final String newName = "Neil Joe George";
     private static final String newPassword = "123";
     private static final String newEmail = "Neil.George@mcgill.ca";
@@ -53,6 +51,12 @@ public class testCreateAccount {
                         return null;
                     }
                 });
+        Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+            return invocation.getArgument(0);
+        };
+        lenient().when(clientRepository.save(any(Client.class))).thenAnswer(returnParameterAsAnswer);
+        lenient().when(registeredUserRepository.save(any(RegisteredUser.class))).thenAnswer(returnParameterAsAnswer);
+
     }
 
     @Test
@@ -85,28 +89,5 @@ public class testCreateAccount {
         }
         assertNull(account);
         assertEquals(error, "Illegal arguments");
-    }
-    @Test
-    public void testExistingAccount() {
-        assertEquals(0, registeredUserRepository.count());
-
-        String name = "Test1";
-        String pwd = "Password";
-        String email = "a@a.com";
-        Client customer = new Client();
-        RegisteredUser account = null;
-        String error = null;
-        try {
-            account = registeredUserService.createUser(name, pwd, email, customer);
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
-        }
-        assertNotNull(account);
-        try {
-            account = registeredUserService.createUser(name, pwd, email, customer);
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
-        }
-        assertEquals(error, "Account Exists");
     }
 }

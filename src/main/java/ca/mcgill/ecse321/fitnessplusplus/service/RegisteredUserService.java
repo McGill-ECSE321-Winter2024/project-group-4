@@ -56,9 +56,16 @@ public class RegisteredUserService {
         // When new user is created, set as client.
         newUser.setAccountRole(aClient);
         // Save both inside of AccountRole & RegisteredUser Repositories.
-        Client client = (Client) newUser.getAccountRole();
-        clientRepository.save(client);
+        clientRepository.save(aClient);
         registeredUserRepository.save(newUser);
+
+        System.out.print("registeredUserRepository.count(): ");
+        System.out.print(registeredUserRepository.count());
+        System.out.print(", ");
+        System.out.print("clientRepository.count(): ");
+        System.out.print(clientRepository.count());
+        System.out.print("\n");
+
         return newUser;
     }
 
@@ -95,6 +102,7 @@ public class RegisteredUserService {
 
     @Transactional
     public RegisteredUser getUserByEmail(String email){
+        int a = (int) registeredUserRepository.count();
         for (RegisteredUser user : registeredUserRepository.findAll()){
             if (user.getEmail().equals(email)){
                 return user;
