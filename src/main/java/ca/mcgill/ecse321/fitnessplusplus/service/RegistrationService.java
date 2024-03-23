@@ -96,24 +96,24 @@ public class RegistrationService {
     /**
      * Removes a Registration from the repository by its ID
      *
-     * @param scheduledClassID Registration ID to be removed
+     * @param registration Registration to be removed
      * @throws Exception
      *
      * @author Yonatan Bensimon
      */
     @Transactional
-    public void removeRegistration(int scheduledClassID) throws Exception {
-        Registration registration = registrationRepository.findRegistrationByregistrationId(scheduledClassID);
+    public Registration removeRegistration(Registration registration) throws Exception {
 
         if (registration == null) {
             throw new Exception("You cannot remove a registration that does not exist");
         }
 
         if (registration.getDateOfRegistration().before(Date.valueOf(LocalDate.now()))) {
-            throw new Exception("YOu cannot remove a registration that has already passed");
+            throw new Exception("You cannot remove a registration that has already passed");
         }
 
         registrationRepository.delete(registration);
         registration.delete();
+        return registration;
     }
 }

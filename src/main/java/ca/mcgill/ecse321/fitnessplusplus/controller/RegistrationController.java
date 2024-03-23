@@ -88,7 +88,8 @@ public class RegistrationController {
      */
     @DeleteMapping(value={"registrations/{id}", "/registrations/{id}"})
     public void removeRegistration(@PathVariable("id") int registrationID) throws Exception {
-        registrationService.removeRegistration(registrationID);
+        Registration registration = registrationService.getRegistrationByID(registrationID);
+        registrationService.removeRegistration(registration);
     }
 
     /**
