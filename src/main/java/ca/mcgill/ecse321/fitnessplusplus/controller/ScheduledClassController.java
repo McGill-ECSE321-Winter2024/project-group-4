@@ -67,8 +67,8 @@ public class ScheduledClassController {
     }
 
     @DeleteMapping(value = { "/scheduled-classes/{id}", "/scheduled-classes/{id}/" })
-    public void cancelScheduledClass(@PathVariable("id") int scheduledClassId, @RequestParam Integer anInstructorId) {
-        scheduledClassService.deleteScheduledClass(scheduledClassId, anInstructorId);
+    public void cancelScheduledClass(@PathVariable("id") int scheduledClassId) throws Exception {
+        scheduledClassService.deleteScheduledClass(scheduledClassService.getScheduledClass(scheduledClassId));
     }
 
     @GetMapping(value = { "/scheduled-class", "/scheduled-class/" })

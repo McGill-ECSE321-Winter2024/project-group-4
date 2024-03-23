@@ -83,7 +83,6 @@ public class ScheduledClassService {
         ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, instructor);
         scheduledClassRepo.save(scheduledClass);
         return scheduledClass;
-
     }
 
     /**
@@ -117,24 +116,36 @@ public class ScheduledClassService {
     }
 
     @Transactional
-    public void deleteScheduledClass(int scheduledClassId, Integer aInstructorId) {
-        // we get the scheduled class we want to remove
-        ScheduledClass scheduledClass = getScheduledClass(scheduledClassId);
+    public ScheduledClass deleteScheduledClass(ScheduledClass scheduledClass) throws Exception {
+        if (scheduledClass  == null) {
+            throw new Exception("The scheduled class does not exist");
+        }
+
+        if (scheduledClass.getDate().before(Date.valueOf(LocalDate.now()))) {
+            throw new Exception("You cannot remove a scheduled class that has already passed");
+        }
+
         // find the associated registration
-        // loop through registrations
-        Registration registration = null;
+        // loop through registrations and add all registration to a list
+        ArrayList<Registration> registrations = new ArrayList<>();
         for (Registration currentRegistration : registrationRepository.findAll()) {
             if (currentRegistration.getScheduledClass().equals(scheduledClass)) {
-                registration = currentRegistration;
-                break;
+                registrations.add(currentRegistration);
             }
         }
         // the associated registration has been found
         // delete the registration
-        if (registration != null) {
+        if (!(registrations.isEmpty())) {
+            //remove all registration associated with the scheduled class
+            for (Registration currentRegistration: registrations) {
+                registrationRepository.delete(currentRegistration);
+                currentRegistration.delete();
+            }
+            //remove the scheduled class
             scheduledClassRepo.delete(scheduledClass);
-            registrationRepository.delete(registration);
+            scheduledClass.delete();
         }
+        return scheduledClass;
     }
 
 

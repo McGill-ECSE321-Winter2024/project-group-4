@@ -1,17 +1,15 @@
 package ca.mcgill.ecse321.fitnessplusplus.repository;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import ca.mcgill.ecse321.fitnessplusplus.model.*;
 
-import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
-import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import java.sql.Date;
 import java.sql.Time;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 public class ScheduledClassRepositoryTest {
@@ -72,4 +70,5 @@ public class ScheduledClassRepositoryTest {
     assertEquals(startTime.toString(), scheduledClass.getStartTime().toString());
     assertEquals(endTime.toString(), scheduledClass.getEndTime().toString());
   }
+
 }

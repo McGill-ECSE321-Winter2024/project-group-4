@@ -31,7 +31,8 @@ public class OfferedClassService {
     }
 
     @Transactional
-    public OfferedClass removeOfferedClass(OfferedClass offeredClass) {
+    public void removeOfferedClass(int offeredClassId) throws Exception {
+        OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(offeredClassId);
 
         if (offeredClass == null) {
             throw new IllegalArgumentException("You cannot remove an offered class that does not exist");
@@ -40,8 +41,7 @@ public class OfferedClassService {
         List<ScheduledClass> scheduledClassList = scheduledClassService.getScheduledClassesByOfferedClass(offeredClass);
 
         for (ScheduledClass currentClass : scheduledClassList) {
-            scheduledClassService.deleteScheduledClass(currentClass.getScheduledClassId(),
-                    currentClass.getInstructor().getRoleId());
+            scheduledClassService.deleteScheduledClass(currentClass);
         }
 
         offeredClassRepository.delete(offeredClass);
