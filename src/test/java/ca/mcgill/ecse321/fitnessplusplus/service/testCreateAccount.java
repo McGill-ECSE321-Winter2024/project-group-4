@@ -30,7 +30,7 @@ public class testCreateAccount {
 
 
     @InjectMocks
-    private RegisteredUserService registeredUserService;
+    private RegisteredUserService userService;
     private static final String newName = "Neil Joe George";
     private static final String newPassword = "123";
     private static final String newEmail = "Neil.George@mcgill.ca";
