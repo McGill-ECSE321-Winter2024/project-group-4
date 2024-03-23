@@ -6,7 +6,7 @@ import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
-import ca.mcgill.ecse321.fitnessplusplus.service.AccountService;
+import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegistrationService;
 import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ public class RegistrationController {
     @Autowired
     private RegistrationService registrationService;
     private ScheduledClassService scheduledClassService;
-    private AccountService accountService;
+    private RegisteredUserService registeredUserService;
 
 
     /**
@@ -43,7 +43,7 @@ public class RegistrationController {
                                               @RequestParam(name = "client") ClientDto clientDto,
                                               @RequestParam(name = "scheduledClass") ScheduledClassDto scheduledClassDto) throws Exception {
         ScheduledClass scheduledClass = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassId());
-        Client client = accountService.getClientById(clientDto.getRoleId());
+        Client client = registeredUserService.getClientById(clientDto.getRoleId());
 
         Registration r = registrationService.createRegistration(date,client.getRoleId() ,scheduledClass.getScheduledClassId());
         return convertToDto(r);

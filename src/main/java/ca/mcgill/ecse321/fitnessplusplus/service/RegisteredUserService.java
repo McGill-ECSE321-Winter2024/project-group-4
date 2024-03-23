@@ -1,5 +1,6 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
 
+import ca.mcgill.ecse321.fitnessplusplus.dto.OwnerDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
@@ -10,6 +11,9 @@ import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class RegisteredUserService {
@@ -79,6 +83,32 @@ public class RegisteredUserService {
     }
 
     @Transactional
+    public List<RegisteredUser> getAllRegisteredUser() {
+        List<RegisteredUser> list = new ArrayList<RegisteredUser>();
+
+        for (RegisteredUser r : registeredUserRepository.findAll()) {
+            list.add(r);
+        }
+
+        return list;
+    }
+
+    @Transactional
     public RegisteredUser getRegisteredUserById(int id){return registeredUserRepository.findRegisteredUserByUserId(id);}
+
+    @Transactional
+    public Client getClientById(int id){
+        return clientRepository.findClientByroleId(id);
+    }
+
+    @Transactional
+    public Instructor getInstructorById(int id){
+        return instructorRepository.findInstructorByroleId(id);
+    }
+
+    @Transactional
+    public Owner getOwnerById(int id){
+        return ownerRepository.findInstructorByroleId(id);
+    }
 
 }
