@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
-import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,7 +27,7 @@ import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 
 @ExtendWith(MockitoExtension.class)
-public class testScheduledClassService {
+public class TestScheduledClassService {
 
     @Mock
     private ScheduledClassRepository scheduledClassRepository;
@@ -197,8 +196,8 @@ public class testScheduledClassService {
 
     //tests for the delete scheduled Class use case
     @Test
-    public void testDeleteExistingScheduledClass() throws Exception {
-        Date aDate = Date.valueOf(LocalDate.now());
+    public void testDeleteScheduledClass() throws Exception {
+        Date aDate = Date.valueOf(LocalDate.now().plusDays(30));
         LocalTime startLocalTime = LocalTime.of(9, 0); // 9:00 AM
         LocalTime endLocalTime = LocalTime.of(17, 0); // 5:00 PM
 

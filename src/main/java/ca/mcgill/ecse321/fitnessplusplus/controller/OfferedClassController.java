@@ -1,9 +1,7 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
-import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.service.OfferedClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -41,8 +39,11 @@ public class OfferedClassController {
 
     @DeleteMapping(value = { "/offered-classes/{id}", "/offered-classes/{id}/" })
     public void removeOfferedClass(@PathVariable("id") int offeredClassId) {
-        OfferedClass offeredClass = offeredClassService.getOfferedClassById(offeredClassId);
-        offeredClassService.removeOfferedClass(offeredClass);
+        try {
+            offeredClassService.removeOfferedClass(offeredClassId);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private OfferedClassDto convertToDto(OfferedClass o) {

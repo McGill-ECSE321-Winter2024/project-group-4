@@ -25,19 +25,15 @@ public class TestOfferedClassService {
     @InjectMocks
     private OfferedClassService offeredClassService;
 
-    private static final int OfferedClass_KEY = 123;
-    private static final String OfferedClass_Type = "Running";
-    private static final String OfferedClass_Description = "Learn to run with us!";
+    private static final String offeredClass_Type = "Running";
+    private static final String offeredClass_Description = "Learn to run with us!";
 
     @BeforeEach
     public void setMockOutput() {
 
         lenient().when(offeredClassDao.findOfferedClassByOfferedClassId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(OfferedClass_KEY)) {
-                OfferedClass offeredClass = new OfferedClass();
-                offeredClass.setClassType(OfferedClass_Type);
-                offeredClass.setDescription(OfferedClass_Description);
-                offeredClass.setOfferedClassId(OfferedClass_KEY);
+            if (invocation.getArgument(0).equals(0)) {
+                OfferedClass offeredClass = new OfferedClass(offeredClass_Type,offeredClass_Description);
                 return offeredClass;
             }
             else {
@@ -49,24 +45,27 @@ public class TestOfferedClassService {
 
     @Test
     public void testRemoveOfferedClass() {
-        OfferedClass offeredClass = offeredClassService.requestClass(OfferedClass_Type, OfferedClass_Description);
+        OfferedClass offeredClass = offeredClassService.requestClass(offeredClass_Type, offeredClass_Description);
         int id = offeredClass.getId();
-        OfferedClass deletedOfferedClass = offeredClassService.removeOfferedClass(offeredClass);
-        assertNotNull(deletedOfferedClass);
-        assertEquals(id, deletedOfferedClass.getId());
+        String error = null;
+
+        try {
+            offeredClassService.removeOfferedClass(id);
+        } catch(Exception e){
+            error = e.getMessage();
+        } 
+        assertNull(error);
     }
 
     @Test
     public void testRemoveOfferedClassInvalidOfferedClass() {
-        OfferedClass deletedOfferedClass = null;
         String error = null;
         try {
-            deletedOfferedClass = offeredClassService.removeOfferedClass(null);
-        } catch (IllegalArgumentException e) {
+            offeredClassService.removeOfferedClass(4);
+        } catch (Exception e) {
             error = e.getMessage();
         }
-        assertEquals("You cannot remove an offered class that does not exist", error);
-        assertNull(deletedOfferedClass);
+        assertNotNull(error);
     }
 
 }

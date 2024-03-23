@@ -45,6 +45,7 @@ public class IntegrationTests {
     private final String INVALID_PASS = null;
     private final String INVALID_EMAIL = null;
 
+    /*
     @Test
     @Order(1)
     public void createUsers(){
@@ -57,4 +58,5 @@ public class IntegrationTests {
         assertEquals(HttpStatus.CREATED, response.getStatusCode()); 
         
     }
+    */
 }

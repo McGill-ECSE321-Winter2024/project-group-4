@@ -1,7 +1,6 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
-import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +44,6 @@ public class OfferedClassService {
         }
 
         offeredClassRepository.delete(offeredClass);
-        return offeredClass;
     }
 
     @Transactional

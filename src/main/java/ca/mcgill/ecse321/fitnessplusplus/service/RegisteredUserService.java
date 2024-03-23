@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
 
-import ca.mcgill.ecse321.fitnessplusplus.dto.OwnerDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
