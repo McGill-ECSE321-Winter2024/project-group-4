@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+
 @CrossOrigin(origins = "*")
 @RestController
 public class RegisteredUserController {
