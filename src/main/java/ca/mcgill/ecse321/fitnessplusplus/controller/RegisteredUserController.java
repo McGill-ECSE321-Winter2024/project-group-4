@@ -25,7 +25,8 @@ public class RegisteredUserController {
 
     @PostMapping(value = {"/promote", "/promote/"})
     public RegisteredUserDto promoteRegisteredUser(@RequestParam(name = "id") int registeredUserId) throws Exception {
-        return convertToDto(registeredUserService.promoteUser(registeredUserId));
+        RegisteredUser registeredUser = registeredUserService.getRegisteredUserById(registeredUserId);
+        return convertToDto(registeredUserService.promoteUser(registeredUser));
     }
 
     private RegisteredUserDto convertToDto(RegisteredUser o) {
