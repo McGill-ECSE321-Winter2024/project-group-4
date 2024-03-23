@@ -42,28 +42,28 @@ public class testCreateAccount {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(registeredUserRepository.findRegisteredUserByUserId(any(Integer.class)))
+        lenient().when(registeredUserRepository.findAll())
                 .thenAnswer((InvocationOnMock invocation) -> {
-                    if (invocation.getArgument(0).equals(PERSON_KEY)) {
-                        RegisteredUser registeredUser = new RegisteredUser(PERSON_KEY, PERSON_KEY, PERSON_KEY);
-                        return registeredUser;
-                    } else {
-                        return null;
-                    }
+                    RegisteredUser user1 = new RegisteredUser("Lello", "Lello", "Lello");
+                    List<RegisteredUser> users = new ArrayList<RegisteredUser>();
+                    users.add(user1);
+                    return users;
+                });
+        lenient().when(registeredUserRepository.findRegisteredUserByUsername(any(String.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    RegisteredUser user1 = registeredUserService.createUser("Lello", "Lello", "Lello");
+                    return user1;
                 });
         Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
             return invocation.getArgument(0);
         };
-        lenient().when(clientRepository.save(any(Client.class))).thenAnswer(returnParameterAsAnswer);
-        lenient().when(registeredUserRepository.save(any(RegisteredUser.class))).thenAnswer(returnParameterAsAnswer);
-
     }
 
     @Test
     public void testCreateAccount() {
         assertEquals(0, registeredUserRepository.count());
 
-        String name = "Lello";
+        String name = "Lello1";
         RegisteredUser account = null;
         Client customer = new Client();
         try {
@@ -89,5 +89,20 @@ public class testCreateAccount {
         }
         assertNull(account);
         assertEquals(error, "Illegal arguments");
+    }
+    @Test
+    public void testExistingAccount() {
+        assertEquals(0, registeredUserRepository.count());
+
+        String name = "Lello";
+        RegisteredUser account = null;
+        Client customer = new Client();
+        String error = null;
+        try {
+            account = registeredUserService.createUser(name, name, name, customer);
+        } catch (IllegalArgumentException e) {
+            error = e.getMessage();
+        }
+        assertEquals("Account Exists", error);
     }
 }
