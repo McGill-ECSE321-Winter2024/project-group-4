@@ -1,12 +1,14 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
+import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -44,6 +46,17 @@ public class OfferedClassService {
 
         offeredClassRepository.delete(offeredClass);
         return offeredClass;
+    }
+
+    @Transactional
+    public List<OfferedClass> getAllOfferedClasses() {
+        List<OfferedClass> list = new ArrayList<OfferedClass>();
+
+        for (OfferedClass c : offeredClassRepository.findAll()) {
+            list.add(c);
+        }
+
+        return list;
     }
 
     @Transactional

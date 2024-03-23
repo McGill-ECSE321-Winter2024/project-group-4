@@ -111,6 +111,6 @@ public class RegistrationController {
          Date schDate = r.getScheduledClass().getDate();
 
          ScheduledClassDto scheduledClassDto = new ScheduledClassDto(schID, schStart, schEnd, schDate);
-         return new RegistrationDto(r.getDateOfRegistration(), clientDto, scheduledClassDto);
+         return new RegistrationDto(r.getDateOfRegistration(), clientDto, scheduledClassDto, r.getRegistrationId());
     }
 }

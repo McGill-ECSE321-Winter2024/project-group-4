@@ -45,7 +45,7 @@ public class RegisteredUserController {
 
     private RegisteredUserDto convertToDto(RegisteredUser o) {
         if (o == null) {
-            throw new IllegalArgumentException("Scheduled Class does not exist.");
+            throw new IllegalArgumentException("Registered user does not exist.");
         }
 
         RegisteredUserDto registeredUserDto = new RegisteredUserDto(o.getUsername(), o.getPassword(), o.getEmail(), o.getUserId());
