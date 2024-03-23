@@ -17,17 +17,6 @@ public class OfferedClassService {
     @Autowired
     ScheduledClassService scheduledClassService;
 
-    
-    @Transactional
-    public OfferedClass requestClass(String classType, String classDescription, int classId) {
-        if (classType == null || classDescription == null)
-            throw new IllegalArgumentException("Illegal arguments");
-
-        OfferedClass requestedClass = new OfferedClass(classType, classDescription);
-        requestedClass.setOfferedClassId(classId);
-        offeredClassRepository.save(requestedClass);
-        return requestedClass;
-    }
 
     @Transactional
     public OfferedClass requestClass(String classType, String classDescription) {
@@ -40,8 +29,8 @@ public class OfferedClassService {
     }
 
     @Transactional
-    public void removeOfferedClass(int offeredClassId) {
-        OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(offeredClassId);
+    public void removeOfferedClass(String offeredClassType) {
+        OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassType(offeredClassType);
 
         if (offeredClass == null) {
             throw new IllegalArgumentException("You cannot remove an offered class that does not exist");

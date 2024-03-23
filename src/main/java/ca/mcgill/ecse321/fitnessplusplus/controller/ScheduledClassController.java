@@ -44,7 +44,7 @@ public class ScheduledClassController {
      * @param aStartTime
      * @param aEndTime
      * @param aDay
-     * @param aOfferedClassId
+     * @param aOfferedClassType
      * @param anInstructorId
      * @return ScheduleClassDto
      * @throws Exception
@@ -55,9 +55,9 @@ public class ScheduledClassController {
     public ScheduledClassDto createScheduledClass(
             @RequestParam Time aStartTime,
             @RequestParam Time aEndTime,
-            @RequestParam Date aDay, @RequestParam Integer aOfferedClassId, @RequestParam Integer anInstructorId)
+            @RequestParam Date aDay, @RequestParam String aOfferedClassType, @RequestParam Integer anInstructorId)
             throws Exception {
-        return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId,
+        return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassType,
                 anInstructorId));
     }
 

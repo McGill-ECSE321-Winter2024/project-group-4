@@ -41,7 +41,7 @@ public class testOfferedClassService {
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(offeredClassRepository.findOfferedClassByOfferedClassId(any(Integer.class)))
+        lenient().when(offeredClassRepository.findOfferedClassByOfferedClassType(any(String.class)))
                 .thenAnswer((InvocationOnMock invocation) -> {
                     if (invocation.getArgument(0).equals(OFFERED_CLASS_KEY)) {
                         OfferedClass offeredClass = new OfferedClass("Boxing", "Make em bleed");
@@ -63,7 +63,7 @@ public class testOfferedClassService {
         OfferedClassService offeredClassService1 = new OfferedClassService();
 
         try{
-            offeredClass = offeredClassService1.requestClass(classType, description, OFFERED_CLASS_KEY);
+            offeredClass = offeredClassService1.requestClass(classType, description);
         } catch (Exception e) {
             fail();
         }

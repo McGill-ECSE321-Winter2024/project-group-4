@@ -44,13 +44,14 @@ public class testScheduledClassService {
     private OfferedClassService offeredClassService;
 
     public static final Integer INSTRUCTOR_KEY = 0;
+    public static final String OFFERED_CLASS_TYPE = "Strength";
     public static final Integer OFFERED_CLASS_KEY = 0;
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(offeredClassRepository.findOfferedClassByOfferedClassId(any(Integer.class)))
+        lenient().when(offeredClassRepository.findOfferedClassByOfferedClassType(any(String.class)))
                 .thenAnswer((InvocationOnMock invocation) -> {
-                    if (invocation.getArgument(0).equals(OFFERED_CLASS_KEY)) {
+                    if (invocation.getArgument(0).equals(OFFERED_CLASS_TYPE)) {
                         OfferedClass offeredClass = new OfferedClass("Boxing", "Make em bleed");
                         offeredClass.setOfferedClassId(OFFERED_CLASS_KEY);
                         return offeredClass;
@@ -106,7 +107,7 @@ public class testScheduledClassService {
         ScheduledClass scheduledClass = null;
         try {
             scheduledClass = scheduledClassService.createScheduledClass(startTime, endTime, localDate,
-                    OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
+                    OFFERED_CLASS_TYPE, INSTRUCTOR_KEY);
         } catch (Exception e) {
             fail();
         }
@@ -114,7 +115,7 @@ public class testScheduledClassService {
         assertEquals(scheduledClass.getStartTime(), startTime);
         assertEquals(scheduledClass.getEndTime(), endTime);
         assertEquals(scheduledClass.getDate(), localDate);
-        assertEquals(scheduledClass.getOfferedClass().getId(), OFFERED_CLASS_KEY);
+        assertEquals(scheduledClass.getOfferedClass().getClassType(), OFFERED_CLASS_TYPE);
         assertEquals(scheduledClass.getInstructor().getRoleId(), INSTRUCTOR_KEY);
 
     }
@@ -124,17 +125,17 @@ public class testScheduledClassService {
         Time startTime = Time.valueOf(LocalTime.of(10, 0));
         Time endTime = Time.valueOf(LocalTime.of(12, 0));
         Date localDate = Date.valueOf(LocalDate.of(2024, 12, 12));
-        Integer FAKE_OFFERED_CLASS_KEY = 100;
+        String FAKE_OFFERED_CLASS_TYPE = "Bleh";
         Integer FAKE_INSTRUCTOR_KEY = 100;
 
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(startTime, endTime, localDate,
-                    FAKE_OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
+                    FAKE_OFFERED_CLASS_TYPE, INSTRUCTOR_KEY);
         });
 
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(startTime, endTime, localDate,
-                    OFFERED_CLASS_KEY, FAKE_INSTRUCTOR_KEY);
+                    OFFERED_CLASS_TYPE, FAKE_INSTRUCTOR_KEY);
         });
     }
 
@@ -154,19 +155,19 @@ public class testScheduledClassService {
         // before opening
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(badStartTime, goodEndTime, goodDate,
-                    OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
+                    OFFERED_CLASS_TYPE, INSTRUCTOR_KEY);
         });
 
         // after closing
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(goodStartTime, badEndTime, goodDate,
-                    OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
+                    OFFERED_CLASS_TYPE, INSTRUCTOR_KEY);
         });
 
         // before current date
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(goodStartTime, goodEndTime, badDate,
-                    OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
+                    OFFERED_CLASS_TYPE, INSTRUCTOR_KEY);
         });
     }
 
@@ -179,7 +180,7 @@ public class testScheduledClassService {
         Date aDate = Date.valueOf(LocalDate.now());
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(startTime, endTime, aDate,
-                    OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
+                    OFFERED_CLASS_TYPE, INSTRUCTOR_KEY);
         });
     }
 

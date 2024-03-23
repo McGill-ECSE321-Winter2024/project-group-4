@@ -22,23 +22,23 @@ public class OfferedClassRepositoryTest {
   public void testPersistAndLoadOfferedClass1() {
     OfferedClass offeredClass = new OfferedClass();
     offeredClassRepository.save(offeredClass);
-    int classId = offeredClass.getId();
+    String classType = offeredClass.getClassType();
 
-    offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+    offeredClass = offeredClassRepository.findOfferedClassByOfferedClassType(classType);
 
     assertNotNull(offeredClass);
-    assertEquals(classId, offeredClass.getId());
+    assertEquals(classType, offeredClass.getClassType());
   }
 
   @Test
   public void testPersistAndLoadOfferedClass2() {
     OfferedClass offeredClass = new OfferedClass();
     offeredClassRepository.save(offeredClass);
-    int classId = offeredClass.getId();
+    String classType = offeredClass.getClassType();
 
-    offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+    offeredClass = offeredClassRepository.findOfferedClassByOfferedClassType(classType);
 
-    String classType = "Strength";
+    classType = "Strength";
     offeredClass.setClassType(classType);
     String description = "Strength class";
     offeredClass.setDescription(description);
@@ -46,7 +46,7 @@ public class OfferedClassRepositoryTest {
     offeredClassRepository.save(offeredClass);
 
     OfferedClass updatedOfferedClass =
-        offeredClassRepository.findOfferedClassByOfferedClassId(classId);
+        offeredClassRepository.findOfferedClassByOfferedClassType(classType);
 
     assertEquals(classType, updatedOfferedClass.getClassType());
     assertEquals(description, updatedOfferedClass.getDescription());

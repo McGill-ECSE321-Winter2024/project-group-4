@@ -43,7 +43,7 @@ public class ScheduledClassService {
      * @param aStartTime
      * @param aEndTime
      * @param aDate
-     * @param aOfferedClassId
+     * @param aOfferedClassType
      * @param aInstructorId
      * @return ScheduledClass
      * @throws Exception
@@ -51,7 +51,7 @@ public class ScheduledClassService {
      * @author Isbat-ul Islam
      */
     @Transactional
-    public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, Integer aOfferedClassId,
+    public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, String aOfferedClassType,
             Integer aInstructorId) throws Exception {
 
         // add checks for if instructor and offered class exist.
@@ -77,7 +77,7 @@ public class ScheduledClassService {
             }
         }
 
-        OfferedClass offeredClass = offeredClassRepo.findOfferedClassByOfferedClassId(aOfferedClassId);
+        OfferedClass offeredClass = offeredClassRepo.findOfferedClassByOfferedClassType(aOfferedClassType);
         // Must be Instructor despite getting regisered user because checks above make
         // sure of it.
         Instructor instructor = instructorRepository.findInstructorByroleId(aInstructorId);
