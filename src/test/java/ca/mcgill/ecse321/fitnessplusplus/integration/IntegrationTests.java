@@ -45,18 +45,24 @@ public class IntegrationTests {
     private final String INVALID_PASS = null;
     private final String INVALID_EMAIL = null;
 
-    /*
-    @Test
-    @Order(1)
-    public void createUsers(){
-
-        // test creating client
-        RegisteredUserDto request = new RegisteredUserDto(CLIENT_PASS, CLIENT_NAME, CLIENT_EMAIL); 
-        ResponseEntity<RegisteredUserDto> response = client.postForEntity("/register-user", request,RegisteredUserDto.class);
-
-        assertNotNull(response);
-        assertEquals(HttpStatus.CREATED, response.getStatusCode()); 
+    public void clearDatabase(){
         
     }
-    */
+
+    @Test
+    @Order(1)
+    public void createUser(){
+
+        RegisteredUserRequestDto request = new RegisteredUserRequestDto(CLIENT_NAME, CLIENT_PASS, CLIENT_EMAIL);
+        
+        ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/register-user", request, RegisteredUserResponseDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode());
+        RegisteredUserResponseDto createdUser = response.getBody(); 
+        assertEquals(CLIENT_NAME, createdUser.getUsername());     
+    }
+
+
+
 }
