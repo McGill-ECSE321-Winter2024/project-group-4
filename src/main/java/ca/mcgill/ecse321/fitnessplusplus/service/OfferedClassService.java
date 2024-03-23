@@ -29,8 +29,7 @@ public class OfferedClassService {
     }
 
     @Transactional
-    public void removeOfferedClass(int offeredClassId) {
-        OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(offeredClassId);
+    public OfferedClass removeOfferedClass(OfferedClass offeredClass) {
 
         if (offeredClass == null) {
             throw new IllegalArgumentException("You cannot remove an offered class that does not exist");
@@ -44,6 +43,10 @@ public class OfferedClassService {
         }
 
         offeredClassRepository.delete(offeredClass);
+        return offeredClass;
     }
+
+    @Transactional
+    public OfferedClass getOfferedClassById(int id){return offeredClassRepository.findOfferedClassByOfferedClassId(id);}
 
 }

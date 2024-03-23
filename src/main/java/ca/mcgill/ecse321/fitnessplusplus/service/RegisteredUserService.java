@@ -1,9 +1,6 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
 
-import ca.mcgill.ecse321.fitnessplusplus.model.Client;
-import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
-import ca.mcgill.ecse321.fitnessplusplus.model.Owner;
-import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
+import ca.mcgill.ecse321.fitnessplusplus.model.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
@@ -47,6 +44,11 @@ public class RegisteredUserService {
 
     @Transactional
     public RegisteredUser promoteUser(RegisteredUser registeredUser) {
+
+        if (registeredUser == null) {
+            throw new IllegalArgumentException("You cannot promote a user that does not exist");
+        }
+
         if (registeredUser.getAccountRole().getClass() == Client.class) {
             // Delete client account role -> change to instructor
             clientRepository.delete((Client) registeredUser.getAccountRole());
@@ -75,4 +77,8 @@ public class RegisteredUserService {
 
         return registeredUser;
     }
+
+    @Transactional
+    public RegisteredUser getRegisteredUserById(int id){return registeredUserRepository.findRegisteredUserByUserId(id);}
+
 }
