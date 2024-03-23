@@ -53,8 +53,6 @@ public class TestRegisteredUserService {
     @Test
     public void testPromoteClientToInstructor() {
         RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        int id = registeredUser.getUserId();
-
         RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser);
 
         assertNotNull(promotedUser);
@@ -64,7 +62,6 @@ public class TestRegisteredUserService {
     @Test
     public void testPromoteInstructorToOwner() {
         RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        int id = registeredUser.getUserId();
         registeredUser.setAccountRole(new Instructor());
 
         RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser);
@@ -76,7 +73,6 @@ public class TestRegisteredUserService {
     @Test
     public void testPromoteOwner() {
         RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        int id = registeredUser.getUserId();
         registeredUser.setAccountRole(new Owner());
 
         RegisteredUser promotedUser = null;

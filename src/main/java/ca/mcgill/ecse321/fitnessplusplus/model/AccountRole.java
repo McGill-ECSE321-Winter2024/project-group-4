@@ -42,7 +42,4 @@ public abstract class AccountRole {
 
   public void delete() {}
 
-  public String toString() {
-    return super.toString() + "[" + "roleId" + ":" + getRoleId() + "]";
-  }
 }

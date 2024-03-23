@@ -134,47 +134,4 @@ public class ScheduledClass {
     instructor = null;
   }
 
-  public String toString() {
-    return super.toString()
-        + "["
-        + "scheduledClassId"
-        + ":"
-        + getScheduledClassId()
-        + "]"
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "startTime"
-        + "="
-        + (getStartTime() != null
-            ? !getStartTime().equals(this)
-                ? getStartTime().toString().replaceAll("  ", "    ")
-                : "this"
-            : "null")
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "endTime"
-        + "="
-        + (getEndTime() != null
-            ? !getEndTime().equals(this) ? getEndTime().toString().replaceAll("  ", "    ") : "this"
-            : "null")
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "date"
-        + "="
-        + (getDate() != null
-            ? !getDate().equals(this) ? getDate().toString().replaceAll("  ", "    ") : "this"
-            : "null")
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "offeredClass = "
-        + (getOfferedClass() != null
-            ? Integer.toHexString(System.identityHashCode(getOfferedClass()))
-            : "null")
-        + System.getProperties().getProperty("line.separator")
-        + "  "
-        + "instructor = "
-        + (getInstructor() != null
-            ? Integer.toHexString(System.identityHashCode(getInstructor()))
-            : "null");
-  }
 }

@@ -178,7 +178,6 @@ public class testRegistrationService {
     public void testUnsuccessfulDeleteRegistrationPassedRegistration() {
         Date aDate = Date.valueOf(LocalDate.now().minusDays(1));
         Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
-        int id = registration.getRegistrationId();
 
         assertThrows(Exception.class, () -> {
             registrationService.removeRegistration(registration);
