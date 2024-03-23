@@ -29,7 +29,7 @@ public class OfferedClassService {
     }
 
     @Transactional
-    public void removeOfferedClass(int offeredClassId) {
+    public void removeOfferedClass(int offeredClassId) throws Exception {
         OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(offeredClassId);
 
         if (offeredClass == null) {
@@ -39,8 +39,7 @@ public class OfferedClassService {
         List<ScheduledClass> scheduledClassList = scheduledClassService.getScheduledClassesByOfferedClass(offeredClass);
 
         for (ScheduledClass currentClass : scheduledClassList) {
-            scheduledClassService.deleteScheduledClass(currentClass.getScheduledClassId(),
-                    currentClass.getInstructor().getRoleId());
+            scheduledClassService.deleteScheduledClass(currentClass);
         }
 
         offeredClassRepository.delete(offeredClass);

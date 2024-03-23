@@ -6,6 +6,8 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.*;
 
+import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
+import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,11 +15,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.fail;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.lenient;
+import static org.mockito.Mockito.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.OfferedClassRepository;
@@ -35,6 +36,8 @@ public class testScheduledClassService {
     private OfferedClassRepository offeredClassRepository;
     @Mock
     private InstructorRepository instructorRepository;
+    @Mock
+    private RegistrationRepository registrationRepository;
 
     @InjectMocks
     private ScheduledClassService scheduledClassService;
@@ -79,19 +82,15 @@ public class testScheduledClassService {
                     ScheduledClass s1 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate),
                             new OfferedClass("FireBending", "Fireball"), new Instructor(1));
                     list.add(s1);
-
                     ScheduledClass s2 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(2)),
                             new OfferedClass("WaterBending", "Save the ocean"), new Instructor(2));
                     list.add(s2);
-
                     ScheduledClass s3 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(20)),
                             new OfferedClass("AirBending", "Just keep breathing"), new Instructor(2));
                     list.add(s3);
-
                     ScheduledClass s4 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(5)),
                             new OfferedClass("EarthBending", "Rock'n Roll"), new Instructor(2));
                     list.add(s4);
-
                     return list;
                 });
 
@@ -193,4 +192,36 @@ public class testScheduledClassService {
         assertEquals(4, numberOfClassesBeforeWeeklyFilter);
         assertEquals(2, numberOfClassesAfterWeeklyFilter);
     }
+
+    //tests for the delete scheduled Class use case
+    @Test
+    public void testDeleteExistingScheduledClass() throws Exception {
+        Date aDate = Date.valueOf(LocalDate.now());
+        LocalTime startLocalTime = LocalTime.of(9, 0); // 9:00 AM
+        LocalTime endLocalTime = LocalTime.of(17, 0); // 5:00 PM
+
+        Time startTime = Time.valueOf(startLocalTime);
+        Time endTime = Time.valueOf(endLocalTime);
+
+        String classType = "some class type";
+        String description = "some description";
+        OfferedClass offeredclass = new OfferedClass(classType, description);
+
+        Instructor instructor = new Instructor();
+        ScheduledClass scheduledClass = scheduledClassService.createScheduledClass(startTime, endTime, aDate, offeredclass.getId(), instructor.getRoleId());
+        int id = scheduledClass.getScheduledClassId();
+        ScheduledClass deletedScheduledClass = scheduledClassService.deleteScheduledClass(scheduledClass);
+        assertNotNull(deletedScheduledClass);
+        assertEquals(id, deletedScheduledClass.getScheduledClassId());
+    }
+
+    @Test
+    public void testDeleteUnexistingScheduledClass() {
+        int scheduledClassId = -1; //negative class ID
+
+        assertThrows(Exception.class, () -> {
+            scheduledClassService.deleteScheduledClass(scheduledClassService.getScheduledClass(scheduledClassId));
+        });
+    }
+
 }
