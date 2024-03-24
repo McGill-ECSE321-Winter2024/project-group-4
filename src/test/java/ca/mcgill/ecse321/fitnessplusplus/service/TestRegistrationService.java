@@ -47,7 +47,7 @@ public class TestRegistrationService {
     public static final Integer SCHEDULED_CLASS_KEY = 0;
     public static final Integer CLIENT_KEY = 3;
 
-    public static final Date REGISTRATION_DATE = Date.valueOf(LocalDate.now());
+    public static final LocalDate REGISTRATION_DATE = (LocalDate.now());
 
     @BeforeEach
     public void setMockOutput() {
@@ -56,7 +56,7 @@ public class TestRegistrationService {
                     if (invocation.getArgument(0).equals(SCHEDULED_CLASS_KEY)) {
                         Time startTime = Time.valueOf(LocalTime.of(13, 0));
                         Time endTime = Time.valueOf(LocalTime.of(15, 59));
-                        Date aDate = Date.valueOf(LocalDate.now().plusDays(1));
+                        LocalDate aDate = (LocalDate.now().plusDays(1));
 
                         ScheduledClass scheduledClass = new ScheduledClass(startTime, endTime, aDate,
                                 new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"));
@@ -81,10 +81,10 @@ public class TestRegistrationService {
 
         lenient().when(registrationRepository.findAll())
                 .thenAnswer((InvocationOnMock invocation) -> {
-                    Date aRegistrationDate = Date.valueOf(LocalDate.now());
+                    LocalDate aRegistrationDate = (LocalDate.now());
                     Time startTime = Time.valueOf(LocalTime.of(13, 0));
                     Time endTime = Time.valueOf(LocalTime.of(15, 59));
-                    Date aScheduledDate = Date.valueOf(LocalDate.now());
+                    LocalDate aScheduledDate = (LocalDate.now());
 
                     ScheduledClass aScheduledClass = new ScheduledClass(startTime, endTime, aScheduledDate,
                             new OfferedClass("Swimming", "A very needed class for some engineers"));
@@ -129,7 +129,7 @@ public class TestRegistrationService {
 
     @Test
     public void testSuccessfulCreateRegistration() {
-        Date aDate = Date.valueOf(LocalDate.now());
+        LocalDate aDate = (LocalDate.now());
         Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
 
         assertEquals(registration.getDateOfRegistration(), aDate);
@@ -139,7 +139,7 @@ public class TestRegistrationService {
 
     @Test
     public void testWrongClientAndScheduledClassUnsuccesfullCreateRegistration() {
-        Date aDate = Date.valueOf(LocalDate.now());
+        LocalDate aDate = (LocalDate.now());
         Integer WRONG_CLIENT_ID = 666;
         Integer WRONG_SCHEDULED_CLASS_ID = 666;
 
@@ -154,7 +154,7 @@ public class TestRegistrationService {
 
     @Test
     public void testRegistrationDateAfterScheduledClassDate() {
-        Date aRegistrationDate = Date.valueOf(LocalDate.now().plusDays(2));
+        LocalDate aRegistrationDate = (LocalDate.now().plusDays(2));
 
         assertThrows(Exception.class, () -> {
             registrationService.createRegistration(aRegistrationDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
@@ -167,7 +167,7 @@ public class TestRegistrationService {
         ScheduledClass existingClass = registrationService.getAllRegistrations().get(0).getScheduledClass();
 
         assertThrows(Exception.class, () -> {
-            registrationService.createRegistration(Date.valueOf(LocalDate.now()), alreadyRegisteredClient.getRoleId(), existingClass.getScheduledClassId());
+            registrationService.createRegistration((LocalDate.now()), alreadyRegisteredClient.getRoleId(), existingClass.getScheduledClassId());
         });
         
     }
@@ -202,7 +202,7 @@ public class TestRegistrationService {
                 .thenAnswer((InvocationOnMock invocation) -> {
                         Time startTime = Time.valueOf(LocalTime.of(13, 0));
                         Time endTime = Time.valueOf(LocalTime.of(15, 59));
-                        Date aDate = Date.valueOf(LocalDate.now().minusDays(1));
+                    LocalDate aDate = (LocalDate.now().minusDays(1));
 
                         ScheduledClass scheduledClass = new ScheduledClass(startTime, endTime, aDate,
                                 new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"));
@@ -212,8 +212,8 @@ public class TestRegistrationService {
                         return scheduledClass;
                 });
 
-        Date aDate = Date.valueOf(LocalDate.now().plusDays(5));
-        Registration registration = registrationService.createRegistration(Date.valueOf(LocalDate.now().minusDays(1)), CLIENT_KEY, SCHEDULED_CLASS_KEY);
+        LocalDate aDate = (LocalDate.now().plusDays(5));
+        Registration registration = registrationService.createRegistration((LocalDate.now().minusDays(1)), CLIENT_KEY, SCHEDULED_CLASS_KEY);
 
         registration.setDateOfRegistration(aDate);
 

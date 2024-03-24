@@ -1,6 +1,8 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import java.sql.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,11 +38,7 @@ public class ScheduledClassController {
     /**
      * Creates a scheduled class.
      * 
-     * @param aStartTime
-     * @param aEndTime
-     * @param aDay
-     * @param aOfferedClassId
-     * @param anInstructorId
+     * @param dto
      * @return ScheduleClassDto
      * @throws Exception
      * 
@@ -67,9 +65,11 @@ public class ScheduledClassController {
     }
 
     @GetMapping(value = { "/scheduled-class/{date}", "/scheduled-class/{date}/" })
-    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@PathVariable("date") Date aDay) throws Exception {
+    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@PathVariable("date") String aDay) throws Exception {
         List<ScheduleClassResponseDTO> dto = new ArrayList<>();
-        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(aDay)) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        LocalDate convertedDay = LocalDate.parse(aDay, formatter);
+        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(convertedDay)) {
             dto.add(convertToDto(scheduledClass));
         }
         return dto;

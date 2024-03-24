@@ -4,6 +4,8 @@ import ca.mcgill.ecse321.fitnessplusplus.model.*;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +55,7 @@ public class ScheduledClassRepositoryTest {
 
     scheduledClass.setOfferedClass(offeredClass);
     scheduledClass.setInstructor(instructor);
-    Date date = new Date(0);
+    LocalDate date = LocalDate.now();
     scheduledClass.setDate(date);
     Time startTime = new Time(0);
     scheduledClass.setStartTime(startTime);

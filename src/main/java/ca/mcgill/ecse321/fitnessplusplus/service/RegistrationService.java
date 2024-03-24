@@ -7,6 +7,7 @@ import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 
+import org.springframework.cglib.core.Local;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,8 +31,6 @@ public class RegistrationService {
      * parameters
      *
      * @param aDateOfRegistration Date of registration
-     * @param aClient             Registering Client
-     * @param aScheduledClass     Class being registered for
      *
      * @return Registration
      * @throws Exception
@@ -39,12 +38,12 @@ public class RegistrationService {
      * @author Yonatan Bensimon
      */
     @Transactional
-    public Registration createRegistration(Date aDateOfRegistration, int clientId, int classId) {
+    public Registration createRegistration(LocalDate aDateOfRegistration, int clientId, int classId) {
         Client aClient = clientRepository.findClientByroleId(clientId);
         ScheduledClass aScheduledClass = scheduledClassRepository.findScheduledClassByscheduledClassId(classId);
 
         // We verify if the registration date is before today
-        if (aScheduledClass.getDate().before(aDateOfRegistration)) {
+        if (aScheduledClass.getDate().isBefore(aDateOfRegistration)) {
             throw new IllegalArgumentException("It is not possible to register for a class in the past");
         }
 
@@ -111,7 +110,7 @@ public class RegistrationService {
             throw new Exception("You cannot remove a registration that does not exist");
         }
 
-        if (registration.getScheduledClass().getDate().before(Date.valueOf(LocalDate.now()))) {
+        if (registration.getScheduledClass().getDate().isBefore((LocalDate.now()))) {
             throw new Exception("You cannot remove a registration that has already passed");
         }
 

@@ -6,6 +6,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 // line 31 "model.ump"
 // line 89 "model.ump"
@@ -20,7 +21,7 @@ public class ScheduledClass {
   @Id @GeneratedValue private int scheduledClassId;
   private Time startTime;
   private Time endTime;
-  private Date date;
+  private LocalDate date;
 
   // ScheduledClass Associations
   @ManyToOne private OfferedClass offeredClass;
@@ -30,7 +31,7 @@ public class ScheduledClass {
   // CONSTRUCTOR
   // ------------------------
 
-  public ScheduledClass(Time aStartTime, Time aEndTime, Date aDate, OfferedClass aOfferedClass)
+  public ScheduledClass(Time aStartTime, Time aEndTime, LocalDate aDate, OfferedClass aOfferedClass)
   {
     startTime = aStartTime;
     endTime = aEndTime;
@@ -71,7 +72,7 @@ public class ScheduledClass {
     return wasSet;
   }
 
-  public boolean setDate(Date aDate)
+  public boolean setDate(LocalDate aDate)
   {
     boolean wasSet = false;
     date = aDate;
@@ -94,7 +95,7 @@ public class ScheduledClass {
     return endTime;
   }
 
-  public Date getDate()
+  public LocalDate getDate()
   {
     return date;
   }

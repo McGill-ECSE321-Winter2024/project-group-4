@@ -1,10 +1,11 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 public class RegistrationResponseDto {
 
-    private Date dateOfRegistration;
+    private LocalDate dateOfRegistration;
     private int clientId;
     private int scheduledClassID;
     private int registrationId;
@@ -13,18 +14,18 @@ public class RegistrationResponseDto {
     public RegistrationResponseDto() {
     }
 
-    public RegistrationResponseDto(Date aDateOfRegistration, int clientId, int scheduledClassID, int registrationId) {
+    public RegistrationResponseDto(LocalDate aDateOfRegistration, int clientId, int scheduledClassID, int registrationId) {
         this.dateOfRegistration = aDateOfRegistration;
         this.clientId = clientId;
         this.scheduledClassID = scheduledClassID;
         this.registrationId = registrationId;
     }
 
-    public Date getDateOfRegistration() {
+    public LocalDate getDateOfRegistration() {
         return dateOfRegistration;
     }
 
-    public void setDateOfRegistration(Date dateOfRegistration) {
+    public void setDateOfRegistration(LocalDate dateOfRegistration) {
         this.dateOfRegistration = dateOfRegistration;
     }
 
