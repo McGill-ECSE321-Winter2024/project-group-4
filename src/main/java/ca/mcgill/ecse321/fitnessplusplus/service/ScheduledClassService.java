@@ -52,20 +52,20 @@ public class ScheduledClassService {
      */
     @Transactional
     public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, Integer aOfferedClassId,
-            Integer aInstructorId) throws Exception {
+            Integer aInstructorId) throws IllegalArgumentException {
 
         // add checks for if instructor and offered class exist.
         if (aStartTime == null || aEndTime == null || aDate == null || aOfferedClassId == null || aInstructorId == null){
-            throw new Exception("Parameters cannot be empty");
+            throw new IllegalArgumentException("Parameters cannot be empty");
         }
 
         // Check if date selected is before.
         if (aDate.compareTo(Date.valueOf(LocalDate.now())) < 0 ) {
-            throw new Exception("Impossible to schedule a class in the past.");
+            throw new IllegalArgumentException("Impossible to schedule a class in the past.");
         }
 
         if (aStartTime.before(Time.valueOf(OPENING_TIME)) || aEndTime.after(Time.valueOf(CLOSING_TIME))) {
-            throw new Exception("Cannot schedule class before and after closing hours");
+            throw new IllegalArgumentException("Cannot schedule class before and after closing hours");
         }
 
         // Check if any scheduled class is conflicting
@@ -74,7 +74,7 @@ public class ScheduledClassService {
             if (e.getDate().compareTo(aDate) == 0) {
                 if ((aStartTime.compareTo(e.getStartTime()) >= 0 && aStartTime.compareTo(e.getEndTime()) <= 0)
                         || (aEndTime.compareTo(e.getStartTime()) >= 0 && aEndTime.compareTo(e.getEndTime()) <= 0)) {
-                    throw new Exception("There already exists a class scheduled at those times.");
+                    throw new IllegalArgumentException("There already exists a class scheduled at those times.");
                 }
             }
         }
@@ -84,7 +84,7 @@ public class ScheduledClassService {
         // sure of it.
         Instructor instructor = instructorRepository.findInstructorByroleId(aInstructorId);
         if (instructor == null){
-            throw new Exception("Not a valid Intructor ID");
+            throw new IllegalArgumentException("Not a valid Intructor ID");
         }
         ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass);
         scheduledClass.setInstructor(instructor);
@@ -117,19 +117,19 @@ public class ScheduledClassService {
      * @author Isbat-ul Islam
      */
     @Transactional
-    public ScheduledClass getScheduledClass(int scheduledClassId) {
+    public ScheduledClass getScheduledClass (int scheduledClassId) {
         return scheduledClassRepo.findScheduledClassByscheduledClassId(scheduledClassId);
 
     }
 
     @Transactional
-    public ScheduledClass deleteScheduledClass(ScheduledClass scheduledClass) throws Exception {
+    public ScheduledClass deleteScheduledClass(ScheduledClass scheduledClass) throws IllegalArgumentException {
         if (scheduledClass  == null) {
-            throw new Exception("The scheduled class does not exist");
+            throw new IllegalArgumentException("The scheduled class does not exist");
         }
 
         if (scheduledClass.getDate().before(Date.valueOf(LocalDate.now()))) {
-            throw new Exception("You cannot remove a scheduled class that has already passed");
+            throw new IllegalArgumentException("You cannot remove a scheduled class that has already passed");
         }
 
         // find the associated registration

@@ -63,7 +63,7 @@ public class ScheduledClassController {
     }
 
     @GetMapping(value = { "/scheduled-classes/{id}", "/scheduled-classes/{id}/" })
-    public ScheduleClassResponseDTO getScheduledClass(@PathVariable("id") int scheduledClassId) {
+    public ScheduleClassResponseDTO getScheduledClass(@PathVariable("id") int scheduledClassId) throws Exception {
         return convertToDto(scheduledClassService.getScheduledClass(scheduledClassId));
     }
 
@@ -73,7 +73,7 @@ public class ScheduledClassController {
     }
 
     @GetMapping(value = { "/scheduled-class", "/scheduled-class/" })
-    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@RequestParam Date aday) {
+    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@RequestParam Date aday) throws Exception {
         List<ScheduleClassResponseDTO> dto = new ArrayList<>();
         for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(aday)) {
             dto.add(convertToDto(scheduledClass));

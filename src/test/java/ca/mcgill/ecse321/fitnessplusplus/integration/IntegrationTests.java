@@ -352,6 +352,23 @@ public class IntegrationTests {
         }
 
 
+    @Test
+    @Order(100)
+    public void offerClass1() {
+        OfferedClassRequestDto request = new OfferedClassRequestDto(OFFERED_CLASS_TYPE,
+                OFFERED_CLASS_DESCRIPTION);
+        ResponseEntity<OfferedClassResponseDto> response = client.postForEntity("/offer-class", request,
+                OfferedClassResponseDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Response has correct status");
+        OfferedClassResponseDto createdOfferedClass = response.getBody();
+        assertNotNull(createdOfferedClass);
+        this.OFFERED_CLASS_ID = createdOfferedClass.getOfferedClassId();
+        assertEquals(OFFERED_CLASS_TYPE, createdOfferedClass.getClassType(), "Response has correct class type");
+        assertEquals(OFFERED_CLASS_DESCRIPTION, createdOfferedClass.getDescription(),
+                "Response has correct description");
+    }
 
 
 
@@ -366,7 +383,7 @@ public class IntegrationTests {
                 requestDTO, ScheduleClassResponseDTO.class);
 
         assertNotNull(response);
-        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response doesn't have correct status");
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
         ScheduleClassResponseDTO scheduleClassResponseDTO = response.getBody();
         assertNotNull(scheduleClassResponseDTO);
         assertEquals(OFFERED_CLASS_ID, scheduleClassResponseDTO.getOfferedClassID());
