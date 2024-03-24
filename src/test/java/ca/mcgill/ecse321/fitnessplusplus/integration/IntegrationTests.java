@@ -89,13 +89,9 @@ public class IntegrationTests {
         private final Time SCHEDULE_CLASS_START = Time.valueOf(LocalTime.of(10, 0));
         private final Time SCHEDULE_CLASS_END = Time.valueOf(LocalTime.of(20, 0));
         private final Date SCHEDULE_CLASS_DATE = Date.valueOf(LocalDate.of(2024, 12, 12));
-        private final Time INVALID_SCHEDULE_CLASS_START = null;
-        private final Time INVALID_SCHEDULE_CLASS_END = null;
-        private final Date INVALID_SCHEDULE_CLASS_DATE = null;
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
 
-        /*
         @BeforeAll
         public void clearDatabase() {
             List<String> tableNames = jdbcTemplate.queryForList(
