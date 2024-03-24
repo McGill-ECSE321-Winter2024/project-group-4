@@ -60,8 +60,8 @@ public class TestRegistrationService {
                         Date aDate = Date.valueOf(LocalDate.now().plusDays(1));
 
                         ScheduledClass scheduledClass = new ScheduledClass(startTime, endTime, aDate,
-                                new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"),
-                                new Instructor(1));
+                                new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"));
+
 
                         scheduledClass.setScheduledClassId(SCHEDULED_CLASS_KEY);
 
@@ -88,8 +88,8 @@ public class TestRegistrationService {
                     Date aScheduledDate = Date.valueOf(LocalDate.now());
 
                     ScheduledClass aScheduledClass = new ScheduledClass(startTime, endTime, aScheduledDate,
-                            new OfferedClass("Swimming", "A very needed class for some engineers"),
-                            new Instructor(1));
+                            new OfferedClass("Swimming", "A very needed class for some engineers"));
+                            aScheduledClass.setInstructor(new Instructor(1));
 
                     List<Registration> registrations = new ArrayList<Registration>();
 

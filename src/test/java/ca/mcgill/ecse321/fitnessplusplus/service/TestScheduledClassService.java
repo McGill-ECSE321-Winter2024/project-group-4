@@ -81,16 +81,20 @@ public class TestScheduledClassService {
                     ArrayList<ScheduledClass> list = new ArrayList<>();
 
                     ScheduledClass s1 = new ScheduledClass(startTime, endTime, localDate,
-                            new OfferedClass("FireBending", "Fireball"), new Instructor(1));
+                            new OfferedClass("FireBending", "Fireball"));
+                    s1.setInstructor(new Instructor(1));
                     list.add(s1);
                     ScheduledClass s2 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(2)),
-                            new OfferedClass("WaterBending", "Save the ocean"), new Instructor(2));
+                            new OfferedClass("WaterBending", "Save the ocean"));
+                    s2.setInstructor(new Instructor(2));
                     list.add(s2);
                     ScheduledClass s3 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(20)),
-                            new OfferedClass("AirBending", "Just keep breathing"), new Instructor(2));
+                            new OfferedClass("AirBending", "Just keep breathing"));
+                    s3.setInstructor(new Instructor(2));
                     list.add(s3);
                     ScheduledClass s4 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(5)),
-                            new OfferedClass("EarthBending", "Rock'n Roll"), new Instructor(2));
+                            new OfferedClass("EarthBending", "Rock'n Roll"));
+                    s4.setInstructor(new Instructor(2)); 
                     list.add(s4);
                     return list;
                 });

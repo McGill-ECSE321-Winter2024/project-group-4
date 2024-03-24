@@ -55,6 +55,9 @@ public class ScheduledClassService {
             Integer aInstructorId) throws Exception {
 
         // add checks for if instructor and offered class exist.
+        if (aStartTime == null || aEndTime == null || aDate == null || aOfferedClassId == null || aInstructorId == null){
+            throw new Exception("Parameters cannot be empty");
+        }
 
         // Check if date selected is before.
         if (aDate.compareTo(Date.valueOf(LocalDate.now())) < 0 ) {
@@ -80,7 +83,11 @@ public class ScheduledClassService {
         // Must be Instructor despite getting regisered user because checks above make
         // sure of it.
         Instructor instructor = instructorRepository.findInstructorByroleId(aInstructorId);
-        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass, instructor);
+        if (instructor == null){
+            throw new Exception("Not a valid Intructor ID");
+        }
+        ScheduledClass scheduledClass = new ScheduledClass(aStartTime, aEndTime, aDate, offeredClass);
+        scheduledClass.setInstructor(instructor);
         scheduledClassRepo.save(scheduledClass);
         return scheduledClass;
     }

@@ -92,18 +92,20 @@ public class IntegrationTests {
         private final String INVALID_CLASS_TYPE = null;
         private final String INVALID_CLASS_DESCRIPTION = null;
 
+        /*
         @BeforeAll
         public void clearDatabase() {
-                scheduledClassRepository.deleteAll();
                 registrationRepository.deleteAll();
+                scheduledClassRepository.deleteAll();
                 clientRepository.deleteAll();
                 instructorRepository.deleteAll();
-                offeredClassRepository.deleteAll();
                 ownerRepository.deleteAll();
+                offeredClassRepository.deleteAll();
                 staffRepository.deleteAll();
-                registeredUserRepository.deleteAll();
                 accountRoleRepository.deleteAll();
+                registeredUserRepository.deleteAll();
         }
+        */
 
         @Test
         @Order(1)
@@ -139,8 +141,8 @@ public class IntegrationTests {
                 ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/promote", request,
                                 RegisteredUserResponseDto.class);
                 assertNotNull(response);
-                assertNull(clientRepository.findClientByroleId(ROLE_ID));
-                assertNotNull(instructorRepository.findInstructorByroleId(ROLE_ID));
+                assertNull(clientRepository.findClientByroleId(response.getBody().getAccountRole()));
+                assertNotNull(instructorRepository.findInstructorByroleId(response.getBody().getAccountRole()));
         }
 
         @Test
