@@ -24,11 +24,7 @@ public class RegisteredUserService {
     @Autowired
     private OwnerRepository ownerRepository;
     @Autowired
-    private ScheduledClassRepository scheduledClassRepo;
-    @Autowired
     OfferedClassRepository offeredClassRepo;
-    @Autowired
-    private RegistrationRepository registrationRepository;
 
     @Transactional
     public RegisteredUser createUser(String aUsername, String aPassword, String aEmail) {
@@ -70,7 +66,7 @@ public class RegisteredUserService {
         RegisteredUser registeredUser = registeredUserRepository.findRegisteredUserByUserId(id); 
 
         if (registeredUser == null) {
-            throw new IllegalArgumentException("You cannot promote a user that does not exist");
+            throw new IllegalArgumentException("Cannot promote a user that does not exist");
         }
 
         if (registeredUser.getAccountRole().getClass() == Client.class) {

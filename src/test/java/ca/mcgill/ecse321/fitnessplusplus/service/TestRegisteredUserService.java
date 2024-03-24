@@ -12,8 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.mockito.stubbing.Answer;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.lenient;
 
@@ -21,88 +23,99 @@ import static org.mockito.Mockito.lenient;
 public class TestRegisteredUserService {
 
     @Mock
-    private RegisteredUserRepository registeredUserDao;
+    private RegisteredUserRepository registeredUserRepository;
     @Mock
-    private ClientRepository clientDao;
+    private ClientRepository clientRepository;
     @Mock
-    private InstructorRepository instructorDao;
+    private InstructorRepository instructorRepository;
     @Mock
-    private OwnerRepository ownerDao;
+    private OwnerRepository ownerRepository;
 
     @InjectMocks
     private RegisteredUserService registeredUserService;
 
-    private static final int RegisteredUser_KEY = 0;
-    private static final String RegisteredUser_Username = "johndoe";
-    private static final String RegisteredUser_Password = "123456789";
-    private static final String RegisteredUser_Email = "test@gmail.com";
+    private static final int USER_ID1 = 0;
+    private static final int USER_ID2 = 1;
+    private static final int USER_ID3 = 2;
 
     @BeforeEach
     public void setMockOutput() {
-        lenient().when(registeredUserDao.findRegisteredUserByUserId(anyInt())).thenAnswer((InvocationOnMock invocation) -> {
-            if (invocation.getArgument(0).equals(RegisteredUser_KEY)) {
-                RegisteredUser registeredUser = new RegisteredUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-                registeredUser.setUserId(RegisteredUser_KEY);
+        lenient().when(registeredUserRepository.findRegisteredUserByUserId(anyInt()))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                    if (invocation.getArgument(0).equals(USER_ID1)) {
+                        RegisteredUser registeredUser = new RegisteredUser();
+                        registeredUser.setUserId(USER_ID1);
+                        registeredUser.setUsername("johndoe");
+                        registeredUser.setPassword("test@gmail.com");
+                        registeredUser.setAccountRole(new Client(USER_ID1));
+                        return registeredUser;
+                    } else if (invocation.getArgument(0).equals(USER_ID2)) {
+                        RegisteredUser registeredUser = new RegisteredUser();
+                        registeredUser.setUserId(USER_ID2);
+                        registeredUser.setUsername("johndoe");
+                        registeredUser.setPassword("test@gmail.com");
+                        registeredUser.setAccountRole(new Instructor(USER_ID2));
+                        return registeredUser;
+                    } else if (invocation.getArgument(0).equals(USER_ID3)) {
+                        RegisteredUser registeredUser = new RegisteredUser();
+                        registeredUser.setUserId(USER_ID3);
+                        registeredUser.setUsername("johndoe");
+                        registeredUser.setPassword("test@gmail.com");
+                        registeredUser.setAccountRole(new Owner(USER_ID3));
+                        return registeredUser;
+                    } else {
+                        return null;
+                    }
+                });
 
-                return registeredUser;
-            } else {
-                return null;
-            }
-        });
+        Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
+            return invocation.getArgument(0);
+        };
+        lenient().when(instructorRepository.save(any(Instructor.class))).thenAnswer(returnParameterAsAnswer);
+        lenient().when(ownerRepository.save(any(Owner.class))).thenAnswer(returnParameterAsAnswer);
+        lenient().when(clientRepository.save(any(Client.class))).thenAnswer(returnParameterAsAnswer);
+        lenient().when(registeredUserRepository.save(any(RegisteredUser.class))).thenAnswer(returnParameterAsAnswer);
+        // For a method that returns void
+        lenient().doNothing().when(clientRepository).delete(any(Client.class));
+        lenient().doNothing().when(instructorRepository).delete(any(Instructor.class));
+        
+        
     }
 
     @Test
     public void testPromoteClientToInstructor() {
-        RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser.getUserId());
-
-        assertNotNull(promotedUser);
-        assertEquals(promotedUser.getAccountRole().getClass(), Instructor.class);
+        RegisteredUser user = registeredUserService.promoteUser(USER_ID1);
+        assertEquals(Instructor.class, user.getAccountRole().getClass());
     }
 
     @Test
     public void testPromoteInstructorToOwner() {
-        RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        registeredUser.setAccountRole(new Instructor());
-
-        RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser.getUserId());
-
-        assertNotNull(promotedUser);
-        assertEquals(promotedUser.getAccountRole().getClass(), Owner.class);
+        RegisteredUser user = registeredUserService.promoteUser(USER_ID2);
+        assertEquals(Owner.class, user.getAccountRole().getClass());
     }
 
     @Test
     public void testPromoteOwner() {
-        RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        registeredUser.setAccountRole(new Owner());
-
-        RegisteredUser promotedUser = null;
-        String error = null;
-
+        String message = null;
         try {
-            promotedUser = registeredUserService.promoteUser(registeredUser.getUserId());
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
+            registeredUserService.promoteUser(USER_ID3);
+        } catch (Exception e) {
+            message = e.getMessage();
         }
+        assertEquals("Cannot promote a owner", message);
 
-        assertNull(promotedUser);
-        assertEquals("Cannot promote a owner", error);
-        assertEquals(registeredUser.getAccountRole().getClass(), Owner.class);
     }
 
     @Test
     public void testPromoteInvalidUser() {
-        RegisteredUser registeredUser = null;
-        String error = null;
-
+        String message = null;
         try {
-            registeredUser = registeredUserService.promoteUser(19487124);
-        } catch (IllegalArgumentException e) {
-            error = e.getMessage();
+            registeredUserService.promoteUser(18);
+        } catch (Exception e) {
+            message = e.getMessage();
         }
+        assertEquals("Cannot promote a user that does not exist", message);
 
-        assertEquals("You cannot promote a user that does not exist", error);
-        assertNull(registeredUser);
     }
 
 }

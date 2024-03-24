@@ -1,8 +1,4 @@
 package ca.mcgill.ecse321.fitnessplusplus.service;
-import java.sql.Date;
-import java.sql.Time;
-import java.time.LocalDate;
-import java.time.LocalTime;
 import java.util.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.*;
@@ -14,8 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.mockito.stubbing.Answer;
-
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.lenient;
@@ -29,16 +23,6 @@ public class testCreateAccount {
 
     @InjectMocks
     private RegisteredUserService registeredUserService;
-    private static final String newName = "Neil Joe George";
-    private static final String newPassword = "123";
-    private static final String newEmail = "Neil.George@mcgill.ca";
-
-    private static final String managerName = "manager";
-    private static final String managerPwd = "manager";
-    private static final String managerEmil = "manager@mcgill.ca";
-
-    private static final String PERSON_KEY = "TestPerson";
-    private static final String NONEXISTING_KEY = "NotAPerson";
 
     @BeforeEach
     public void setMockOutput() {
@@ -54,13 +38,10 @@ public class testCreateAccount {
                     RegisteredUser user1 = registeredUserService.createUser("Lello", "Lello", "Lello");
                     return user1;
                 });
-        Answer<?> returnParameterAsAnswer = (InvocationOnMock invocation) -> {
-            return invocation.getArgument(0);
-        };
     }
 
     @Test
-    public void testCreateAccount() {
+    public void testCreateAnAccount() {
         assertEquals(0, registeredUserRepository.count());
 
         String name = "Lello1";
@@ -95,6 +76,7 @@ public class testCreateAccount {
         assertEquals(0, registeredUserRepository.count());
 
         String name = "Lello";
+        @SuppressWarnings("unused")
         RegisteredUser account = null;
         Client customer = new Client();
         String error = null;

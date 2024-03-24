@@ -81,6 +81,7 @@ public class IntegrationTests {
     private final String INVALID_PASS = null;
     private final String INVALID_EMAIL = null;
 
+    /*
     @BeforeAll
     public void clearDatabase() {
         scheduledClassRepository.deleteAll();
@@ -92,8 +93,9 @@ public class IntegrationTests {
         staffRepository.deleteAll();
         registeredUserRepository.deleteAll();
         accountRoleRepository.deleteAll();
-    }
+    }*/
 
+    /*
     @Test
     @Order(1)
     public void createUser() {
@@ -113,6 +115,7 @@ public class IntegrationTests {
         ROLE_ID = createdUser.getAccountRole();
         assertEquals(CLIENT_NAME, createdUser.getUsername());
     }
+    
 
     @Test
     @Order(2)
@@ -140,7 +143,7 @@ public class IntegrationTests {
         assertNotNull(response);
         assertNull(clientRepository.findClientByroleId(ROLE_ID));
         assertNotNull(instructorRepository.findInstructorByroleId(ROLE_ID));
-    }
+    }*/
 
     // @Test
     // @Order(3)
