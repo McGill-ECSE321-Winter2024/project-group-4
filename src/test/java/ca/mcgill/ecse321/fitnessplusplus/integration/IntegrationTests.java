@@ -89,7 +89,6 @@ public class IntegrationTests {
         private final int INVALID_OFFERED_CLASS_ID = -1;
 
         // TODO Get instructor ID and offered class ID
-        private int VALID_OFFERED_CLASS_ID;
         private int VALID_INSTRUCTOR_ID;
         private final Time SCHEDULE_CLASS_START = Time.valueOf(LocalTime.of(10, 0));
         private final Time SCHEDULE_CLASS_END = Time.valueOf(LocalTime.of(20, 0));
@@ -361,7 +360,7 @@ public class IntegrationTests {
     public void createScheduleClass1() {
         ScheduleClassRequestDTO requestDTO = new
                 ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
-                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+                OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
 
         ResponseEntity<ScheduleClassResponseDTO> response = client.postForEntity("/scheduled-class",
                 requestDTO, ScheduleClassResponseDTO.class);
@@ -370,7 +369,7 @@ public class IntegrationTests {
         assertEquals(HttpStatus.OK, response.getStatusCode(), "Response doesn't have correct status");
         ScheduleClassResponseDTO scheduleClassResponseDTO = response.getBody();
         assertNotNull(scheduleClassResponseDTO);
-        assertEquals(VALID_OFFERED_CLASS_ID, scheduleClassResponseDTO.getOfferedClassID());
+        assertEquals(OFFERED_CLASS_ID, scheduleClassResponseDTO.getOfferedClassID());
         assertEquals(VALID_INSTRUCTOR_ID, scheduleClassResponseDTO.getInstructorID());
         assertEquals(SCHEDULE_CLASS_START, scheduleClassResponseDTO.getStartTime());
         assertEquals(SCHEDULE_CLASS_END, scheduleClassResponseDTO.getEndTime());
@@ -382,7 +381,7 @@ public class IntegrationTests {
     public void createInvalidScheduleClass() {
         ScheduleClassRequestDTO requestDTO = new
                 ScheduleClassRequestDTO(SCHEDULE_CLASS_END, SCHEDULE_CLASS_START, SCHEDULE_CLASS_DATE,
-                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+                OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
 
         String error = null;
         ResponseEntity<ErrorDto> response = client.postForEntity("/scheduled-class/",
@@ -400,7 +399,7 @@ public class IntegrationTests {
     public void createDuplicateScheduleClass() {
         ScheduleClassRequestDTO requestDTO = new
                 ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
-                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+                OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
 
         ResponseEntity<ErrorDto> responseError = client.postForEntity("/scheduled-class",
                 requestDTO, ErrorDto.class);
@@ -425,7 +424,7 @@ public class IntegrationTests {
         // Assert
         ScheduleClassResponseDTO scheduleClassResponseDTO = response.getBody();
         assertNotNull(scheduleClassResponseDTO);
-        assertEquals(VALID_OFFERED_CLASS_ID, scheduleClassResponseDTO.getOfferedClassID());
+        assertEquals(OFFERED_CLASS_ID, scheduleClassResponseDTO.getOfferedClassID());
         assertEquals(VALID_INSTRUCTOR_ID, scheduleClassResponseDTO.getInstructorID());
         assertEquals(SCHEDULE_CLASS_START, scheduleClassResponseDTO.getStartTime());
         assertEquals(SCHEDULE_CLASS_END, scheduleClassResponseDTO.getEndTime());
