@@ -27,44 +27,31 @@ public class RegisteredUserController {
     }
 
     @PostMapping(value = { "/promote", "/promote/" })
+    @ResponseStatus(HttpStatus.OK)
     public RegisteredUserResponseDto promoteRegisteredUser(@RequestBody RegisteredUserResponseDto dto) throws Exception {
         RegisteredUser user = registeredUserService.promoteUser(dto.getUserId());
         return new RegisteredUserResponseDto(user.getUserId(),user.getUsername(),user.getPassword(),user.getEmail(),
                    user.getAccountRole().getRoleId());
     }
-    /* 
+
+
     @GetMapping(value = { "/registered-users", "/registered-users/" })
-    public List<RegisteredUserDto> getAllRegisteredUsers() {
-        List<RegisteredUserDto> dto = new ArrayList<>();
+    @ResponseStatus(HttpStatus.OK)
+    public List<RegisteredUserResponseDto> getAllRegisteredUsers() {
+        List<RegisteredUserResponseDto> dto = new ArrayList<>();
         for (RegisteredUser r : registeredUserService.getAllRegisteredUser()) {
-            dto.add(convertToDto(r));
+            dto.add(new RegisteredUserResponseDto(r.getUserId(), r.getUsername(), r.getPassword(), r.getEmail(), r.getAccountRole().getRoleId()));
         }
         return dto;
     }
 
-    @GetMapping(value = { "/registered-user", "/registered-user/" })
-    public RegisteredUserDto getRegisteredUserByID(@RequestParam(name = "id") int registeredUserId) {
-        return convertToDto(registeredUserService.getRegisteredUserById(registeredUserId));
-    }*/
-    
-    /* 
-    private RegisteredUserDto convertToDto(RegisteredUser o) {
-        if (o == null) {
-            throw new IllegalArgumentException("Registered user does not exist.");
-        }
 
-        RegisteredUserDto registeredUserDto = new RegisteredUserDto(o.getUsername(), o.getPassword(), o.getEmail());
-        if (o.getAccountRole().getClass() == Client.class) {
-            registeredUserDto.setAccountRole(new ClientDto(o.getAccountRole().getRoleId()));
-        }
-        if (o.getAccountRole().getClass() == Instructor.class) {
-            registeredUserDto.setAccountRole(new InstructorDto(o.getAccountRole().getRoleId()));
-        }
-        if (o.getAccountRole().getClass() == Owner.class) {
-            registeredUserDto.setAccountRole(new OwnerDto(o.getAccountRole().getRoleId()));
-        }
-        return registeredUserDto;
+//    @GetMapping(value = { "/registered-user/{id}", "/registered-user/{id}/" })
+//    public RegisteredUserResponseDto getRegisteredUserByID(@PathVariable int id) {
+//        RegisteredUser registeredUser = registeredUserService.getRegisteredUserById(id);
+//
+//        return convertToDto(registeredUserService.getRegisteredUserById(registeredUserId));
+//    }
 
-    }
-*/
+
 }
