@@ -71,36 +71,19 @@ public class IntegrationTests {
 //        @BeforeAll
 //        @AfterAll
 //        public void clearDatabase() {
-//            List<String> tableNames = jdbcTemplate.queryForList(
-//                    "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
-//                    String.class);
-//            for (String tableName : tableNames){
-//                jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
-//            }
-//            for (String tableName : tableNames){
-//                jdbcTemplate.execute("DELETE FROM "+tableName);
-//            }
-//            for (String tableName : tableNames){
-//                jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
-//            }
+//                List<String> tableNames = jdbcTemplate.queryForList(
+//                                "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
+//                                String.class);
+//                for (String tableName : tableNames) {
+//                        jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
+//                }
+//                for (String tableName : tableNames) {
+//                        jdbcTemplate.execute("DELETE FROM " + tableName);
+//                }
+//                for (String tableName : tableNames) {
+//                        jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
+//                }
 //        }
-
-        @BeforeAll
-        @AfterAll
-        public void clearDatabase() {
-                List<String> tableNames = jdbcTemplate.queryForList(
-                                "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
-                                String.class);
-                for (String tableName : tableNames) {
-                        jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
-                }
-                for (String tableName : tableNames) {
-                        jdbcTemplate.execute("DELETE FROM " + tableName);
-                }
-                for (String tableName : tableNames) {
-                        jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
-                }
-        }
 
         @Test
         @Order(1)
@@ -405,7 +388,7 @@ public class IntegrationTests {
                 ErrorDto body = response.getBody();
                 assertNotNull(body);
                 assertEquals(1, body.getErrors().size());
-                assertEquals("Not a valid Intructor ID", body.getErrors().get(0));
+                assertEquals("There already exists a class scheduled at those times.", body.getErrors().get(0));
         }
 
         /*
@@ -533,11 +516,11 @@ public class IntegrationTests {
 
                 // Assert
                 assertNotNull(response);
-                assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+                assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
                 ErrorDto body = response.getBody();
                 assertNotNull(body);
                 assertEquals(1, body.getErrors().size());
-                assertEquals("There is no person with ID " + this.INVALID_SCHEDULE_CLASS_ID + ".",
+                assertEquals("The scheduled class does not exist",
                                 body.getErrors().get(0));
 
         }
