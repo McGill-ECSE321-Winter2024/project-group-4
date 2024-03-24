@@ -1,34 +1,52 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
+import org.springframework.data.repository.query.ParameterOutOfBoundsException;
+
 import java.sql.Date;
 import java.sql.Time;
 
-public class ScheduledClassDto {
-    private int scheduledClassId;
+public class ScheduleClassResponseDTO {
     private Time startTime;
     private Time endTime;
     private Date date;
+    private int offeredClassID;
+    private int intrusctorID;
+    private int scheduledClassID;
 
-    public ScheduledClassDto(int aId, Time aStartTime, Time aEndTime, Date aDate) {
-        this.scheduledClassId = aId;
+    public ScheduleClassResponseDTO(int aScheduleClassID, Time aStartTime, Time aEndTime,
+                                    Date aDate, int aInstructorID, int aofferedClassID) {
+        this.scheduledClassID = aScheduleClassID;
         this.startTime = aStartTime;
         this.endTime = aEndTime;
         this.date = aDate;
-    }
-
-    public int getScheduledClassId() {
-        return scheduledClassId;
+        this.offeredClassID = aofferedClassID;
+        this.intrusctorID = aInstructorID;
     }
 
     public Time getStartTime() {
         return startTime;
     }
+    public void setStartTime(Time aStartTime) { this.startTime = aStartTime; }
 
     public Time getEndTime() {
         return endTime;
+    }
+    public void setEndTime(Time aEndTime) {
+        this.endTime = aEndTime;
     }
 
     public Date getDate() {
         return date;
     }
+    public void setDate(Date aDate) {
+        this.date = aDate;
+    }
+
+    public  int getOfferedClassID(){ return offeredClassID; }
+    public  void setOfferedClassID(int aOfferedClassID){ this.offeredClassID = aOfferedClassID; }
+
+    public  int getInstructorID(){ return intrusctorID; }
+    public  void setInstructorID(Integer aInstructorID){ this.intrusctorID = aInstructorID; }
+    public  int getScheduledClassID(){ return scheduledClassID; }
+    public  void setScheduledClassID(Integer aScheduleID){ this.scheduledClassID = aScheduleID; }
 }
