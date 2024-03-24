@@ -2,10 +2,7 @@ package ca.mcgill.ecse321.fitnessplusplus.service;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.*;
 
-import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
-import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
-import ca.mcgill.ecse321.fitnessplusplus.repository.OwnerRepository;
-import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
+import ca.mcgill.ecse321.fitnessplusplus.repository.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,18 +19,24 @@ public class RegisteredUserService {
 
     @Autowired
     private InstructorRepository instructorRepository;
-
     @Autowired
     private ClientRepository clientRepository;
-
     @Autowired
     private OwnerRepository ownerRepository;
+    @Autowired
+    private ScheduledClassRepository scheduledClassRepo;
+    @Autowired
+    OfferedClassRepository offeredClassRepo;
+    @Autowired
+    private RegistrationRepository registrationRepository;
 
     @Transactional
     public RegisteredUser createUser(String aUsername, String aPassword, String aEmail) {
         // Input validation
         if (aUsername == null || aPassword == null || aEmail == null)
             throw new IllegalArgumentException("Illegal arguments");
+        if (accountExists(aEmail, aUsername) != null)
+            throw new IllegalArgumentException("Account Exists");
 
         RegisteredUser newUser = new RegisteredUser(aUsername, aPassword, aEmail);
         // When new user is created, set as client.
@@ -42,6 +45,23 @@ public class RegisteredUserService {
         Client client = (Client) newUser.getAccountRole();
         clientRepository.save(client);
         registeredUserRepository.save(newUser);
+
+        return newUser;
+
+    }
+    @Transactional
+    public RegisteredUser createUser(String aUsername, String aPassword, String aEmail, Client aClient) {
+        // Input validation
+        if (aUsername == null || aPassword == null || aEmail == null)
+            throw new IllegalArgumentException("Illegal arguments");
+        if (accountExists(aEmail, aUsername) != null)
+            throw new IllegalArgumentException("Account Exists");
+        RegisteredUser newUser = new RegisteredUser(aUsername, aPassword, aEmail);
+        newUser.setAccountRole(aClient);
+        // When new user is created, set as client.
+        clientRepository.save(aClient);
+        registeredUserRepository.save(newUser);
+
         return newUser;
     }
 
@@ -91,9 +111,29 @@ public class RegisteredUserService {
 
         return list;
     }
-
     @Transactional
     public RegisteredUser getRegisteredUserById(int id){return registeredUserRepository.findRegisteredUserByUserId(id);}
+
+    @Transactional
+    public RegisteredUser getUserByEmail(String aEmail) {
+        for (RegisteredUser user : registeredUserRepository.findAll()){
+            if (user.getEmail().equals(aEmail)){
+                return user;
+            }
+        }
+        return null;
+    }
+
+    @Transactional
+    public RegisteredUser accountExists(String aEmail, String aUsername){
+        for (RegisteredUser user : registeredUserRepository.findAll()){
+            if (user.getEmail().equals(aEmail) || user.getUsername().equals(aUsername)){
+                return user;
+            }
+        }
+
+        return null;
+    }
 
     @Transactional
     public Client getClientById(int id){
@@ -109,5 +149,4 @@ public class RegisteredUserService {
     public Owner getOwnerById(int id){
         return ownerRepository.findInstructorByroleId(id);
     }
-
 }

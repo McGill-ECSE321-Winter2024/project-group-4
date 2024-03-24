@@ -144,7 +144,7 @@ public class TestRegistrationService {
     public void testRepeatedRegistrationUnsuccesfullCreateRegistration(){
         Client alreadyRegisteredClient = registrationService.getAllRegistrations().get(0).getClient();
         ScheduledClass existingClass = registrationService.getAllRegistrations().get(0).getScheduledClass();
-
+        System.out.println(registrationRepository.count());
         assertThrows(Exception.class, () -> {
             registrationService.createRegistration(Date.valueOf(LocalDate.now()), alreadyRegisteredClient.getRoleId(), existingClass.getScheduledClassId());
         });
