@@ -12,7 +12,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
-import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassRequestDTO;
+import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassResponseDTO;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 
@@ -30,8 +31,8 @@ public class ScheduledClassController {
      * @author Isbat-ul Islam
      */
     @GetMapping(value = { "/scheduled-classes", "/scheduled-classes/" })
-    public List<ScheduledClassDto> getAllSCheduledClasses() {
-        List<ScheduledClassDto> dto = new ArrayList<>();
+    public List<ScheduleClassResponseDTO> getAllSCheduledClasses() {
+        List<ScheduleClassResponseDTO> dto = new ArrayList<>();
         for (ScheduledClass scheduledClass : scheduledClassService.getAllScheduledClass()) {
             dto.add(convertToDto(scheduledClass));
         }
@@ -52,17 +53,17 @@ public class ScheduledClassController {
      * @author Isbat-ul Islam
      */
     @PostMapping(value = { "/scheduled-class", "/scheduled-class/" })
-    public ScheduledClassDto createScheduledClass(
-            @RequestParam Time aStartTime,
-            @RequestParam Time aEndTime,
-            @RequestParam Date aDay, @RequestParam Integer aOfferedClassId, @RequestParam Integer anInstructorId)
+    public ScheduleClassResponseDTO createScheduledClass(@RequestParam ScheduleClassRequestDTO scheduleClassRequestDTO)
             throws Exception {
-        return convertToDto(scheduledClassService.createScheduledClass(aStartTime, aEndTime, aDay, aOfferedClassId,
-                anInstructorId));
+        return convertToDto(scheduledClassService.createScheduledClass(scheduleClassRequestDTO.getStartTime(),
+                scheduleClassRequestDTO.getEndTime(),
+                scheduleClassRequestDTO.getDate(),
+                scheduleClassRequestDTO.getOfferedClassID(),
+                scheduleClassRequestDTO.getInstructorID()));
     }
 
     @GetMapping(value = { "/scheduled-classes/{id}", "/scheduled-classes/{id}/" })
-    public ScheduledClassDto getScheduledClass(@PathVariable("id") int scheduledClassId) {
+    public ScheduleClassResponseDTO getScheduledClass(@PathVariable("id") int scheduledClassId) {
         return convertToDto(scheduledClassService.getScheduledClass(scheduledClassId));
     }
 
@@ -72,19 +73,21 @@ public class ScheduledClassController {
     }
 
     @GetMapping(value = { "/scheduled-class", "/scheduled-class/" })
-    public List<ScheduledClassDto> getWeeklyClassSchedule(@RequestParam Date aday) {
-        List<ScheduledClassDto> dto = new ArrayList<>();
+    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@RequestParam Date aday) {
+        List<ScheduleClassResponseDTO> dto = new ArrayList<>();
         for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(aday)) {
             dto.add(convertToDto(scheduledClass));
         }
         return dto;
     }
 
-    private ScheduledClassDto convertToDto(ScheduledClass o) {
+    private ScheduleClassResponseDTO convertToDto(ScheduledClass o) {
         if (o == null) {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
         }
-        return new ScheduledClassDto(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate());
+        return new
+                ScheduleClassResponseDTO(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate(),
+                o.getInstructor().getRoleId(), o.getScheduledClassId());
 
     }
 

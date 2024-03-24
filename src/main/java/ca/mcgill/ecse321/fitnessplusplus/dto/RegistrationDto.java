@@ -6,13 +6,13 @@ public class RegistrationDto {
 
     private Date dateOfRegistration;
     private ClientDto client;
-    private ScheduledClassDto scheduledClass;
+    private int scheduledClassID;
     private int registrationId;
 
-    public RegistrationDto(Date aDateOfRegistration, ClientDto aClient, ScheduledClassDto aScheduledClass, int registrationId) {
+    public RegistrationDto(Date aDateOfRegistration, ClientDto aClient, int scheduledClassID, int registrationId) {
         this.dateOfRegistration = aDateOfRegistration;
         this.client = aClient;
-        this.scheduledClass = aScheduledClass;
+        this.scheduledClassID = scheduledClassID;
         this.registrationId = registrationId;
     }
 
@@ -24,8 +24,8 @@ public class RegistrationDto {
         return client;
     }
 
-    public ScheduledClassDto getScheduledClass() {
-        return scheduledClass;
+    public int getScheduledClass() {
+        return scheduledClassID;
     }
     public int getRegistrationId() {return registrationId;}
 }

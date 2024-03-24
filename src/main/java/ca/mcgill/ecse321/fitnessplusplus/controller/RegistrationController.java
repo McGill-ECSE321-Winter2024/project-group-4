@@ -2,8 +2,10 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.ClientDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.RegistrationDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduledClassDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassRequestDTO;
+import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassResponseDTO;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
+import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
@@ -40,9 +42,8 @@ public class RegistrationController {
      */
     @PostMapping(value = {"/register", "/register/"})
     public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
-                                              @RequestParam(name = "client") ClientDto clientDto,
-                                              @RequestParam(name = "scheduledClass") ScheduledClassDto scheduledClassDto) throws Exception {
-        ScheduledClass scheduledClass = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassId());
+                                              @RequestParam(name = "client") ClientDto clientDto, ScheduleClassResponseDTO scheduledClassDto) throws Exception {
+        ScheduledClass scheduledClass = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassID());
         Client client = registeredUserService.getClientById(clientDto.getRoleId());
 
         Registration r = registrationService.createRegistration(date,client.getRoleId() ,scheduledClass.getScheduledClassId());
@@ -110,7 +111,6 @@ public class RegistrationController {
          Time schEnd = r.getScheduledClass().getEndTime();
          Date schDate = r.getScheduledClass().getDate();
 
-         ScheduledClassDto scheduledClassDto = new ScheduledClassDto(schID, schStart, schEnd, schDate);
-         return new RegistrationDto(r.getDateOfRegistration(), clientDto, scheduledClassDto, r.getRegistrationId());
+         return new RegistrationDto(r.getDateOfRegistration(), clientDto, schID, r.getRegistrationId());
     }
 }
