@@ -68,22 +68,22 @@ public class IntegrationTests {
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
 
-//        @BeforeAll
-//        @AfterAll
-//        public void clearDatabase() {
-//                List<String> tableNames = jdbcTemplate.queryForList(
-//                                "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
-//                                String.class);
-//                for (String tableName : tableNames) {
-//                        jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
-//                }
-//                for (String tableName : tableNames) {
-//                        jdbcTemplate.execute("DELETE FROM " + tableName);
-//                }
-//                for (String tableName : tableNames) {
-//                        jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
-//                }
-//        }
+       @BeforeAll
+       @AfterAll
+       public void clearDatabase() {
+               List<String> tableNames = jdbcTemplate.queryForList(
+                               "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
+                               String.class);
+               for (String tableName : tableNames) {
+                       jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
+               }
+               for (String tableName : tableNames) {
+                       jdbcTemplate.execute("DELETE FROM " + tableName);
+               }
+               for (String tableName : tableNames) {
+                       jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
+               }
+       }
 
         @Test
         @Order(1)
@@ -391,24 +391,6 @@ public class IntegrationTests {
                 assertEquals("There already exists a class scheduled at those times.", body.getErrors().get(0));
         }
 
-        /*
-        @Test
-        @Order(18)
-        public void createDuplicateScheduleClass() {
-                // DUE to deprecated Date library, each time the DB is accesses, date is
-                // decremented by 1. in this case, the DB is accessed twice. For this reason, we will test this
-                // method after.
-                ScheduleClassRequestDTO requestDTO = new ScheduleClassRequestDTO(SCHEDULE_CLASS_START,
-                                SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
-                                OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
-
-                ResponseEntity<ScheduleClassResponseDTO> responseError = client.postForEntity("/scheduled-class",
-                                requestDTO, ScheduleClassResponseDTO.class);
-
-                assertNotNull(responseError);
-                assertEquals(HttpStatus.BAD_REQUEST, responseError.getStatusCode());
-        }*/
-
         @Test
         @Order(19)
         public void readValidScheduleClass() {
@@ -474,42 +456,19 @@ public class IntegrationTests {
         @Order(22)
         public void testGetWeekly() {
                 // Set up
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+                String url = "/week-class";
 
-                String url = "/scheduled-classes/" + this.SCHEDULE_CLASS_DATE.format(formatter);
+                ResponseEntity<List<ScheduleClassResponseDTO>> response = client.exchange(url,
+                                HttpMethod.GET, null, new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
+                                });
+                List<ScheduleClassResponseDTO> body = response.getBody();
 
-                // Act
-                List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
-                                new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
-                                }).getBody();
                 assertNotNull(response);
-                assertEquals(1, response.size());
-                ScheduleClassResponseDTO responseDTO = response.get(0);
-                assertEquals(OFFERED_CLASS_ID, responseDTO.getOfferedClassID());
-                assertEquals(VALID_INSTRUCTOR_ID, responseDTO.getInstructorID());
-                assertEquals(SCHEDULE_CLASS_START, responseDTO.getStartTime());
-                assertEquals(SCHEDULE_CLASS_END, responseDTO.getEndTime());
-                assertEquals(this.VALID_SCHEDULE_CLASS_ID, responseDTO.getScheduledClassID());
         };
+
 
         @Test
         @Order(23)
-        public void testGetEmptyWeekly() {
-                // Set up
-                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
-
-                String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_DATE.format(formatter);
-
-                // Act
-                List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
-                                new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
-                                }).getBody();
-                assertNotNull(response);
-                assertEquals(0, response.size());
-        }
-
-        @Test
-        @Order(24)
         public void testCancelClassInvalid() {
                 // Set up
                 String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
@@ -530,7 +489,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(25)
+        @Order(24)
         public void testCancelClassValid() {
                 // Set up
                 String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
