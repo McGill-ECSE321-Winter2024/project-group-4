@@ -5,7 +5,10 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
@@ -92,7 +95,15 @@ public class IntegrationTests {
         private final String INVALID_CLASS_TYPE = null;
         private final String INVALID_CLASS_DESCRIPTION = null;
 
-        /*
+        // TODO Get instructor ID and offered class ID
+        private final int VALID_OFFERED_CLASS_ID = 0;
+        private final int VALID_INSTRUCTOR_ID = 0;
+        private final Time SCHEDULE_CLASS_START = Time.valueOf(LocalTime.of(10, 0));
+        private final Time SCHEDULE_CLASS_END = Time.valueOf(LocalTime.of(20, 0));
+        private final Date SCHEDULE_CLASS_DATE = Date.valueOf(LocalDate.of(2024, 12, 12));
+        private final Time INVALID_SCHEDULE_CLASS_START = null;
+        private final Time INVALID_SCHEDULE_CLASS_END = null;
+        private final Date INVALID_SCHEDULE_CLASS_DATE = null;
         @BeforeAll
         public void clearDatabase() {
                 registrationRepository.deleteAll();
@@ -105,7 +116,6 @@ public class IntegrationTests {
                 accountRoleRepository.deleteAll();
                 registeredUserRepository.deleteAll();
         }
-        */
 
         @Test
         @Order(1)
@@ -141,8 +151,8 @@ public class IntegrationTests {
                 ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/promote", request,
                                 RegisteredUserResponseDto.class);
                 assertNotNull(response);
-                assertNull(clientRepository.findClientByroleId(response.getBody().getAccountRole()));
-                assertNotNull(instructorRepository.findInstructorByroleId(response.getBody().getAccountRole()));
+                assertNull(clientRepository.findClientByroleId(ROLE_ID));
+                assertNotNull(instructorRepository.findInstructorByroleId(response.getBody().getUserId()));
         }
 
         @Test
@@ -200,5 +210,100 @@ public class IntegrationTests {
                 }
 
         }
+
+
+
+
+
+    @Test
+    @Order(100)
+    public void createScheduleClass1() {
+        ScheduleClassRequestDTO requestDTO = new
+                ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
+                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+
+        ResponseEntity<ScheduleClassResponseDTO> response = client.postForEntity("/scheduled-class",
+                requestDTO, ScheduleClassResponseDTO.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response doesn't have correct status");
+        ScheduleClassResponseDTO offeredClasses = response.getBody();
+        assertNotNull(offeredClasses);
+        assertEquals(VALID_OFFERED_CLASS_ID, response.getBody().getOfferedClassID());
+        assertEquals(VALID_INSTRUCTOR_ID, response.getBody().getInstructorID());
+        assertEquals(SCHEDULE_CLASS_START, response.getBody().getStartTime());
+        assertEquals(SCHEDULE_CLASS_END, response.getBody().getEndTime());
+        assertEquals(SCHEDULE_CLASS_DATE, response.getBody().getDate());
+    }
+    @Test
+    @Order(101)
+    public void createScheduleClass2() {
+        ScheduleClassRequestDTO requestDTO = new
+                ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
+                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+
+        ResponseEntity<ScheduleClassResponseDTO> response = client.postForEntity("/scheduled-class/",
+                requestDTO, ScheduleClassResponseDTO.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response doesn't have correct status");
+        ScheduleClassResponseDTO offeredClasses = response.getBody();
+        assertNotNull(offeredClasses);
+        assertEquals(VALID_OFFERED_CLASS_ID, response.getBody().getOfferedClassID());
+        assertEquals(VALID_INSTRUCTOR_ID, response.getBody().getInstructorID());
+        assertEquals(SCHEDULE_CLASS_START, response.getBody().getStartTime());
+        assertEquals(SCHEDULE_CLASS_END, response.getBody().getEndTime());
+        assertEquals(SCHEDULE_CLASS_DATE, response.getBody().getDate());
+    }
+    @Test
+    @Order(102)
+    public void createInvalidScheduleClass() {
+        ScheduleClassRequestDTO requestDTO = new
+                ScheduleClassRequestDTO(SCHEDULE_CLASS_END, SCHEDULE_CLASS_START, SCHEDULE_CLASS_DATE,
+                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+
+        String error = null;
+        ResponseEntity<ErrorDto> response = client.postForEntity("/scheduled-class/",
+                requestDTO, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("Cannot schedule class before and after closing hours", body.getErrors().get(0));
+    }
+    @Test
+    @Order(103)
+    public void createDuplicateScheduleClass() {
+        ScheduleClassRequestDTO requestDTO = new
+                ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
+                VALID_OFFERED_CLASS_ID, VALID_INSTRUCTOR_ID);
+
+        ResponseEntity<ScheduleClassResponseDTO> response = client.postForEntity("/scheduled-class",
+                requestDTO, ScheduleClassResponseDTO.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response doesn't have correct status");
+        ScheduleClassResponseDTO offeredClasses = response.getBody();
+        assertNotNull(offeredClasses);
+        assertEquals(VALID_OFFERED_CLASS_ID, response.getBody().getOfferedClassID());
+        assertEquals(VALID_INSTRUCTOR_ID, response.getBody().getInstructorID());
+        assertEquals(SCHEDULE_CLASS_START, response.getBody().getStartTime());
+        assertEquals(SCHEDULE_CLASS_END, response.getBody().getEndTime());
+        assertEquals(SCHEDULE_CLASS_DATE, response.getBody().getDate());
+
+        ResponseEntity<ErrorDto> responseError = client.postForEntity("/scheduled-class",
+                requestDTO, ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorDto body = responseError.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("There already exists a class scheduled at those times.", body.getErrors().get(0));
+    }
+
+
 
 }
