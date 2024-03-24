@@ -13,7 +13,7 @@ public class RegistrationRequestDto {
     public RegistrationRequestDto() {
     }
 
-    public RegistrationRequestDto(LocalDate aDateOfRegistration, int clientId, int scheduledClassID, int registrationId) {
+    public RegistrationRequestDto(LocalDate aDateOfRegistration, int clientId, int scheduledClassID) {
         this.dateOfRegistration = aDateOfRegistration;
         this.clientId = clientId;
         this.scheduledClassID = scheduledClassID;

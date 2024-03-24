@@ -5,6 +5,8 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.*;
+import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
+import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
 import java.sql.Date;
@@ -66,9 +68,11 @@ public class IntegrationTests {
         private final LocalDate SCHEDULE_CLASS_DATE = (LocalDate.of(2024, 12, 12));
         private final Time INVALID_SCHEDULE_CLASS_START = null;
         private final Time INVALID_SCHEDULE_CLASS_END = null;
-        private final LocalDate INVALID_SCHEDULE_CLASS_DATE = (LocalDate.of(2024, 10, 12));
+        private final LocalDate INVALID_SCHEDULE_CLASS_DATE = (LocalDate.of(2023, 10, 12));
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
+        private int REGISTRATION_ID;
+        private int CLIENT_ROLE_ID;
 
        @BeforeAll
        @AfterAll
@@ -492,7 +496,173 @@ public class IntegrationTests {
 
         @Test
         @Order(24)
-        public void testCancelClassValid() {
+        public void createRegistration() {
+            RegisteredUserRequestDto request = new RegisteredUserRequestDto("John Doe", "Password", "client@gmail.com");
+            ResponseEntity<RegisteredUserResponseDto> userResponse = client.postForEntity("/register-user", request,
+                    RegisteredUserResponseDto.class);
+
+            assertNotNull(userResponse);
+            assertNotNull(userResponse.getBody());
+            this.CLIENT_ROLE_ID = userResponse.getBody().getAccountRole();
+
+            RegistrationRequestDto requestDto = new RegistrationRequestDto(SCHEDULE_CLASS_DATE, CLIENT_ROLE_ID, VALID_SCHEDULE_CLASS_ID);
+
+            ResponseEntity<RegistrationResponseDto> response = client.postForEntity("/register", requestDto, RegistrationResponseDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.CREATED, response.getStatusCode());
+            RegistrationResponseDto registration = response.getBody();
+            assertNotNull(registration);
+            this.REGISTRATION_ID = registration.getRegistrationId();
+            assertEquals(SCHEDULE_CLASS_DATE, registration.getDateOfRegistration());
+            assertEquals(CLIENT_ROLE_ID, registration.getClientId());
+            assertEquals(VALID_SCHEDULE_CLASS_ID, registration.getScheduledClassID());
+
+        }
+
+        @Test
+        @Order(25)
+        public void createRegistrationInvalidClass() {
+            RegistrationRequestDto request = new RegistrationRequestDto(SCHEDULE_CLASS_DATE, CLIENT_ROLE_ID, INVALID_SCHEDULE_CLASS_ID);
+
+            ResponseEntity<ErrorDto> response = client.postForEntity("/register", request, ErrorDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            ErrorDto error = response.getBody();
+            assertNotNull(error);
+            assertEquals(1, error.getErrors().size());
+            assertEquals("Cannot find ScheduledClass with id "+INVALID_SCHEDULE_CLASS_ID, error.getErrors().get(0));
+        }
+
+        @Test
+        @Order(26)
+        public void createRegistrationInvalidClient() {
+            RegistrationRequestDto request = new RegistrationRequestDto(SCHEDULE_CLASS_DATE, INVALID_USER_ID, VALID_SCHEDULE_CLASS_ID);
+
+            ResponseEntity<ErrorDto> response = client.postForEntity("/register", request, ErrorDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            ErrorDto error = response.getBody();
+            assertNotNull(error);
+            assertEquals(1, error.getErrors().size());
+            assertEquals("Cannot find Client with id "+INVALID_USER_ID, error.getErrors().get(0));
+        }
+
+        @Test
+        @Order(27)
+        public void createRegistrationDuplicate() {
+            RegistrationRequestDto request = new RegistrationRequestDto(SCHEDULE_CLASS_DATE, CLIENT_ROLE_ID, VALID_SCHEDULE_CLASS_ID);
+
+            ResponseEntity<ErrorDto> response = client.postForEntity("/register", request, ErrorDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            ErrorDto error = response.getBody();
+            assertNotNull(error);
+            assertEquals(1, error.getErrors().size());
+            assertEquals("A Client cannot register for a class more than once.", error.getErrors().get(0));
+        }
+
+        @Test
+        @Order(28)
+        public void listRegistrations() {
+            ResponseEntity<List<RegistrationResponseDto>> response = client.exchange("/registrations",
+                    HttpMethod.GET, null,
+                    new ParameterizedTypeReference<List<RegistrationResponseDto>>() {
+                    });
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            List<RegistrationResponseDto> registrations = response.getBody();
+            assertNotNull(registrations);
+            assertEquals(1, registrations.size());
+
+            for (RegistrationResponseDto r : registrations) {
+                assertEquals(CLIENT_ROLE_ID, r.getClientId());
+                assertEquals(REGISTRATION_ID, r.getRegistrationId());
+                assertEquals(SCHEDULE_CLASS_DATE, r.getDateOfRegistration());
+                assertEquals(VALID_SCHEDULE_CLASS_ID, r.getScheduledClassID());
+            }
+        }
+
+        @Test
+        @Order(29)
+        public void findRegistrationById() {
+            ResponseEntity<RegistrationResponseDto> response = client
+                    .getForEntity("/registrations/" + REGISTRATION_ID, RegistrationResponseDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            RegistrationResponseDto registration = response.getBody();
+            assertNotNull(registration);
+            assertEquals(SCHEDULE_CLASS_DATE, registration.getDateOfRegistration());
+            assertEquals(CLIENT_ROLE_ID, registration.getClientId());
+            assertEquals(VALID_SCHEDULE_CLASS_ID, registration.getScheduledClassID());
+            assertEquals(REGISTRATION_ID, registration.getRegistrationId());
+        }
+
+        @Test
+        @Order(30)
+        public void findRegistrationByInvalidId() {
+            ResponseEntity<ErrorDto> response = client.getForEntity("/registrations/" + INVALID_USER_ID,
+                    ErrorDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            ErrorDto body = response.getBody();
+            assertNotNull(body);
+            assertEquals(1, body.getErrors().size());
+            assertEquals("Registration with id "+INVALID_USER_ID+" not found.",
+                    body.getErrors().get(0));
+        }
+
+        @Test
+        @Order(31)
+        public void removeRegistration() {
+
+            ResponseEntity<RegistrationResponseDto> response = client.exchange("/registrations/" + REGISTRATION_ID,
+                    HttpMethod.DELETE, null, RegistrationResponseDto.class);
+
+            // check attributes of deleted registration
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            RegistrationResponseDto deletedRegistration = response.getBody();
+            assertEquals(SCHEDULE_CLASS_DATE, deletedRegistration.getDateOfRegistration());
+            assertEquals(CLIENT_ROLE_ID, deletedRegistration.getClientId());
+            assertEquals(VALID_SCHEDULE_CLASS_ID, deletedRegistration.getScheduledClassID());
+            assertEquals(REGISTRATION_ID, deletedRegistration.getRegistrationId());
+
+            // try to find deleted registration
+            ResponseEntity<ErrorDto> searchResponse = client.getForEntity("/registrations/" + REGISTRATION_ID, ErrorDto.class);
+
+            // check error message
+            assertNotNull(searchResponse);
+            assertEquals(HttpStatus.BAD_REQUEST, searchResponse.getStatusCode());
+            ErrorDto body = searchResponse.getBody();
+            assertNotNull(body);
+            assertEquals(1, body.getErrors().size());
+            assertEquals("Registration with id "+REGISTRATION_ID+" not found.", body.getErrors().get(0));
+        }
+
+        @Test
+        @Order(32)
+        public void removeRegistrationInvalidId() {
+            ResponseEntity<ErrorDto> response = client.exchange("/registrations/" + INVALID_OFFERED_CLASS_ID,
+                    HttpMethod.DELETE, null, ErrorDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            ErrorDto body = response.getBody();
+            assertNotNull(body);
+            assertEquals(1, body.getErrors().size());
+            assertEquals("You cannot remove a registration that does not exist", body.getErrors().get(0));
+        }
+
+  @Test
+  @Order(33)
+  public void testCancelClassValid() {
                 // Set up
                 String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
 

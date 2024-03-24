@@ -42,6 +42,9 @@ public class RegistrationService {
         Client aClient = clientRepository.findClientByroleId(clientId);
         ScheduledClass aScheduledClass = scheduledClassRepository.findScheduledClassByscheduledClassId(classId);
 
+        if (aClient==null) {throw new IllegalArgumentException("Cannot find Client with id "+clientId);}
+        if (aScheduledClass==null) {throw new IllegalArgumentException("Cannot find ScheduledClass with id "+classId);}
+
         // We verify if the registration date is before today
         if (aScheduledClass.getDate().isBefore(aDateOfRegistration)) {
             throw new IllegalArgumentException("It is not possible to register for a class in the past");
@@ -107,7 +110,7 @@ public class RegistrationService {
         Registration registration = registrationRepository.findRegistrationByregistrationId(registrationID);
 
         if (registration == null) {
-            throw new Exception("You cannot remove a registration that does not exist");
+            throw new IllegalArgumentException("You cannot remove a registration that does not exist");
         }
 
         if (registration.getScheduledClass().getDate().isBefore((LocalDate.now()))) {
