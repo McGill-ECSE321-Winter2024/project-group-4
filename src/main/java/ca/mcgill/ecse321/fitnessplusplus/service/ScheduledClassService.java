@@ -147,10 +147,10 @@ public class ScheduledClassService {
                 registrationRepository.delete(currentRegistration);
                 currentRegistration.delete();
             }
-            //remove the scheduled class
-            scheduledClassRepo.delete(scheduledClass);
-            scheduledClass.delete();
         }
+        //remove the scheduled class
+        scheduledClassRepo.deleteById(scheduledClass.getScheduledClassId());
+        scheduledClass.delete();
         return scheduledClass;
     }
 

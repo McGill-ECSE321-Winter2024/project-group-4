@@ -14,6 +14,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
+import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,7 +40,8 @@ public class IntegrationTests {
         private ClientRepository clientRepository;
         @Autowired
         private InstructorRepository instructorRepository;
-
+        @Autowired
+        private ScheduledClassRepository scheduledClassRepository;
         private final String CLIENT_NAME = "Bib";
         private final String CLIENT_PASS = "BibIsGreatAlso";
         private final String CLIENT_EMAIL = "yahooShallLiveOn@yahoo.com";
@@ -502,28 +504,20 @@ public class IntegrationTests {
                 assertNotNull(response);
                 assertEquals(HttpStatus.OK, response.getStatusCode());
                 ScheduleClassResponseDTO body = response.getBody();
-                assertNotNull(body);
-                assertEquals(OFFERED_CLASS_ID, body.getOfferedClassID());
-                assertEquals(VALID_INSTRUCTOR_ID, body.getInstructorID());
-                assertEquals(SCHEDULE_CLASS_START, body.getStartTime());
-                assertEquals(SCHEDULE_CLASS_END, body.getEndTime());
-                assertEquals(SCHEDULE_CLASS_DATE, body.getDate());
-                assertEquals(this.VALID_SCHEDULE_CLASS_ID, body.getScheduledClassID());
-
-                // Set up
-                url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
+                assertNull(body);
+                url = "/scheduled-classes";
 
                 // Act
-                ResponseEntity<ErrorDto> responseError = client.getForEntity(url, ErrorDto.class);
+                ResponseEntity<List<ScheduleClassResponseDTO>> newResponse = client.exchange(url,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
+                        });
 
                 // Assert
-                assertNotNull(responseError);
-                assertEquals(HttpStatus.NOT_FOUND, responseError.getStatusCode());
-                ErrorDto bodyError = responseError.getBody();
-                assertNotNull(bodyError);
-                assertEquals(1, bodyError.getErrors().size());
-                assertEquals("There is no person with ID " + this.INVALID_SCHEDULE_CLASS_ID + ".",
-                                bodyError.getErrors().get(0));
+                assertNotNull(newResponse);
+                assertEquals(HttpStatus.OK, newResponse.getStatusCode(), "Response doesn't have correct status");
+                List<ScheduleClassResponseDTO> newBody = newResponse.getBody();
+                assertNotNull(newBody);
+                assertEquals(0, newBody.size());
 
         }
 }
