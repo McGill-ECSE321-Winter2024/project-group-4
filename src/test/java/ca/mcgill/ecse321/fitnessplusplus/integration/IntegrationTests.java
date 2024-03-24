@@ -85,6 +85,9 @@ public class IntegrationTests {
         private final Time SCHEDULE_CLASS_START = Time.valueOf(LocalTime.of(10, 0));
         private final Time SCHEDULE_CLASS_END = Time.valueOf(LocalTime.of(20, 0));
         private final Date SCHEDULE_CLASS_DATE = Date.valueOf(LocalDate.of(2024, 12, 12));
+        private final Time INVALID_SCHEDULE_CLASS_START = null;
+        private final Time INVALID_SCHEDULE_CLASS_END = null;
+        private final Date INVALID_SCHEDULE_CLASS_DATE = Date.valueOf(LocalDate.of(2024, 10, 12));
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
 
@@ -484,9 +487,41 @@ public class IntegrationTests {
         assertEquals(this.VALID_SCHEDULE_CLASS_ID, bodyDTO.getScheduledClassID());
 
     }
-
     @Test
     @Order(22)
+    public void testGetWeekly(){
+        // Set up
+        String url = "/scheduled-classes/" + this.SCHEDULE_CLASS_DATE;
+
+        // Act
+        List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
+        }).getBody();
+        assertNotNull(response);
+        assertEquals(1, response.size());
+        ScheduleClassResponseDTO responseDTO = response.get(0);
+        assertEquals(OFFERED_CLASS_ID, responseDTO.getOfferedClassID());
+        assertEquals(VALID_INSTRUCTOR_ID, responseDTO.getInstructorID());
+        assertEquals(SCHEDULE_CLASS_START, responseDTO.getStartTime());
+        assertEquals(SCHEDULE_CLASS_END, responseDTO.getEndTime());
+        assertEquals(SCHEDULE_CLASS_DATE, responseDTO.getDate());
+        assertEquals(this.VALID_SCHEDULE_CLASS_ID, responseDTO.getScheduledClassID());
+    };
+    @Test
+    @Order(23)
+    public void testGetEmptyWeekly() {
+        // Set up
+        String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_DATE;
+
+        // Act
+        List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
+                new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
+                }).getBody();
+        assertNotNull(response);
+        assertEquals(0, response.size());
+    }
+        @Test
+    @Order(24)
     public void testCancelClassInvalid(){
         // Set up
         String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
@@ -505,7 +540,7 @@ public class IntegrationTests {
 
     }
     @Test
-    @Order(23)
+    @Order(25)
     public void testCancelClassValid(){
         // Set up
         String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;

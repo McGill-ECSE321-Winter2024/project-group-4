@@ -66,10 +66,10 @@ public class ScheduledClassController {
         scheduledClassService.deleteScheduledClass(scheduledClassService.getScheduledClass(scheduledClassId));
     }
 
-    @GetMapping(value = { "/scheduled-class", "/scheduled-class/" })
-    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@RequestParam Date aday) throws Exception {
+    @GetMapping(value = { "/scheduled-class/{date}", "/scheduled-class/{date}/" })
+    public List<ScheduleClassResponseDTO> getWeeklyClassSchedule(@PathVariable("date") Date aDay) throws Exception {
         List<ScheduleClassResponseDTO> dto = new ArrayList<>();
-        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(aday)) {
+        for (ScheduledClass scheduledClass : scheduledClassService.getWeeklyScheduledClasses(aDay)) {
             dto.add(convertToDto(scheduledClass));
         }
         return dto;
