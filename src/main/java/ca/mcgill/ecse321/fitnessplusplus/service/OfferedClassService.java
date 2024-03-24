@@ -30,7 +30,7 @@ public class OfferedClassService {
     }
 
     @Transactional
-    public void removeOfferedClass(int offeredClassId) throws Exception {
+    public OfferedClass removeOfferedClass(int offeredClassId) throws Exception {
         OfferedClass offeredClass = offeredClassRepository.findOfferedClassByOfferedClassId(offeredClassId);
 
         if (offeredClass == null) {
@@ -44,6 +44,7 @@ public class OfferedClassService {
         }
 
         offeredClassRepository.delete(offeredClass);
+        return offeredClass;
     }
 
     @Transactional
@@ -58,6 +59,10 @@ public class OfferedClassService {
     }
 
     @Transactional
-    public OfferedClass getOfferedClassById(int id){return offeredClassRepository.findOfferedClassByOfferedClassId(id);}
+    public OfferedClass getOfferedClassById(int id){
+        OfferedClass o = offeredClassRepository.findOfferedClassByOfferedClassId(id);
+        if (o==null) { throw new IllegalArgumentException("OfferedClass with id "+id+" not found.");}
+        return o;
+    }
 
 }

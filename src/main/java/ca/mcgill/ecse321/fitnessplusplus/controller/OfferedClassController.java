@@ -40,26 +40,22 @@ public class OfferedClassController {
         return dto;
     }
 
-    @GetMapping(value={"/offered-class", "/offered-class/"})
-    public OfferedClassResponseDto getOfferedClassByID(@RequestParam(name = "id") int offeredClassId) {
-        return convertToDto(offeredClassService.getOfferedClassById(offeredClassId));
+    @GetMapping(value={"/offered-class/{id}", "/offered-class/{id}/"})
+    @ResponseStatus(HttpStatus.OK)
+    public OfferedClassResponseDto getOfferedClassByID(@PathVariable int id) {
+        OfferedClass offeredClass = offeredClassService.getOfferedClassById(id);
+
+        return new OfferedClassResponseDto(offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId());
     }
 
     @DeleteMapping(value = { "/offered-classes/{id}", "/offered-classes/{id}/" })
-    public void removeOfferedClass(@PathVariable("id") int offeredClassId) {
-        try {
-            offeredClassService.removeOfferedClass(offeredClassId);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+    @ResponseStatus(HttpStatus.OK)
+    public OfferedClassResponseDto removeOfferedClass(@PathVariable("id") int offeredClassId) throws Exception {
 
-    private OfferedClassResponseDto convertToDto(OfferedClass o) {
-        if (o == null) {
-            throw new IllegalArgumentException("Offered class does not exist.");
-        }
-        return new OfferedClassResponseDto(o.getClassType(), o.getDescription(), o.getId());
-    }
+        OfferedClass offeredClass = offeredClassService.removeOfferedClass(offeredClassId);
 
+        return new OfferedClassResponseDto(offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId());
+
+    }
 
 }
