@@ -35,6 +35,8 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -43,6 +45,8 @@ public class IntegrationTests {
 
         @Autowired
         private TestRestTemplate client;
+        @Autowired
+        private JdbcTemplate jdbcTemplate;
         @Autowired
         private ScheduledClassRepository scheduledClassRepository;
         @Autowired
@@ -102,15 +106,18 @@ public class IntegrationTests {
 
         @BeforeAll
         public void clearDatabase() {
-                registrationRepository.deleteAll();
-                scheduledClassRepository.deleteAll();
-                clientRepository.deleteAll();
-                instructorRepository.deleteAll();
-                ownerRepository.deleteAll();
-                offeredClassRepository.deleteAll();
-                staffRepository.deleteAll();
-                registeredUserRepository.deleteAll();
-                accountRoleRepository.deleteAll();
+            List<String> tableNames = jdbcTemplate.queryForList(
+                    "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
+                    String.class);
+            for (String tableName : tableNames){
+                jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
+            }
+            for (String tableName : tableNames){
+                jdbcTemplate.execute("DELETE FROM "+tableName);
+            }
+            for (String tableName : tableNames){
+                jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
+            }
         }
 
         @Test
