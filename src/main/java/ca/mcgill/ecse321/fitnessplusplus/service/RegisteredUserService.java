@@ -112,7 +112,7 @@ public class RegisteredUserService {
     public RegisteredUser getRegisteredUserById(int id){
         RegisteredUser r = registeredUserRepository.findRegisteredUserByUserId(id);
         if (r==null){throw new IllegalArgumentException("RegisteredUser with id "+id+" not found.");}
-        return registeredUserRepository.findRegisteredUserByUserId(id);
+        return r;
     }
 
     @Transactional

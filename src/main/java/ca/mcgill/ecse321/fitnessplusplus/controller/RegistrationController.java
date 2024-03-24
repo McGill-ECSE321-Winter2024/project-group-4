@@ -1,8 +1,8 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.ClientDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.RegistrationDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassResponseDTO;
+import ca.mcgill.ecse321.fitnessplusplus.dto.*;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
@@ -10,6 +10,7 @@ import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegistrationService;
 import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Date;
@@ -29,9 +30,7 @@ public class RegistrationController {
     /**
      * API Post Endpoint to create a registration
      *
-     * @param date Date of the registration
-     * @param clientDto Client Data Transfer Object
-     * @param scheduledClassDto ScheduledClass Data Transfer Object
+     * @param dto Request body of Registration to create
      *
      * @return RegistrationDto
      * @throws Exception
@@ -39,13 +38,10 @@ public class RegistrationController {
      * @author Yonatan Bensimon
      */
     @PostMapping(value = {"/register", "/register/"})
-    public RegistrationDto createRegistration(@RequestParam(name = "date") Date date,
-                                              @RequestParam(name = "client") ClientDto clientDto, ScheduleClassResponseDTO scheduledClassDto) throws Exception {
-        ScheduledClass scheduledClass = scheduledClassService.getScheduledClass(scheduledClassDto.getScheduledClassID());
-        Client client = registeredUserService.getClientById(clientDto.getRoleId());
-
-        Registration r = registrationService.createRegistration(date,client.getRoleId() ,scheduledClass.getScheduledClassId());
-        return convertToDto(r);
+    @ResponseStatus(HttpStatus.CREATED)
+    public RegistrationResponseDto createRegistration(@RequestBody RegistrationRequestDto dto) throws Exception {
+        Registration r = registrationService.createRegistration(dto.getDateOfRegistration(), dto.getClientId(), dto.getScheduledClassID());
+    return new RegistrationResponseDto(r.getDateOfRegistration(), r.getClient().getRoleId(), r.getScheduledClass().getScheduledClassId(), r.getRegistrationId());
     }
 
 
@@ -57,10 +53,11 @@ public class RegistrationController {
      * @author Yonatan Bensimon
      */
     @GetMapping(value={"/registrations", "/registrations/" })
-    public List<RegistrationDto> getAllRegistrations() {
-        List<RegistrationDto> dto = new ArrayList<>();
+    @ResponseStatus(HttpStatus.OK)
+    public List<RegistrationResponseDto> getAllRegistrations() {
+        List<RegistrationResponseDto> dto = new ArrayList<>();
         for (Registration r: registrationService.getAllRegistrations()) {
-            dto.add(convertToDto(r));
+            dto.add(new RegistrationResponseDto(r.getDateOfRegistration(), r.getClient().getRoleId(), r.getScheduledClass().getScheduledClassId(), r.getRegistrationId()));
         }
         return dto;
     }
@@ -74,8 +71,10 @@ public class RegistrationController {
      * @author Yonatan Bensimon
      */
     @GetMapping(value={"/registrations/{id}", "/registrations/{id}/"})
-    public RegistrationDto getRegistrationByID(@PathVariable("id") int registrationID) {
-        return convertToDto(registrationService.getRegistrationByID(registrationID));
+    @ResponseStatus(HttpStatus.OK)
+    public RegistrationResponseDto getRegistrationByID(@PathVariable("id") int registrationID) {
+        Registration registration = registrationService.getRegistrationByID(registrationID);
+        return new RegistrationResponseDto(registration.getDateOfRegistration(), registration.getClient().getRoleId(), registration.getScheduledClass().getScheduledClassId(), registration.getRegistrationId());
     }
 
     /**
@@ -86,32 +85,10 @@ public class RegistrationController {
      * @author Yonatan Bensimon
      */
     @DeleteMapping(value={"registrations/{id}", "/registrations/{id}"})
-    public void removeRegistration(@PathVariable("id") int registrationID) throws Exception {
-        try {
-            registrationService.removeRegistration(registrationID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public RegistrationResponseDto removeRegistration(@PathVariable("id") int registrationID) throws Exception {
+        Registration registration = registrationService.removeRegistration(registrationID);
+
+        return new RegistrationResponseDto(registration.getDateOfRegistration(), registration.getClient().getRoleId(), registration.getScheduledClass().getScheduledClassId(), registration.getRegistrationId());
     }
 
-    /**
-     * Private method in order to convert a registration object to a registration data transfer object
-     *
-     * @param r Registration object to be converted
-     * @return RegistrationDto
-     *
-     * @author Yonatan Bensimon
-     */
-    private RegistrationDto convertToDto(Registration r) {
-         if (r == null) {
-             throw new IllegalArgumentException("There is no such registration");
-         }
-         ClientDto clientDto = new ClientDto(r.getClient().getRoleId());
-         int schID = r.getScheduledClass().getScheduledClassId();
-         Time schStart = r.getScheduledClass().getStartTime();
-         Time schEnd = r.getScheduledClass().getEndTime();
-         Date schDate = r.getScheduledClass().getDate();
-
-         return new RegistrationDto(r.getDateOfRegistration(), clientDto, schID, r.getRegistrationId());
-    }
 }

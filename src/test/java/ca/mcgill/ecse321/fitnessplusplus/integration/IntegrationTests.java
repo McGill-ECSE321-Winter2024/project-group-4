@@ -19,13 +19,9 @@ import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+
+import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
-import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
@@ -93,6 +89,7 @@ public class IntegrationTests {
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
 
         @BeforeAll
+        @AfterAll
         public void clearDatabase() {
             List<String> tableNames = jdbcTemplate.queryForList(
                     "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",

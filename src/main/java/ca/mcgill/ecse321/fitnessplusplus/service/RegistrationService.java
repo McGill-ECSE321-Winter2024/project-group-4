@@ -90,7 +90,9 @@ public class RegistrationService {
      */
     @Transactional
     public Registration getRegistrationByID(int registrationID) {
-        return registrationRepository.findRegistrationByregistrationId(registrationID);
+        Registration r = registrationRepository.findRegistrationByregistrationId(registrationID);
+        if (r==null) {throw new IllegalArgumentException("Registration with id "+registrationID+" not found.");}
+        return r;
     }
 
     /**
@@ -102,7 +104,7 @@ public class RegistrationService {
      * @author Yonatan Bensimon
      */
     @Transactional
-    public void removeRegistration(int registrationID) throws Exception {
+    public Registration removeRegistration(int registrationID) throws Exception {
         Registration registration = registrationRepository.findRegistrationByregistrationId(registrationID);
 
         if (registration == null) {
@@ -114,6 +116,6 @@ public class RegistrationService {
         }
 
         registrationRepository.delete(registration);
-        registration.delete();
+        return registration;
     }
 }
