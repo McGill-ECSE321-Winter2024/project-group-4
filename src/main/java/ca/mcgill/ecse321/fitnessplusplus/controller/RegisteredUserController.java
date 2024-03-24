@@ -46,12 +46,13 @@ public class RegisteredUserController {
     }
 
 
-//    @GetMapping(value = { "/registered-user/{id}", "/registered-user/{id}/" })
-//    public RegisteredUserResponseDto getRegisteredUserByID(@PathVariable int id) {
-//        RegisteredUser registeredUser = registeredUserService.getRegisteredUserById(id);
-//
-//        return convertToDto(registeredUserService.getRegisteredUserById(registeredUserId));
-//    }
+    @GetMapping(value = { "/registered-user/{id}", "/registered-user/{id}/" })
+    @ResponseStatus(HttpStatus.OK)
+    public RegisteredUserResponseDto getRegisteredUserByID(@PathVariable int id) {
+        RegisteredUser registeredUser = registeredUserService.getRegisteredUserById(id);
+
+        return new RegisteredUserResponseDto(registeredUser.getUserId(), registeredUser.getUsername(), registeredUser.getPassword(), registeredUser.getEmail(), registeredUser.getAccountRole().getRoleId());
+    }
 
 
 }

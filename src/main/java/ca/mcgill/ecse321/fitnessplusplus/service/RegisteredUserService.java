@@ -109,7 +109,11 @@ public class RegisteredUserService {
         return list;
     }
     @Transactional
-    public RegisteredUser getRegisteredUserById(int id){return registeredUserRepository.findRegisteredUserByUserId(id);}
+    public RegisteredUser getRegisteredUserById(int id){
+        RegisteredUser r = registeredUserRepository.findRegisteredUserByUserId(id);
+        if (r==null){throw new IllegalArgumentException("RegisteredUser with id "+id+" not found.");}
+        return registeredUserRepository.findRegisteredUserByUserId(id);
+    }
 
     @Transactional
     public RegisteredUser getUserByEmail(String aEmail) {

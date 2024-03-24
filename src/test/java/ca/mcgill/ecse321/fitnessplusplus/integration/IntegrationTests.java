@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.*;
+import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.repository.AccountRoleRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
@@ -82,6 +83,7 @@ public class IntegrationTests {
         private final String INVALID_NAME = null;
         private final String INVALID_PASS = null;
         private final String INVALID_EMAIL = null;
+        private final int INVALID_USER_ID = -1;
         private final String INVALID_OFFERED_CLASS_TYPE = null;
         private final String INVALID_OFFERED_CLASS_DESCRIPTION = null;
         private final int INVALID_OFFERED_CLASS_ID = -1;
@@ -196,6 +198,35 @@ public class IntegrationTests {
 
         @Test
         @Order(6)
+        public void findRegisteredUserById() {
+            ResponseEntity<RegisteredUserResponseDto> response = client.getForEntity("/registered-user/"+USER_ID, RegisteredUserResponseDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.OK, response.getStatusCode());
+            RegisteredUserResponseDto registeredUser = response.getBody();
+            assertNotNull(registeredUser);
+            assertEquals(CLIENT_NAME, registeredUser.getUsername());
+            assertEquals(CLIENT_PASS, registeredUser.getPassword());
+            assertEquals(CLIENT_EMAIL, registeredUser.getEmail());
+            assertEquals(USER_ID, registeredUser.getUserId());
+            assertEquals(VALID_INSTRUCTOR_ID, registeredUser.getAccountRole());
+        }
+
+        @Test
+        @Order(7)
+        public void findRegisteredUserByInvalidId() {
+            ResponseEntity<ErrorDto> response = client.getForEntity("/registered-user/"+INVALID_USER_ID, ErrorDto.class);
+
+            assertNotNull(response);
+            assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+            ErrorDto error = response.getBody();
+            assertNotNull(error);
+            assertEquals(1, error.getErrors().size());
+            assertEquals("RegisteredUser with id "+INVALID_USER_ID+" not found.", error.getErrors().get(0));
+        }
+
+        @Test
+        @Order(8)
         public void offerClass() {
                 OfferedClassRequestDto request = new OfferedClassRequestDto(OFFERED_CLASS_TYPE,
                                 OFFERED_CLASS_DESCRIPTION);
@@ -213,7 +244,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(7)
+        @Order(9)
         public void offerInvalidClass() {
                 OfferedClassRequestDto request = new OfferedClassRequestDto(INVALID_OFFERED_CLASS_TYPE,
                         INVALID_OFFERED_CLASS_DESCRIPTION);
@@ -231,7 +262,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(8)
+        @Order(10)
         public void listOfferedClasses() {
                 ResponseEntity<List<OfferedClassResponseDto>> response = client.exchange("/offered-classes",
                                 HttpMethod.GET, null, new ParameterizedTypeReference<List<OfferedClassResponseDto>>() {
@@ -251,7 +282,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(9)
+        @Order(11)
         public void findOfferedClassById() {
             ResponseEntity<OfferedClassResponseDto> response = client.getForEntity("/offered-class/"+OFFERED_CLASS_ID, OfferedClassResponseDto.class);
 
@@ -265,7 +296,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(10)
+        @Order(12)
         public void findOfferedClassByInvalidId() {
             ResponseEntity<ErrorDto> response = client.getForEntity("/offered-class/"+ INVALID_OFFERED_CLASS_ID, ErrorDto.class);
 
@@ -278,7 +309,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(11)
+        @Order(13)
         public void removeOfferedClass() {
                 // create offeredclass
                 ResponseEntity<OfferedClassResponseDto> createdOfferedClass = client.postForEntity("/offer-class", new OfferedClassRequestDto(OFFERED_CLASS_TYPE,
@@ -309,7 +340,7 @@ public class IntegrationTests {
         }
 
         @Test
-        @Order(12)
+        @Order(14)
         public void removeOfferedClassInvalidId() {
                 ResponseEntity<ErrorDto> response = client.exchange("/offered-classes/"+INVALID_OFFERED_CLASS_ID, HttpMethod.DELETE, null, ErrorDto.class);
 
