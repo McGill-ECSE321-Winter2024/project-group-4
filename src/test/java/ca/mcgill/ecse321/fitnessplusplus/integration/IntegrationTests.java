@@ -6,7 +6,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
+import java.util.List;
 
+import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.MethodOrderer;
@@ -19,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -33,6 +37,9 @@ import ca.mcgill.ecse321.fitnessplusplus.repository.RegisteredUserRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.RegistrationRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.StaffRepository;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.client.HttpClientErrorException;
+import org.springframework.web.client.RestClientException;
 
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -80,8 +87,9 @@ public class IntegrationTests {
     private final String INVALID_NAME = null;
     private final String INVALID_PASS = null;
     private final String INVALID_EMAIL = null;
+    private final String INVALID_CLASS_TYPE = null;
+    private final String INVALID_CLASS_DESCRIPTION = null;
 
-    /*
     @BeforeAll
     public void clearDatabase() {
         scheduledClassRepository.deleteAll();
@@ -93,9 +101,8 @@ public class IntegrationTests {
         staffRepository.deleteAll();
         registeredUserRepository.deleteAll();
         accountRoleRepository.deleteAll();
-    }*/
+    }
 
-    /*
     @Test
     @Order(1)
     public void createUser() {
@@ -115,10 +122,22 @@ public class IntegrationTests {
         ROLE_ID = createdUser.getAccountRole();
         assertEquals(CLIENT_NAME, createdUser.getUsername());
     }
-    
+
 
     @Test
     @Order(2)
+    public void promoteUser() {
+        RegisteredUserResponseDto request = new RegisteredUserResponseDto(CLIENT_ID, CLIENT_PASS, CLIENT_NAME,
+                CLIENT_EMAIL, ROLE_ID);
+        ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/promote", request,
+                RegisteredUserResponseDto.class);
+        assertNotNull(response);
+        assertNull(clientRepository.findClientByroleId(ROLE_ID));
+        assertNotNull(instructorRepository.findInstructorByroleId(ROLE_ID));
+    }
+
+    @Test
+    @Order(3)
     public void offerClass() {
         OfferedClassRequestDto request = new OfferedClassRequestDto(OFFERED_CLASS_TYPE, OFFERED_CLASS_DESCRIPTION);
 
@@ -134,21 +153,39 @@ public class IntegrationTests {
     }
 
     @Test
-    @Order(3)
-    public void promoteUser() {
-        RegisteredUserResponseDto request = new RegisteredUserResponseDto(CLIENT_ID, CLIENT_PASS, CLIENT_NAME,
-                CLIENT_EMAIL, ROLE_ID);
-        ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/promote", request,
-                RegisteredUserResponseDto.class);
-        assertNotNull(response);
-        assertNull(clientRepository.findClientByroleId(ROLE_ID));
-        assertNotNull(instructorRepository.findInstructorByroleId(ROLE_ID));
-    }*/
+    @Order(4)
+    public void offerInvalidClass() {
+        OfferedClassRequestDto request = new OfferedClassRequestDto(INVALID_CLASS_TYPE, INVALID_CLASS_DESCRIPTION);
+        String error = null;
 
-    // @Test
-    // @Order(3)
-    // public void listOfferedClasses() {
-    //
-    // }
+        ResponseEntity<ErrorDto> response = client.postForEntity("/offer-class", request,
+                ErrorDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("Illegal arguments", body.getErrors().get(0));
+
+    }
+
+    @Test
+    @Order(5)
+    public void listOfferedClasses() {
+        ResponseEntity<List<OfferedClassResponseDto>> response = client.exchange("/offered-classes", HttpMethod.GET, null, new ParameterizedTypeReference<List<OfferedClassResponseDto>>() {});
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response has correct status");
+        List<OfferedClassResponseDto> offeredClasses = response.getBody();
+        assertNotNull(offeredClasses);
+        assertEquals(1, offeredClasses.size());
+
+        for (OfferedClassResponseDto c : offeredClasses) {
+            assertEquals(OFFERED_CLASS_TYPE, c.getClassType(), "Response has correct class type");
+            assertEquals(OFFERED_CLASS_DESCRIPTION, c.getDescription(), "Response has correct class description");
+        }
+
+    }
 
 }

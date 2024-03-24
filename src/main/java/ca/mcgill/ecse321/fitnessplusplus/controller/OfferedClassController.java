@@ -31,7 +31,7 @@ public class OfferedClassController {
     }
 
     @GetMapping(value={"/offered-classes", "/offered-classes/" })
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public List<OfferedClassResponseDto> getAllRegisteredUser() throws Exception{
         List<OfferedClassResponseDto> dto = new ArrayList<>();
         for (OfferedClass c: offeredClassService.getAllOfferedClasses()) {
