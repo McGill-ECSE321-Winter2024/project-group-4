@@ -70,12 +70,12 @@ public class IntegrationTests {
         private final String INSTRUCTOR_PASS = "SoundsALotLikeSmthElse";
         private final String INSTRUCTOR_EMAIL = "UgandanKnuckles@mySpace.com";
 
-    private final String CLIENT_NAME = "Bib";
-    private final String CLIENT_PASS = "BibIsGreatAlso";
-    private final String CLIENT_EMAIL = "yahooShallLiveOn@yahoo.com";
-    private int USER_ID = 0;
-    private int ROLE_ID = 0;
-    private int OFFERED_CLASS_ID = 0;
+        private final String CLIENT_NAME = "Bib";
+        private final String CLIENT_PASS = "BibIsGreatAlso";
+        private final String CLIENT_EMAIL = "yahooShallLiveOn@yahoo.com";
+        private int USER_ID = 0;
+        private int ROLE_ID = 0;
+        private int OFFERED_CLASS_ID = 0;
 
         private final String OFFERED_CLASS_TYPE = "Cardio";
         private final String OFFERED_CLASS_DESCRIPTION = "Come exercise with us!";
@@ -451,19 +451,94 @@ public class IntegrationTests {
 
     @Test
     @Order(106)
-    public void testGetAllScheduledClass(){}
+    public void testGetAllScheduledClass(){
+        // Set up
+        String url = "/scheduled-classes";
+
+        // Act
+        ResponseEntity<List<ScheduleClassResponseDTO>> response = client.exchange(url,
+                HttpMethod.GET, null, new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
+        });
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode(), "Response doesn't have correct status");
+        List<ScheduleClassResponseDTO> body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.size());
+        ScheduleClassResponseDTO bodyDTO = body.get(0);
+        assertEquals(OFFERED_CLASS_ID, bodyDTO.getOfferedClassID());
+        assertEquals(VALID_INSTRUCTOR_ID, bodyDTO.getInstructorID());
+        assertEquals(SCHEDULE_CLASS_START, bodyDTO.getStartTime());
+        assertEquals(SCHEDULE_CLASS_END, bodyDTO.getEndTime());
+        assertEquals(SCHEDULE_CLASS_DATE, bodyDTO.getDate());
+        assertEquals(this.VALID_SCHEDULE_CLASS_ID, bodyDTO.getScheduledClassID());
+
+    }
 
     @Test
     @Order(107)
-    public void testCancelClassInvalid(){}
+    public void testCancelClassInvalid(){
+        // Set up
+        String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
+
+        // Act
+        ResponseEntity<ErrorDto> response = client.exchange(url,
+                HttpMethod.DELETE, null, ErrorDto.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        ErrorDto body = response.getBody();
+        assertNotNull(body);
+        assertEquals(1, body.getErrors().size());
+        assertEquals("There is no person with ID " + this.INVALID_SCHEDULE_CLASS_ID + ".", body.getErrors().get(0));
+
+    }
     @Test
     @Order(108)
-    public void testCancelClassValid(){}
-    @Test
-    @Order(109)
-    public void testGetWeeklyClassSchedule(){}
-    @Test
-    @Order(110)
-    public void testInvalidGetWeeklyClassSchedule(){}
+    public void testCancelClassValid(){
+        // Set up
+        String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
+
+        // Act
+        ResponseEntity<ScheduleClassResponseDTO> response = client.exchange(url,
+                HttpMethod.DELETE, null, ScheduleClassResponseDTO.class);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(HttpStatus.OK, response.getStatusCode());
+        ScheduleClassResponseDTO body = response.getBody();
+        assertNotNull(body);
+        assertEquals(OFFERED_CLASS_ID, body.getOfferedClassID());
+        assertEquals(VALID_INSTRUCTOR_ID, body.getInstructorID());
+        assertEquals(SCHEDULE_CLASS_START, body.getStartTime());
+        assertEquals(SCHEDULE_CLASS_END, body.getEndTime());
+        assertEquals(SCHEDULE_CLASS_DATE, body.getDate());
+        assertEquals(this.VALID_SCHEDULE_CLASS_ID, body.getScheduledClassID());
+
+
+        // Set up
+        url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
+
+        // Act
+        ResponseEntity<ErrorDto> responseError = client.getForEntity(url, ErrorDto.class);
+
+        // Assert
+        assertNotNull(responseError);
+        assertEquals(HttpStatus.NOT_FOUND, responseError.getStatusCode());
+        ErrorDto bodyError = responseError.getBody();
+        assertNotNull(bodyError);
+        assertEquals(1, bodyError.getErrors().size());
+        assertEquals("There is no person with ID " + this.INVALID_SCHEDULE_CLASS_ID + ".", bodyError.getErrors().get(0));
+
+
+    }
+//    @Test
+//    @Order(109)
+//    public void testGetWeeklyClassSchedule(){}
+//    @Test
+//    @Order(110)
+//    public void testInvalidGetWeeklyClassSchedule(){}
 
 }
