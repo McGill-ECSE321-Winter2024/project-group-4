@@ -474,7 +474,9 @@ public class IntegrationTests {
         @Order(22)
         public void testGetWeekly() {
                 // Set up
-                String url = "/scheduled-classes/" + this.SCHEDULE_CLASS_DATE;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+                String url = "/scheduled-classes/" + this.SCHEDULE_CLASS_DATE.format(formatter);
 
                 // Act
                 List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
@@ -494,7 +496,9 @@ public class IntegrationTests {
         @Order(23)
         public void testGetEmptyWeekly() {
                 // Set up
-                String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_DATE;
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+
+                String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_DATE.format(formatter);
 
                 // Act
                 List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
