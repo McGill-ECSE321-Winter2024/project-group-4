@@ -21,6 +21,8 @@ import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
+
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,7 +70,7 @@ public class RegistrationRepositoryTest {
     Instructor instructor = new Instructor();
     instructorRepositoryTest.save(instructor);
 
-    Date classDate = Date.valueOf("2024-02-29");
+    LocalDate classDate = LocalDate.of(2024, 02, 29);
     Time classStart = Time.valueOf("22:11:23");
     Time classEnd = Time.valueOf("23:59:59");
 
@@ -83,10 +85,10 @@ public class RegistrationRepositoryTest {
     // Create Registration
 
     Registration registration = new Registration();
-    Date registrationDate = Date.valueOf("2024-02-18");
+    LocalDate registrationDate = LocalDate.of(2024, 02, 18);
     registration.setClient(client);
     registration.setScheduledClass(scheduledClass);
-    registration.setDateOfRegistration(registrationDate);
+    registration.setDateOfRegistration((registrationDate));
 
     // Save Registration
     registrationRepositoryTest.save(registration);
@@ -134,7 +136,7 @@ public class RegistrationRepositoryTest {
     Instructor instructor = new Instructor();
     instructorRepositoryTest.save(instructor);
 
-    Date classDate = Date.valueOf("2024-02-29");
+    LocalDate classDate = LocalDate.of(2024, 02, 29);
     Time classStart = Time.valueOf("22:11:23");
     Time classEnd = Time.valueOf("23:59:59");
 
@@ -149,7 +151,7 @@ public class RegistrationRepositoryTest {
     // Create Registration
 
     Registration registration = new Registration();
-    Date registrationDate = Date.valueOf("2024-02-18");
+    LocalDate registrationDate = LocalDate.of(2024, 02, 18);
     registration.setClient(client);
     registration.setScheduledClass(scheduledClass);
     registration.setDateOfRegistration(registrationDate);
@@ -164,7 +166,7 @@ public class RegistrationRepositoryTest {
     assertNotNull(registration);
 
     // Set new attributes
-    Date newRegistrationDate = Date.valueOf("2023-02-18");
+    LocalDate newRegistrationDate = LocalDate.of(2023, 02, 18);
     registration.setDateOfRegistration(newRegistrationDate);
     registrationRepositoryTest.save(registration);
 

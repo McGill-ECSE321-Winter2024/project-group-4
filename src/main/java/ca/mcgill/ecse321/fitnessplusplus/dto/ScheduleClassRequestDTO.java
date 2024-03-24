@@ -2,18 +2,19 @@ package ca.mcgill.ecse321.fitnessplusplus.dto;
 
 import java.sql.Date;
 import java.sql.Time;
+import java.time.LocalDate;
 
 public class ScheduleClassRequestDTO {
     private Time startTime;
     private Time endTime;
-    private Date date;
+    private LocalDate date;
     private int offeredClassID;
     private int instructorID;
 
     @SuppressWarnings("unused")
     public ScheduleClassRequestDTO() {}
 
-    public ScheduleClassRequestDTO(Time aStartTime, Time aEndTime, Date aDate, Integer aOfferedClassId,
+    public ScheduleClassRequestDTO(Time aStartTime, Time aEndTime, LocalDate aDate, Integer aOfferedClassId,
                                    Integer aInstructorId) {
         this.startTime = aStartTime;
         this.endTime = aEndTime;
@@ -33,10 +34,10 @@ public class ScheduleClassRequestDTO {
         this.endTime = aEndTime;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(Date aDate) {
+    public void setDate(LocalDate aDate) {
         this.date = aDate;
     }
 

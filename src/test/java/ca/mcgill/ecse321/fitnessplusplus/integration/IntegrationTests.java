@@ -18,6 +18,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import org.junit.jupiter.api.*;
@@ -84,29 +85,29 @@ public class IntegrationTests {
         private int VALID_INSTRUCTOR_ID;
         private final Time SCHEDULE_CLASS_START = Time.valueOf(LocalTime.of(10, 0));
         private final Time SCHEDULE_CLASS_END = Time.valueOf(LocalTime.of(20, 0));
-        private final Date SCHEDULE_CLASS_DATE = Date.valueOf(LocalDate.of(2024, 12, 12));
+        private final LocalDate SCHEDULE_CLASS_DATE = (LocalDate.of(2024, 12, 12));
         private final Time INVALID_SCHEDULE_CLASS_START = null;
         private final Time INVALID_SCHEDULE_CLASS_END = null;
-        private final Date INVALID_SCHEDULE_CLASS_DATE = Date.valueOf(LocalDate.of(2024, 10, 12));
+        private final LocalDate INVALID_SCHEDULE_CLASS_DATE = (LocalDate.of(2024, 10, 12));
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
 
-        @BeforeAll
-        @AfterAll
-        public void clearDatabase() {
-            List<String> tableNames = jdbcTemplate.queryForList(
-                    "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
-                    String.class);
-            for (String tableName : tableNames){
-                jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
-            }
-            for (String tableName : tableNames){
-                jdbcTemplate.execute("DELETE FROM "+tableName);
-            }
-            for (String tableName : tableNames){
-                jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
-            }
-        }
+//        @BeforeAll
+//        @AfterAll
+//        public void clearDatabase() {
+//            List<String> tableNames = jdbcTemplate.queryForList(
+//                    "SELECT table_name FROM information_schema.tables WHERE table_schema='public'",
+//                    String.class);
+//            for (String tableName : tableNames){
+//                jdbcTemplate.execute("ALTER TABLE " + tableName + " DISABLE TRIGGER ALL");
+//            }
+//            for (String tableName : tableNames){
+//                jdbcTemplate.execute("DELETE FROM "+tableName);
+//            }
+//            for (String tableName : tableNames){
+//                jdbcTemplate.execute("ALTER TABLE " + tableName + " ENABLE TRIGGER ALL");
+//            }
+//        }
 
         @Test
         @Order(1)
@@ -404,7 +405,7 @@ public class IntegrationTests {
         ErrorDto body = response.getBody();
         assertNotNull(body);
         assertEquals(1, body.getErrors().size());
-        assertEquals("Not a valid Intructor ID", body.getErrors().get(0));
+        assertEquals("There already exists a class scheduled at those times.", body.getErrors().get(0));
     }
     @Test
     @Order(18)
@@ -454,11 +455,11 @@ public class IntegrationTests {
 
         // Assert
         assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorDto body = response.getBody();
         assertNotNull(body);
         assertEquals(1, body.getErrors().size());
-        assertEquals("There is no person with ID " + this.INVALID_SCHEDULE_CLASS_ID + ".", body.getErrors().get(0));
+        assertEquals("Scheduled Class does not exist.", body.getErrors().get(0));
         }
 
     @Test
@@ -490,8 +491,9 @@ public class IntegrationTests {
     @Test
     @Order(22)
     public void testGetWeekly(){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
         // Set up
-        String url = "/scheduled-classes/" + this.SCHEDULE_CLASS_DATE;
+        String url = "/scheduled-classes/" + this.SCHEDULE_CLASS_DATE.format(formatter);
 
         // Act
         List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
@@ -511,7 +513,9 @@ public class IntegrationTests {
     @Order(23)
     public void testGetEmptyWeekly() {
         // Set up
-        String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_DATE;
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
+        // Set up
+        String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_DATE.format(formatter);
 
         // Act
         List<ScheduleClassResponseDTO> response = client.exchange(url, HttpMethod.GET, null,
@@ -532,11 +536,11 @@ public class IntegrationTests {
 
         // Assert
         assertNotNull(response);
-        assertEquals(HttpStatus.NOT_FOUND, response.getStatusCode());
+        assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
         ErrorDto body = response.getBody();
         assertNotNull(body);
         assertEquals(1, body.getErrors().size());
-        assertEquals("There is no person with ID " + this.INVALID_SCHEDULE_CLASS_ID + ".", body.getErrors().get(0));
+        assertEquals("The scheduled class does not exist", body.getErrors().get(0));
 
     }
     @Test

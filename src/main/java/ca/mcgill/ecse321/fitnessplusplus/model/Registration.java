@@ -4,7 +4,10 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import org.springframework.cglib.core.Local;
+
 import java.sql.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Registration {
@@ -15,7 +18,7 @@ public class Registration {
 
   // Registration Attributes
   @Id @GeneratedValue private int registrationId;
-  private Date dateOfRegistration;
+  private LocalDate dateOfRegistration;
 
   // Registration Associations
   @ManyToOne private Client client;
@@ -25,7 +28,7 @@ public class Registration {
   // CONSTRUCTOR
   // ------------------------
 
-  public Registration(Date aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
+  public Registration(LocalDate aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
     dateOfRegistration = aDateOfRegistration;
     if (!setClient(aClient)) {
       throw new RuntimeException(
@@ -50,7 +53,7 @@ public class Registration {
     return wasSet;
   }
 
-  public boolean setDateOfRegistration(Date aDateOfRegistration) {
+  public boolean setDateOfRegistration(LocalDate aDateOfRegistration) {
     boolean wasSet = false;
     dateOfRegistration = aDateOfRegistration;
     wasSet = true;
@@ -61,7 +64,7 @@ public class Registration {
     return registrationId;
   }
 
-  public Date getDateOfRegistration() {
+  public LocalDate getDateOfRegistration() {
     return dateOfRegistration;
   }
 

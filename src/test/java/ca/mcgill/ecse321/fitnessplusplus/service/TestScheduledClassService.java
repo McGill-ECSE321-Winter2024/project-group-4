@@ -75,7 +75,7 @@ public class TestScheduledClassService {
                 .thenAnswer((InvocationOnMock invocation) -> {
                     Time startTime = Time.valueOf(LocalTime.of(15, 0));
                     Time endTime = Time.valueOf(LocalTime.of(17, 0));
-                    Date localDate = Date.valueOf(LocalDate.now());
+                    LocalDate localDate = (LocalDate.now());
                     
                     LocalDate aDate = LocalDate.of(2024,3, 22);
                     ArrayList<ScheduledClass> list = new ArrayList<>();
@@ -84,15 +84,15 @@ public class TestScheduledClassService {
                             new OfferedClass("FireBending", "Fireball"));
                     s1.setInstructor(new Instructor(1));
                     list.add(s1);
-                    ScheduledClass s2 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(2)),
+                    ScheduledClass s2 = new ScheduledClass(startTime, endTime, (aDate.plusDays(2)),
                             new OfferedClass("WaterBending", "Save the ocean"));
                     s2.setInstructor(new Instructor(2));
                     list.add(s2);
-                    ScheduledClass s3 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(20)),
+                    ScheduledClass s3 = new ScheduledClass(startTime, endTime, (aDate.plusDays(20)),
                             new OfferedClass("AirBending", "Just keep breathing"));
                     s3.setInstructor(new Instructor(2));
                     list.add(s3);
-                    ScheduledClass s4 = new ScheduledClass(startTime, endTime, Date.valueOf(aDate.plusDays(5)),
+                    ScheduledClass s4 = new ScheduledClass(startTime, endTime, (aDate.plusDays(5)),
                             new OfferedClass("EarthBending", "Rock'n Roll"));
                     s4.setInstructor(new Instructor(2)); 
                     list.add(s4);
@@ -106,7 +106,7 @@ public class TestScheduledClassService {
 
         Time startTime = Time.valueOf(LocalTime.of(10, 0));
         Time endTime = Time.valueOf(LocalTime.of(12, 0));
-        Date localDate = Date.valueOf(LocalDate.now());
+        LocalDate localDate = (LocalDate.now());
         ScheduledClass scheduledClass = null;
         try {
             scheduledClass = scheduledClassService.createScheduledClass(startTime, endTime, localDate,
@@ -127,7 +127,7 @@ public class TestScheduledClassService {
     public void testFakeInstructorAndOfferedClassUnsuccesfulCreateScheduledClass() {
         Time startTime = Time.valueOf(LocalTime.of(10, 0));
         Time endTime = Time.valueOf(LocalTime.of(12, 0));
-        Date localDate = Date.valueOf(LocalDate.of(2024, 12, 12));
+        LocalDate localDate = (LocalDate.of(2024, 12, 12));
         Integer FAKE_OFFERED_CLASS_KEY = 100;
         Integer FAKE_INSTRUCTOR_KEY = 100;
 
@@ -152,8 +152,8 @@ public class TestScheduledClassService {
         Time badEndTime = Time.valueOf(LocalTime.of(20, 1));
 
         LocalDate currentDate = LocalDate.now();
-        Date goodDate = Date.valueOf(currentDate);
-        Date badDate = Date.valueOf(currentDate.minusDays(1));
+        LocalDate goodDate = (currentDate);
+        LocalDate badDate = (currentDate.minusDays(1));
 
         // before opening
         assertThrows(Exception.class, () -> {
@@ -180,7 +180,7 @@ public class TestScheduledClassService {
         // middle of ongoing class.
         Time startTime = Time.valueOf(LocalTime.of(16, 0));
         Time endTime = Time.valueOf(LocalTime.of(18, 0));
-        Date aDate = Date.valueOf(LocalDate.now());
+        LocalDate aDate = (LocalDate.now());
         assertThrows(Exception.class, () -> {
             scheduledClassService.createScheduledClass(startTime, endTime, aDate,
                     OFFERED_CLASS_KEY, INSTRUCTOR_KEY);
@@ -201,7 +201,7 @@ public class TestScheduledClassService {
     //tests for the delete scheduled Class use case
     @Test
     public void testDeleteScheduledClass() throws Exception {
-        Date aDate = Date.valueOf(LocalDate.now().plusDays(30));
+        LocalDate aDate = (LocalDate.now().plusDays(30));
         LocalTime startLocalTime = LocalTime.of(9, 0); // 9:00 AM
         LocalTime endLocalTime = LocalTime.of(17, 0); // 5:00 PM
 

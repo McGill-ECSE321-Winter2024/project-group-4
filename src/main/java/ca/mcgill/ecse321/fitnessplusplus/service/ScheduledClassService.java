@@ -51,7 +51,7 @@ public class ScheduledClassService {
      * @author Isbat-ul Islam
      */
     @Transactional
-    public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, Date aDate, Integer aOfferedClassId,
+    public ScheduledClass createScheduledClass(Time aStartTime, Time aEndTime, LocalDate aDate, Integer aOfferedClassId,
             Integer aInstructorId) throws IllegalArgumentException {
 
         // add checks for if instructor and offered class exist.
@@ -60,7 +60,7 @@ public class ScheduledClassService {
         }
 
         // Check if date selected is before.
-        if (aDate.compareTo(Date.valueOf(LocalDate.now())) < 0 ) {
+        if (aDate.isBefore((LocalDate.now()))) {
             throw new IllegalArgumentException("Impossible to schedule a class in the past.");
         }
 
@@ -71,7 +71,7 @@ public class ScheduledClassService {
         // Check if any scheduled class is conflicting
         for (ScheduledClass e : scheduledClassRepo.findAll()) {
             // if the dates are same, check if times are same => avoid schedule conflicts
-            if (e.getDate().compareTo(aDate) == 0) {
+            if (e.getDate().isEqual(aDate)) {
                 if ((aStartTime.compareTo(e.getStartTime()) >= 0 && aStartTime.compareTo(e.getEndTime()) <= 0)
                         || (aEndTime.compareTo(e.getStartTime()) >= 0 && aEndTime.compareTo(e.getEndTime()) <= 0)) {
                     throw new IllegalArgumentException("There already exists a class scheduled at those times.");
@@ -128,7 +128,7 @@ public class ScheduledClassService {
             throw new IllegalArgumentException("The scheduled class does not exist");
         }
 
-        if (scheduledClass.getDate().before(Date.valueOf(LocalDate.now()))) {
+        if (scheduledClass.getDate().isBefore((LocalDate.now()))) {
             throw new IllegalArgumentException("You cannot remove a scheduled class that has already passed");
         }
 
@@ -157,14 +157,14 @@ public class ScheduledClassService {
 
 
     @Transactional
-    public ArrayList<ScheduledClass> getWeeklyScheduledClasses(Date aDate) {
-        Date startOfWeek = Date.valueOf(aDate.toLocalDate().with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)));
-        Date endOfWeek = Date.valueOf(startOfWeek.toLocalDate().plusDays(6));
+    public ArrayList<ScheduledClass> getWeeklyScheduledClasses(LocalDate aDate) {
+        LocalDate startOfWeek = (aDate.with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY)));
+        LocalDate endOfWeek = (startOfWeek.plusDays(6));
         ArrayList<ScheduledClass> scheduledClasses = new ArrayList<>();
 
         for (ScheduledClass scheduledClass : scheduledClassRepo.findAll()) {
-            Date date = scheduledClass.getDate();
-            if (date.compareTo(startOfWeek) >= 0 && date.compareTo(endOfWeek) <= 0) {
+            LocalDate date = scheduledClass.getDate();
+            if (!date.isBefore(startOfWeek) && !date.isAfter(endOfWeek)) {
                 scheduledClasses.add(scheduledClass);
             }
         }
