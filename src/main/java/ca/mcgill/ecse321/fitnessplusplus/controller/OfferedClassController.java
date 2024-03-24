@@ -1,9 +1,14 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
-import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassRequestDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassResponseDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserRequestDto;
+import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserResponseDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
+import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.service.OfferedClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,23 +22,26 @@ public class OfferedClassController {
     OfferedClassService offeredClassService;
 
     @PostMapping(value = { "/offer-class", "/offer-class/" })
-    public OfferedClassDto requestClass(@RequestParam String aRequestedClassType, @RequestParam String aRequestedClassDescription)
+    @ResponseStatus(HttpStatus.CREATED)
+    public OfferedClassResponseDto requestClass(@RequestBody OfferedClassRequestDto dto)
             throws Exception {
-
-        return convertToDto(offeredClassService.requestClass(aRequestedClassType, aRequestedClassDescription));
+        OfferedClass offeredClass = offeredClassService.requestClass(dto.getClassType(), dto.getDescription());
+    return new OfferedClassResponseDto(
+        offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId());
     }
 
     @GetMapping(value={"/offered-classes", "/offered-classes/" })
-    public List<OfferedClassDto> getAllRegisteredUser() {
-        List<OfferedClassDto> dto = new ArrayList<>();
+    @ResponseStatus(HttpStatus.CREATED)
+    public List<OfferedClassResponseDto> getAllRegisteredUser() throws Exception{
+        List<OfferedClassResponseDto> dto = new ArrayList<>();
         for (OfferedClass c: offeredClassService.getAllOfferedClasses()) {
-            dto.add(convertToDto(c));
+            dto.add(new OfferedClassResponseDto(c.getClassType(), c.getDescription(), c.getId()));
         }
         return dto;
     }
 
     @GetMapping(value={"/offered-class", "/offered-class/"})
-    public OfferedClassDto getOfferedClassByID(@RequestParam(name = "id") int offeredClassId) {
+    public OfferedClassResponseDto getOfferedClassByID(@RequestParam(name = "id") int offeredClassId) {
         return convertToDto(offeredClassService.getOfferedClassById(offeredClassId));
     }
 
@@ -46,11 +54,11 @@ public class OfferedClassController {
         }
     }
 
-    private OfferedClassDto convertToDto(OfferedClass o) {
+    private OfferedClassResponseDto convertToDto(OfferedClass o) {
         if (o == null) {
             throw new IllegalArgumentException("Offered class does not exist.");
         }
-        return new OfferedClassDto(o.getClassType(), o.getDescription(), o.getId());
+        return new OfferedClassResponseDto(o.getClassType(), o.getDescription(), o.getId());
     }
 
 

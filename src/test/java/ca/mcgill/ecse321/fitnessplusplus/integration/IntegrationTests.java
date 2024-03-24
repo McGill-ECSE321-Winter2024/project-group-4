@@ -70,6 +70,9 @@ public class IntegrationTests {
     private final String CLIENT_PASS = "BibIsGreatAlso";
     private final String CLIENT_EMAIL = "yahooShallLiveOn@yahoo.com";
 
+    private final String OFFERED_CLASS_TYPE = "Cardio";
+    private final String OFFERED_CLASS_DESCRIPTION = "Come exercise with us!";
+
     private final String INVALID_NAME = null;
     private final String INVALID_PASS = null;
     private final String INVALID_EMAIL = null;
@@ -83,8 +86,8 @@ public class IntegrationTests {
         offeredClassRepository.deleteAll();
         ownerRepository.deleteAll();
         staffRepository.deleteAll();
-        accountRoleRepository.deleteAll();
         registeredUserRepository.deleteAll();
+        accountRoleRepository.deleteAll();
     }
 
     @Test
@@ -101,5 +104,27 @@ public class IntegrationTests {
         RegisteredUserResponseDto createdUser = response.getBody();
         assertEquals(CLIENT_NAME, createdUser.getUsername());
     }
+
+    @Test
+    @Order(2)
+    public void offerClass() {
+        OfferedClassRequestDto request = new OfferedClassRequestDto(OFFERED_CLASS_TYPE, OFFERED_CLASS_DESCRIPTION);
+
+        ResponseEntity<OfferedClassResponseDto> response = client.postForEntity("/offer-class", request,
+                OfferedClassResponseDto.class);
+
+        assertNotNull(response);
+        assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Response has correct status");
+        OfferedClassResponseDto createdOfferedClass = response.getBody();
+        assertEquals(OFFERED_CLASS_TYPE, createdOfferedClass.getClassType(), "Response has correct class type");
+        assertEquals(OFFERED_CLASS_DESCRIPTION, createdOfferedClass.getDescription(), "Response has correct description");
+
+    }
+
+//    @Test
+//    @Order(3)
+//    public void listOfferedClasses() {
+//
+//    }
 
 }
