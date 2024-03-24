@@ -26,6 +26,12 @@ public class RegisteredUserController {
                 registeredUser.getPassword(), registeredUser.getEmail(), registeredUser.getAccountRole().getRoleId());
     }
 
+    @PostMapping(value = { "/promote", "/promote/" })
+    public RegisteredUserResponseDto promoteRegisteredUser(@RequestBody RegisteredUserResponseDto dto) throws Exception {
+        RegisteredUser user = registeredUserService.promoteUser(dto.getUserId());
+        return new RegisteredUserResponseDto(user.getUserId(),user.getUsername(),user.getPassword(),user.getEmail(),
+                   user.getAccountRole().getRoleId());
+    }
     /* 
     @GetMapping(value = { "/registered-users", "/registered-users/" })
     public List<RegisteredUserDto> getAllRegisteredUsers() {
@@ -39,14 +45,9 @@ public class RegisteredUserController {
     @GetMapping(value = { "/registered-user", "/registered-user/" })
     public RegisteredUserDto getRegisteredUserByID(@RequestParam(name = "id") int registeredUserId) {
         return convertToDto(registeredUserService.getRegisteredUserById(registeredUserId));
-    }
-
-    @PostMapping(value = { "/promote", "/promote/" })
-    public RegisteredUserDto promoteRegisteredUser(@RequestParam(name = "id") int registeredUserId) throws Exception {
-        RegisteredUser registeredUser = registeredUserService.getRegisteredUserById(registeredUserId);
-        return convertToDto(registeredUserService.promoteUser(registeredUser));
-    }
-
+    }*/
+    
+    /* 
     private RegisteredUserDto convertToDto(RegisteredUser o) {
         if (o == null) {
             throw new IllegalArgumentException("Registered user does not exist.");

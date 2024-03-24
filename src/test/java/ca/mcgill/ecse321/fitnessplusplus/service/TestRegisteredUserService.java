@@ -32,7 +32,7 @@ public class TestRegisteredUserService {
     @InjectMocks
     private RegisteredUserService registeredUserService;
 
-    private static final int RegisteredUser_KEY = 123;
+    private static final int RegisteredUser_KEY = 0;
     private static final String RegisteredUser_Username = "johndoe";
     private static final String RegisteredUser_Password = "123456789";
     private static final String RegisteredUser_Email = "test@gmail.com";
@@ -43,6 +43,7 @@ public class TestRegisteredUserService {
             if (invocation.getArgument(0).equals(RegisteredUser_KEY)) {
                 RegisteredUser registeredUser = new RegisteredUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
                 registeredUser.setUserId(RegisteredUser_KEY);
+
                 return registeredUser;
             } else {
                 return null;
@@ -53,7 +54,7 @@ public class TestRegisteredUserService {
     @Test
     public void testPromoteClientToInstructor() {
         RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
-        RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser);
+        RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser.getUserId());
 
         assertNotNull(promotedUser);
         assertEquals(promotedUser.getAccountRole().getClass(), Instructor.class);
@@ -64,7 +65,7 @@ public class TestRegisteredUserService {
         RegisteredUser registeredUser = registeredUserService.createUser(RegisteredUser_Username, RegisteredUser_Password, RegisteredUser_Email);
         registeredUser.setAccountRole(new Instructor());
 
-        RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser);
+        RegisteredUser promotedUser = registeredUserService.promoteUser(registeredUser.getUserId());
 
         assertNotNull(promotedUser);
         assertEquals(promotedUser.getAccountRole().getClass(), Owner.class);
@@ -79,7 +80,7 @@ public class TestRegisteredUserService {
         String error = null;
 
         try {
-            promotedUser = registeredUserService.promoteUser(registeredUser);
+            promotedUser = registeredUserService.promoteUser(registeredUser.getUserId());
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }
@@ -95,7 +96,7 @@ public class TestRegisteredUserService {
         String error = null;
 
         try {
-            registeredUser = registeredUserService.promoteUser(null);
+            registeredUser = registeredUserService.promoteUser(19487124);
         } catch (IllegalArgumentException e) {
             error = e.getMessage();
         }

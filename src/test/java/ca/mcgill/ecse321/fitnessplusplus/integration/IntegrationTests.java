@@ -2,6 +2,7 @@ package ca.mcgill.ecse321.fitnessplusplus.integration;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDate;
@@ -22,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.*;
+import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.repository.AccountRoleRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
@@ -69,6 +71,8 @@ public class IntegrationTests {
     private final String CLIENT_NAME = "Bib";
     private final String CLIENT_PASS = "BibIsGreatAlso";
     private final String CLIENT_EMAIL = "yahooShallLiveOn@yahoo.com";
+    private int CLIENT_ID = 0;
+    private int ROLE_ID = 0;
 
     private final String OFFERED_CLASS_TYPE = "Cardio";
     private final String OFFERED_CLASS_DESCRIPTION = "Come exercise with us!";
@@ -94,7 +98,10 @@ public class IntegrationTests {
     @Order(1)
     public void createUser() {
 
-        RegisteredUserRequestDto request = new RegisteredUserRequestDto(CLIENT_NAME, CLIENT_PASS, CLIENT_EMAIL);
+        RegisteredUser registeredUser = registeredUserRepository.findRegisteredUserByUserId(CLIENT_ID);
+        RegisteredUserResponseDto request = new RegisteredUserResponseDto(registeredUser.getUserId(),
+                registeredUser.getUsername(), registeredUser.getPassword(), registeredUser.getEmail(),
+                registeredUser.getAccountRole().getRoleId());
 
         ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/register-user", request,
                 RegisteredUserResponseDto.class);
@@ -102,6 +109,8 @@ public class IntegrationTests {
         assertNotNull(response);
         assertEquals(HttpStatus.CREATED, response.getStatusCode());
         RegisteredUserResponseDto createdUser = response.getBody();
+        CLIENT_ID = createdUser.getUserId();
+        ROLE_ID = createdUser.getAccountRole();
         assertEquals(CLIENT_NAME, createdUser.getUsername());
     }
 
@@ -117,14 +126,26 @@ public class IntegrationTests {
         assertEquals(HttpStatus.CREATED, response.getStatusCode(), "Response has correct status");
         OfferedClassResponseDto createdOfferedClass = response.getBody();
         assertEquals(OFFERED_CLASS_TYPE, createdOfferedClass.getClassType(), "Response has correct class type");
-        assertEquals(OFFERED_CLASS_DESCRIPTION, createdOfferedClass.getDescription(), "Response has correct description");
-
+        assertEquals(OFFERED_CLASS_DESCRIPTION, createdOfferedClass.getDescription(),
+                "Response has correct description");
     }
 
-//    @Test
-//    @Order(3)
-//    public void listOfferedClasses() {
-//
-//    }
+    @Test
+    @Order(3)
+    public void promoteUser() {
+        RegisteredUserResponseDto request = new RegisteredUserResponseDto(CLIENT_ID, CLIENT_PASS, CLIENT_NAME,
+                CLIENT_EMAIL, ROLE_ID);
+        ResponseEntity<RegisteredUserResponseDto> response = client.postForEntity("/promote", request,
+                RegisteredUserResponseDto.class);
+        assertNotNull(response);
+        assertNull(clientRepository.findClientByroleId(ROLE_ID));
+        assertNotNull(instructorRepository.findInstructorByroleId(ROLE_ID));
+    }
+
+    // @Test
+    // @Order(3)
+    // public void listOfferedClasses() {
+    //
+    // }
 
 }

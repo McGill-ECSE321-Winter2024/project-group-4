@@ -66,7 +66,8 @@ public class RegisteredUserService {
     }
 
     @Transactional
-    public RegisteredUser promoteUser(RegisteredUser registeredUser) {
+    public RegisteredUser promoteUser(int id) {
+        RegisteredUser registeredUser = registeredUserRepository.findRegisteredUserByUserId(id); 
 
         if (registeredUser == null) {
             throw new IllegalArgumentException("You cannot promote a user that does not exist");
