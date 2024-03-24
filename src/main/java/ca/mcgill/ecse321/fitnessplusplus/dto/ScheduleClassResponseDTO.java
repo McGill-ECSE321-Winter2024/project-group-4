@@ -1,17 +1,15 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
-import org.springframework.data.repository.query.ParameterOutOfBoundsException;
-
 import java.sql.Date;
 import java.sql.Time;
 
 public class ScheduleClassResponseDTO {
+    private int scheduledClassID;
     private Time startTime;
     private Time endTime;
     private Date date;
     private int offeredClassID;
     private int intrusctorID;
-    private int scheduledClassID;
 
     public ScheduleClassResponseDTO(int aScheduleClassID, Time aStartTime, Time aEndTime,
                                     Date aDate, int aofferedClassID, int aInstructorID) {

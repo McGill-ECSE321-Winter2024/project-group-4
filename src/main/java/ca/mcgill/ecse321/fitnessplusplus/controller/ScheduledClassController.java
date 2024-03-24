@@ -80,7 +80,7 @@ public class ScheduledClassController {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
         }
         return new ScheduleClassResponseDTO(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate(),
-                o.getInstructor().getRoleId(), o.getScheduledClassId());
+                o.getOfferedClass().getId(), o.getInstructor().getRoleId());
 
     }
 
