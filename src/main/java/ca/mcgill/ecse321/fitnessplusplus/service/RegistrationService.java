@@ -109,7 +109,7 @@ public class RegistrationService {
             throw new Exception("You cannot remove a registration that does not exist");
         }
 
-        if (registration.getDateOfRegistration().before(Date.valueOf(LocalDate.now()))) {
+        if (registration.getScheduledClass().getDate().before(Date.valueOf(LocalDate.now()))) {
             throw new Exception("You cannot remove a registration that has already passed");
         }
 

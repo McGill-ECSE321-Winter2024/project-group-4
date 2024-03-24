@@ -196,15 +196,32 @@ public class TestRegistrationService {
         });
     }
 
-//    @Test
-//    public void testUnsuccessfulDeleteRegistrationPassedRegistration() {
-//        Date aDate = Date.valueOf(LocalDate.now().minusDays(1));
-//        Registration registration = registrationService.createRegistration(aDate, CLIENT_KEY, SCHEDULED_CLASS_KEY);
-//
-//        assertThrows(Exception.class, () -> {
-//            registrationService.removeRegistration(registration.getRegistrationId());
-//        });
-//
-//    }
+    @Test
+    public void testUnsuccessfulDeleteRegistrationPassedScheduledClass() {
+
+        lenient().when(scheduledClassRepository.findScheduledClassByscheduledClassId(any(Integer.class)))
+                .thenAnswer((InvocationOnMock invocation) -> {
+                        Time startTime = Time.valueOf(LocalTime.of(13, 0));
+                        Time endTime = Time.valueOf(LocalTime.of(15, 59));
+                        Date aDate = Date.valueOf(LocalDate.now().minusDays(1));
+
+                        ScheduledClass scheduledClass = new ScheduledClass(startTime, endTime, aDate,
+                                new OfferedClass("Cooking", "How to not burn down the kitchen: A critical guide"));
+
+                        scheduledClass.setScheduledClassId(SCHEDULED_CLASS_KEY);
+
+                        return scheduledClass;
+                });
+
+        Date aDate = Date.valueOf(LocalDate.now().plusDays(5));
+        Registration registration = registrationService.createRegistration(Date.valueOf(LocalDate.now().minusDays(1)), CLIENT_KEY, SCHEDULED_CLASS_KEY);
+
+        registration.setDateOfRegistration(aDate);
+
+        assertThrows(Exception.class, () -> {
+            registrationService.removeRegistration(registration.getRegistrationId());
+        });
+
+    }
 
 }
