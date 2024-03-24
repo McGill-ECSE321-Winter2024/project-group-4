@@ -2,10 +2,7 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassRequestDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.OfferedClassResponseDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserRequestDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.RegisteredUserResponseDto;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
-import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.service.OfferedClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

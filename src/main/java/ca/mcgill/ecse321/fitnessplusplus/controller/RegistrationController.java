@@ -2,10 +2,8 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.ClientDto;
 import ca.mcgill.ecse321.fitnessplusplus.dto.RegistrationDto;
-import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassRequestDTO;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassResponseDTO;
 import ca.mcgill.ecse321.fitnessplusplus.model.Client;
-import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;

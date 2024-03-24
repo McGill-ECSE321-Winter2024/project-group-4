@@ -1,15 +1,9 @@
 package ca.mcgill.ecse321.fitnessplusplus.controller;
 
 import java.sql.Date;
-import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassRequestDTO;
@@ -53,13 +47,13 @@ public class ScheduledClassController {
      * @author Isbat-ul Islam
      */
     @PostMapping(value = { "/scheduled-class", "/scheduled-class/" })
-    public ScheduleClassResponseDTO createScheduledClass(@RequestParam ScheduleClassRequestDTO scheduleClassRequestDTO)
+    public ScheduleClassResponseDTO createScheduledClass(@RequestBody ScheduleClassRequestDTO dto)
             throws Exception {
-        return convertToDto(scheduledClassService.createScheduledClass(scheduleClassRequestDTO.getStartTime(),
-                scheduleClassRequestDTO.getEndTime(),
-                scheduleClassRequestDTO.getDate(),
-                scheduleClassRequestDTO.getOfferedClassID(),
-                scheduleClassRequestDTO.getInstructorID()));
+        ScheduledClass scheduledClass = scheduledClassService.createScheduledClass(dto.getStartTime(), dto.getEndTime(),
+                dto.getDate(), dto.getOfferedClassID(), dto.getInstructorID());
+        return new ScheduleClassResponseDTO(scheduledClass.getScheduledClassId(), scheduledClass.getStartTime(),
+                scheduledClass.getEndTime(), scheduledClass.getDate(), scheduledClass.getInstructor().getRoleId(),
+                scheduledClass.getInstructor().getRoleId());
     }
 
     @GetMapping(value = { "/scheduled-classes/{id}", "/scheduled-classes/{id}/" })
@@ -85,8 +79,7 @@ public class ScheduledClassController {
         if (o == null) {
             throw new IllegalArgumentException("Scheduled Class does not exist.");
         }
-        return new
-                ScheduleClassResponseDTO(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate(),
+        return new ScheduleClassResponseDTO(o.getScheduledClassId(), o.getStartTime(), o.getEndTime(), o.getDate(),
                 o.getInstructor().getRoleId(), o.getScheduledClassId());
 
     }

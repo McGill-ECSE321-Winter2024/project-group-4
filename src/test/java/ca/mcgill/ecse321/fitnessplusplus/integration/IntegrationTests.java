@@ -5,7 +5,6 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.*;
-import ca.mcgill.ecse321.fitnessplusplus.model.RegisteredUser;
 import ca.mcgill.ecse321.fitnessplusplus.repository.AccountRoleRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
@@ -66,13 +65,6 @@ public class IntegrationTests {
         @Autowired
         private RegisteredUserRepository registeredUserRepository;
 
-        private final String OWNER_NAME = "Bob";
-        private final String OWNER_PASS = "BobIsGreat";
-        private final String OWNER_EMAIL = "BobLivLaffLof@gmail.com";
-
-        private final String INSTRUCTOR_NAME = "Bub";
-        private final String INSTRUCTOR_PASS = "SoundsALotLikeSmthElse";
-        private final String INSTRUCTOR_EMAIL = "UgandanKnuckles@mySpace.com";
 
         private final String CLIENT_NAME = "Bib";
         private final String CLIENT_PASS = "BibIsGreatAlso";
@@ -103,7 +95,7 @@ public class IntegrationTests {
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
 
-
+        /*
         @BeforeAll
         public void clearDatabase() {
             List<String> tableNames = jdbcTemplate.queryForList(
@@ -360,7 +352,7 @@ public class IntegrationTests {
 
 
     @Test
-    @Order(100)
+    @Order(15)
     public void offerClass1() {
         OfferedClassRequestDto request = new OfferedClassRequestDto(OFFERED_CLASS_TYPE,
                 OFFERED_CLASS_DESCRIPTION);
@@ -380,7 +372,7 @@ public class IntegrationTests {
 
 
     @Test
-    @Order(101)
+    @Order(16)
     public void createScheduleClass1() {
         ScheduleClassRequestDTO requestDTO = new
                 ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
@@ -401,7 +393,7 @@ public class IntegrationTests {
         this.VALID_SCHEDULE_CLASS_ID  = scheduleClassResponseDTO.getScheduledClassID();
     }
     @Test
-    @Order(102)
+    @Order(17)
     public void createInvalidScheduleClass() {
         ScheduleClassRequestDTO requestDTO = new
                 ScheduleClassRequestDTO(SCHEDULE_CLASS_END, SCHEDULE_CLASS_START, SCHEDULE_CLASS_DATE,
@@ -419,7 +411,7 @@ public class IntegrationTests {
         assertEquals("Cannot schedule class before and after closing hours", body.getErrors().get(0));
     }
     @Test
-    @Order(103)
+    @Order(18)
     public void createDuplicateScheduleClass() {
         ScheduleClassRequestDTO requestDTO = new
                 ScheduleClassRequestDTO(SCHEDULE_CLASS_START, SCHEDULE_CLASS_END, SCHEDULE_CLASS_DATE,
@@ -437,7 +429,7 @@ public class IntegrationTests {
     }
 
     @Test
-    @Order(104)
+    @Order(19)
     public void readValidScheduleClass() {
         // Set up
         String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
@@ -456,7 +448,7 @@ public class IntegrationTests {
         assertEquals(this.VALID_SCHEDULE_CLASS_ID, scheduleClassResponseDTO.getScheduledClassID());
     }
     @Test
-    @Order(105)
+    @Order(20)
     public void readInvalidScheduleClass() {
         // Set up
         String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
@@ -474,7 +466,7 @@ public class IntegrationTests {
         }
 
     @Test
-    @Order(106)
+    @Order(21)
     public void testGetAllScheduledClass(){
         // Set up
         String url = "/scheduled-classes";
@@ -501,7 +493,7 @@ public class IntegrationTests {
     }
 
     @Test
-    @Order(107)
+    @Order(22)
     public void testCancelClassInvalid(){
         // Set up
         String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
@@ -520,7 +512,7 @@ public class IntegrationTests {
 
     }
     @Test
-    @Order(108)
+    @Order(23)
     public void testCancelClassValid(){
         // Set up
         String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
@@ -558,11 +550,4 @@ public class IntegrationTests {
 
 
     }
-//    @Test
-//    @Order(109)
-//    public void testGetWeeklyClassSchedule(){}
-//    @Test
-//    @Order(110)
-//    public void testInvalidGetWeeklyClassSchedule(){}
-
 }
