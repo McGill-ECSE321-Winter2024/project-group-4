@@ -52,7 +52,7 @@ public class ScheduledClassController {
         ScheduledClass scheduledClass = scheduledClassService.createScheduledClass(dto.getStartTime(), dto.getEndTime(),
                 dto.getDate(), dto.getOfferedClassID(), dto.getInstructorID());
         return new ScheduleClassResponseDTO(scheduledClass.getScheduledClassId(), scheduledClass.getStartTime(),
-                scheduledClass.getEndTime(), scheduledClass.getDate(), scheduledClass.getInstructor().getRoleId(),
+                scheduledClass.getEndTime(), scheduledClass.getDate(), scheduledClass.getOfferedClass().getId(),
                 scheduledClass.getInstructor().getRoleId());
     }
 

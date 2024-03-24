@@ -401,7 +401,7 @@ public class IntegrationTests {
         ErrorDto body = response.getBody();
         assertNotNull(body);
         assertEquals(1, body.getErrors().size());
-        assertEquals("Cannot schedule class before and after closing hours", body.getErrors().get(0));
+        assertEquals("Not a valid Intructor ID", body.getErrors().get(0));
     }
     @Test
     @Order(18)

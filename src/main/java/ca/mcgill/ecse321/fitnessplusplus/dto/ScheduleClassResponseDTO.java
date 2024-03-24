@@ -14,7 +14,7 @@ public class ScheduleClassResponseDTO {
     private int scheduledClassID;
 
     public ScheduleClassResponseDTO(int aScheduleClassID, Time aStartTime, Time aEndTime,
-                                    Date aDate, int aInstructorID, int aofferedClassID) {
+                                    Date aDate, int aofferedClassID, int aInstructorID) {
         this.scheduledClassID = aScheduleClassID;
         this.startTime = aStartTime;
         this.endTime = aEndTime;

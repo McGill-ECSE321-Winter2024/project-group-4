@@ -8,7 +8,7 @@ public class ScheduleClassRequestDTO {
     private Time endTime;
     private Date date;
     private int offeredClassID;
-    private int intrusctorID;
+    private int instructorID;
 
     @SuppressWarnings("unused")
     public ScheduleClassRequestDTO() {}
@@ -19,7 +19,7 @@ public class ScheduleClassRequestDTO {
         this.endTime = aEndTime;
         this.date = aDate;
         this.offeredClassID = aOfferedClassId;
-        this.intrusctorID = aInstructorId;
+        this.instructorID = aInstructorId;
     }
     public Time getStartTime() {
         return startTime;
@@ -43,8 +43,8 @@ public class ScheduleClassRequestDTO {
     public  int getOfferedClassID(){ return offeredClassID; }
     public  void setOfferedClassID(int aOfferedClassID){ this.offeredClassID = aOfferedClassID; }
 
-    public  int getInstructorID(){ return intrusctorID; }
-    public  void setInstructorID(Integer aInstructorId){ this.intrusctorID = aInstructorId; }
+    public  int getInstructorID(){ return instructorID; }
+    public  void setInstructorID(Integer aInstructorId){ this.instructorID = aInstructorId; }
 
 
 }
