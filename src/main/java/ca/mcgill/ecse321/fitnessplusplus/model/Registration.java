@@ -4,7 +4,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-
 import java.time.LocalDate;
 
 @Entity
@@ -26,7 +25,8 @@ public class Registration {
   // CONSTRUCTOR
   // ------------------------
 
-  public Registration(LocalDate aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
+  public Registration(
+      LocalDate aDateOfRegistration, Client aClient, ScheduledClass aScheduledClass) {
     dateOfRegistration = aDateOfRegistration;
     if (!setClient(aClient)) {
       throw new RuntimeException(
@@ -100,5 +100,4 @@ public class Registration {
     client = null;
     scheduledClass = null;
   }
-
 }

@@ -21,7 +21,6 @@ import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import java.sql.Time;
 import java.time.LocalDate;
-
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

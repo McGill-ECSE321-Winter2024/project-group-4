@@ -102,4 +102,4 @@ public class RegisteredUser {
   public void delete() {
     accountRole = null;
   }
-} 
+}

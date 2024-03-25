@@ -41,5 +41,4 @@ public abstract class AccountRole {
   }
 
   public void delete() {}
-
 }

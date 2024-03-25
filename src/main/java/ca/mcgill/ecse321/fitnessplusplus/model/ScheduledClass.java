@@ -30,14 +30,14 @@ public class ScheduledClass {
   // CONSTRUCTOR
   // ------------------------
 
-  public ScheduledClass(Time aStartTime, Time aEndTime, LocalDate aDate, OfferedClass aOfferedClass)
-  {
+  public ScheduledClass(
+      Time aStartTime, Time aEndTime, LocalDate aDate, OfferedClass aOfferedClass) {
     startTime = aStartTime;
     endTime = aEndTime;
     date = aDate;
-    if (!setOfferedClass(aOfferedClass))
-    {
-      throw new RuntimeException("Unable to create ScheduledClass due to aOfferedClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
+    if (!setOfferedClass(aOfferedClass)) {
+      throw new RuntimeException(
+          "Unable to create ScheduledClass due to aOfferedClass. See http://manual.umple.org?RE002ViolationofAssociationMultiplicity.html");
     }
   }
 
@@ -47,97 +47,85 @@ public class ScheduledClass {
   // INTERFACE
   // ------------------------
 
-  public boolean setScheduledClassId(int aScheduledClassId)
-  {
+  public boolean setScheduledClassId(int aScheduledClassId) {
     boolean wasSet = false;
     scheduledClassId = aScheduledClassId;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setStartTime(Time aStartTime)
-  {
+  public boolean setStartTime(Time aStartTime) {
     boolean wasSet = false;
     startTime = aStartTime;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setEndTime(Time aEndTime)
-  {
+  public boolean setEndTime(Time aEndTime) {
     boolean wasSet = false;
     endTime = aEndTime;
     wasSet = true;
     return wasSet;
   }
 
-  public boolean setDate(LocalDate aDate)
-  {
+  public boolean setDate(LocalDate aDate) {
     boolean wasSet = false;
     date = aDate;
     wasSet = true;
     return wasSet;
   }
 
-  public int getScheduledClassId()
-  {
+  public int getScheduledClassId() {
     return scheduledClassId;
   }
 
-  public Time getStartTime()
-  {
+  public Time getStartTime() {
     return startTime;
   }
 
-  public Time getEndTime()
-  {
+  public Time getEndTime() {
     return endTime;
   }
 
-  public LocalDate getDate()
-  {
+  public LocalDate getDate() {
     return date;
   }
+
   /* Code from template association_GetOne */
-  public OfferedClass getOfferedClass()
-  {
+  public OfferedClass getOfferedClass() {
     return offeredClass;
   }
+
   /* Code from template association_GetOne */
-  public Instructor getInstructor()
-  {
+  public Instructor getInstructor() {
     return instructor;
   }
 
-  public boolean hasInstructor()
-  {
+  public boolean hasInstructor() {
     boolean has = instructor != null;
     return has;
   }
+
   /* Code from template association_SetUnidirectionalOne */
-  public boolean setOfferedClass(OfferedClass aNewOfferedClass)
-  {
+  public boolean setOfferedClass(OfferedClass aNewOfferedClass) {
     boolean wasSet = false;
-    if (aNewOfferedClass != null)
-    {
+    if (aNewOfferedClass != null) {
       offeredClass = aNewOfferedClass;
       wasSet = true;
     }
     return wasSet;
   }
+
   /* Code from template association_SetUnidirectionalOptionalOne */
-  public boolean setInstructor(Instructor aNewInstructor)
-  {
+  public boolean setInstructor(Instructor aNewInstructor) {
     boolean wasSet = false;
     instructor = aNewInstructor;
     wasSet = true;
     return wasSet;
   }
 
-  public void delete()
-  {
+  public void delete() {
     offeredClass = null;
     instructor = null;
   }
 }
-  

@@ -65,5 +65,4 @@ public class OfferedClass {
   }
 
   public void delete() {}
-
 }
