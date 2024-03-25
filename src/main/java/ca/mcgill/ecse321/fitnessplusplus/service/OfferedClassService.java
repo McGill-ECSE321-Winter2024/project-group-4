@@ -15,6 +15,14 @@ public class OfferedClassService {
   @Autowired OfferedClassRepository offeredClassRepository;
   @Autowired ScheduledClassService scheduledClassService;
 
+  /**
+   * Method to create an Offered Class
+   *
+   * @param classType
+   * @param classDescription
+   * @return created OfferedClass
+   * @author Neil Joe George
+   */
   @Transactional
   public OfferedClass requestClass(String classType, String classDescription) {
     if (classType == null || classDescription == null)
@@ -25,6 +33,14 @@ public class OfferedClassService {
     return requestedClass;
   }
 
+  /**
+   * Method to delete an Offered Class
+   *
+   * @param offeredClassId
+   * @return deleted OfferedClass
+   * @throws Exception
+   * @author Mathieu Pestel
+   */
   @Transactional
   public OfferedClass removeOfferedClass(int offeredClassId) throws Exception {
     OfferedClass offeredClass =
@@ -45,6 +61,12 @@ public class OfferedClassService {
     return offeredClass;
   }
 
+  /**
+   * Method that returns all Offered Classes
+   *
+   * @return List<OfferedClass>
+   * @author Mathieu Pestel
+   */
   @Transactional
   public List<OfferedClass> getAllOfferedClasses() {
     List<OfferedClass> list = new ArrayList<OfferedClass>();
@@ -56,6 +78,13 @@ public class OfferedClassService {
     return list;
   }
 
+  /**
+   * Get a certain Offered Class By ID
+   *
+   * @param id
+   * @return OfferedClass that was requested
+   * @author Mathieu Pestel
+   */
   @Transactional
   public OfferedClass getOfferedClassById(int id) {
     OfferedClass o = offeredClassRepository.findOfferedClassByOfferedClassId(id);

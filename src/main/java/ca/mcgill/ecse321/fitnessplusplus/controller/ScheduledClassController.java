@@ -10,13 +10,14 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+/** RESTful API Controller for ScheduledClass */
 @CrossOrigin(origins = "*")
 @RestController
 public class ScheduledClassController {
   @Autowired ScheduledClassService scheduledClassService;
 
   /**
-   * API endpoint to get a list of all scheduled classes
+   * API GET: endpoint to get a list of all scheduled classes
    *
    * @return List<ScheduledClassDto>
    * @author Isbat-ul Islam
@@ -31,7 +32,7 @@ public class ScheduledClassController {
   }
 
   /**
-   * Creates a scheduled class.
+   * API POST: Creates a scheduled class.
    *
    * @param dto
    * @return ScheduleClassDto
@@ -57,18 +58,40 @@ public class ScheduledClassController {
         scheduledClass.getInstructor().getRoleId());
   }
 
+  /**
+   * API GET: returns a scheduled class by ID.
+   *
+   * @param scheduledClassId
+   * @return ScheduleClassResponseDTO
+   * @throws Exception
+   * @author Yasmine Drissi
+   */
   @GetMapping(value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
   public ScheduleClassResponseDTO getScheduledClass(@PathVariable("id") int scheduledClassId)
       throws Exception {
     return convertToDto(scheduledClassService.getScheduledClass(scheduledClassId));
   }
 
+  /**
+   * API DELETE: Delete scheduled class by ID.
+   *
+   * @param scheduledClassId
+   * @throws Exception
+   * @author Yasmine Drissi
+   */
   @DeleteMapping(value = {"/scheduled-classes/{id}", "/scheduled-classes/{id}/"})
   public void cancelScheduledClass(@PathVariable("id") int scheduledClassId) throws Exception {
     scheduledClassService.deleteScheduledClass(
         scheduledClassService.getScheduledClass(scheduledClassId));
   }
 
+  /**
+   * API GET: return a list of all classes in the current week
+   *
+   * @return
+   * @throws Exception
+   * @author Yasmine Drissi
+   */
   @GetMapping(value = {"/week-class", "/week-class/"})
   public List<ScheduleClassResponseDTO> getWeeklyClassSchedule() throws Exception {
     List<ScheduleClassResponseDTO> dto = new ArrayList<>();
@@ -79,6 +102,13 @@ public class ScheduledClassController {
     return dto;
   }
 
+  /**
+   * Converts ScheduledClass to scheduledClass response DTO
+   *
+   * @param o
+   * @return
+   * @author Isbat-ul Islam
+   */
   private ScheduleClassResponseDTO convertToDto(ScheduledClass o) {
     if (o == null) {
       throw new IllegalArgumentException("Scheduled Class does not exist.");

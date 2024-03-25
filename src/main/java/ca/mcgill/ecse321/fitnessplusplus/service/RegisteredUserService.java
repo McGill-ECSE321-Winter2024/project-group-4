@@ -18,6 +18,15 @@ public class RegisteredUserService {
   @Autowired private OwnerRepository ownerRepository;
   @Autowired OfferedClassRepository offeredClassRepo;
 
+  /**
+   * Create a RegisteredUser
+   *
+   * @param aUsername
+   * @param aPassword
+   * @param aEmail
+   * @return created RegisteredUser
+   * @author Isbat-ul Islam
+   */
   @Transactional
   public RegisteredUser createUser(String aUsername, String aPassword, String aEmail) {
     // Input validation
@@ -37,6 +46,16 @@ public class RegisteredUserService {
     return newUser;
   }
 
+  /**
+   * Create a registered User
+   *
+   * @param aUsername
+   * @param aPassword
+   * @param aEmail
+   * @param aClient
+   * @return created RegisteredUser
+   * @author Neil Joe George
+   */
   @Transactional
   public RegisteredUser createUser(
       String aUsername, String aPassword, String aEmail, Client aClient) {
@@ -54,6 +73,13 @@ public class RegisteredUserService {
     return newUser;
   }
 
+  /**
+   * Promote a given user
+   *
+   * @param id
+   * @return promoted RegisteredUser
+   * @author Mathieu Pestel
+   */
   @Transactional
   public RegisteredUser promoteUser(int id) {
     RegisteredUser registeredUser = registeredUserRepository.findRegisteredUserByUserId(id);
@@ -91,6 +117,12 @@ public class RegisteredUserService {
     return registeredUser;
   }
 
+  /**
+   * Return all registered Users
+   *
+   * @return List<RegisteredUser>
+   * @author Mathieu Pestel
+   */
   @Transactional
   public List<RegisteredUser> getAllRegisteredUser() {
     List<RegisteredUser> list = new ArrayList<RegisteredUser>();
@@ -102,6 +134,13 @@ public class RegisteredUserService {
     return list;
   }
 
+  /**
+   * Return a certain user
+   *
+   * @param id
+   * @return RegisteredUser
+   * @author Mathieu Pestel
+   */
   @Transactional
   public RegisteredUser getRegisteredUserById(int id) {
     RegisteredUser r = registeredUserRepository.findRegisteredUserByUserId(id);
@@ -111,6 +150,13 @@ public class RegisteredUserService {
     return r;
   }
 
+  /**
+   * Return a certain user
+   *
+   * @param aEmail
+   * @return RegisteredUser
+   * @author Neil Joe George
+   */
   @Transactional
   public RegisteredUser getUserByEmail(String aEmail) {
     for (RegisteredUser user : registeredUserRepository.findAll()) {
@@ -121,6 +167,14 @@ public class RegisteredUserService {
     return null;
   }
 
+  /**
+   * Checks if an account exists
+   *
+   * @param aEmail
+   * @param aUsername
+   * @return RegisteredUser
+   * @author Neil Joe George
+   */
   @Transactional
   public RegisteredUser accountExists(String aEmail, String aUsername) {
     for (RegisteredUser user : registeredUserRepository.findAll()) {

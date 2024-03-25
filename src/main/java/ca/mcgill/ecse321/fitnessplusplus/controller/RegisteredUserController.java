@@ -9,11 +9,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+/** RESTful API Controller for RegisteredUser */
 @CrossOrigin(origins = "*")
 @RestController
 public class RegisteredUserController {
   @Autowired RegisteredUserService registeredUserService;
 
+  /**
+   * API POST: Register a User
+   *
+   * @param dto RegisteredUserRequest you wish to register
+   * @return RegisteredUser response DTO of registered user
+   * @author Neil Joe George
+   */
   @PostMapping(value = {"/register-user", "/register-user/"})
   @ResponseStatus(HttpStatus.CREATED)
   public RegisteredUserResponseDto createRegisteredUser(@RequestBody RegisteredUserRequestDto dto)
@@ -28,6 +36,13 @@ public class RegisteredUserController {
         registeredUser.getAccountRole().getRoleId());
   }
 
+  /**
+   * API POST: Promote registered user
+   *
+   * @param dto RegisteredUser you wish to promote
+   * @return RegisteredUser response DTO of promoted registered user
+   * @author Mathieu Pestel
+   */
   @PostMapping(value = {"/promote", "/promote/"})
   @ResponseStatus(HttpStatus.OK)
   public RegisteredUserResponseDto promoteRegisteredUser(@RequestBody RegisteredUserResponseDto dto)
@@ -41,6 +56,12 @@ public class RegisteredUserController {
         user.getAccountRole().getRoleId());
   }
 
+  /**
+   * API GET: Get all registered users
+   *
+   * @return List of all registeredUsers Response DTO
+   * @author Mathieu Pestel
+   */
   @GetMapping(value = {"/registered-users", "/registered-users/"})
   @ResponseStatus(HttpStatus.OK)
   public List<RegisteredUserResponseDto> getAllRegisteredUsers() {
@@ -57,6 +78,13 @@ public class RegisteredUserController {
     return dto;
   }
 
+  /**
+   * API GET: Get a registered user by ID
+   *
+   * @param id Id of registered user
+   * @return RegisteredUser Response DTO
+   * @author Mathieu Pestel
+   */
   @GetMapping(value = {"/registered-user/{id}", "/registered-user/{id}/"})
   @ResponseStatus(HttpStatus.OK)
   public RegisteredUserResponseDto getRegisteredUserByID(@PathVariable int id) {
