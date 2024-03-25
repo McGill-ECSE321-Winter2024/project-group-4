@@ -4,9 +4,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
-import org.springframework.cglib.core.Local;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 @Entity

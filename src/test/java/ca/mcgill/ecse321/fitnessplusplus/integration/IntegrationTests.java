@@ -5,18 +5,13 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import ca.mcgill.ecse321.fitnessplusplus.dto.*;
-import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.repository.ClientRepository;
 import ca.mcgill.ecse321.fitnessplusplus.repository.InstructorRepository;
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import ca.mcgill.ecse321.fitnessplusplus.repository.ScheduledClassRepository;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.TestInstance.Lifecycle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +37,7 @@ public class IntegrationTests {
         private ClientRepository clientRepository;
         @Autowired
         private InstructorRepository instructorRepository;
-        @Autowired
-        private ScheduledClassRepository scheduledClassRepository;
+        
         private final String CLIENT_NAME = "Bib";
         private final String CLIENT_PASS = "BibIsGreatAlso";
         private final String CLIENT_EMAIL = "yahooShallLiveOn@yahoo.com";
@@ -66,9 +60,6 @@ public class IntegrationTests {
         private final Time SCHEDULE_CLASS_START = Time.valueOf(LocalTime.of(10, 0));
         private final Time SCHEDULE_CLASS_END = Time.valueOf(LocalTime.of(20, 0));
         private final LocalDate SCHEDULE_CLASS_DATE = (LocalDate.of(2024, 12, 12));
-        private final Time INVALID_SCHEDULE_CLASS_START = null;
-        private final Time INVALID_SCHEDULE_CLASS_END = null;
-        private final LocalDate INVALID_SCHEDULE_CLASS_DATE = (LocalDate.of(2023, 10, 12));
         private int VALID_SCHEDULE_CLASS_ID;
         private final int INVALID_SCHEDULE_CLASS_ID = 0;
         private int REGISTRATION_ID;
@@ -385,7 +376,6 @@ public class IntegrationTests {
                                 SCHEDULE_CLASS_START, SCHEDULE_CLASS_DATE,
                                 OFFERED_CLASS_ID, 123);
 
-                String error = null;
                 ResponseEntity<ErrorDto> response = client.postForEntity("/scheduled-class/",
                                 requestDTO, ErrorDto.class);
 
@@ -467,7 +457,6 @@ public class IntegrationTests {
                 ResponseEntity<List<ScheduleClassResponseDTO>> response = client.exchange(url,
                                 HttpMethod.GET, null, new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {
                                 });
-                List<ScheduleClassResponseDTO> body = response.getBody();
 
                 assertNotNull(response);
         };

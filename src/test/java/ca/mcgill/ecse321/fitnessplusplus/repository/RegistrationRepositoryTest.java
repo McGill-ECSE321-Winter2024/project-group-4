@@ -19,7 +19,6 @@ import ca.mcgill.ecse321.fitnessplusplus.model.Instructor;
 import ca.mcgill.ecse321.fitnessplusplus.model.OfferedClass;
 import ca.mcgill.ecse321.fitnessplusplus.model.Registration;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 

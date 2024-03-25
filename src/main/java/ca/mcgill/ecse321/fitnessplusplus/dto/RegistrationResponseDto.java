@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
-import java.sql.Date;
 import java.time.LocalDate;
 
 public class RegistrationResponseDto {

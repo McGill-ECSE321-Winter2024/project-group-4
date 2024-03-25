@@ -1,6 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
-import java.sql.Date;
 import java.sql.Time;
 import java.time.LocalDate;
 
