@@ -58,7 +58,7 @@ function ScheduledClassDTO (startTime, endTime, date, offeredClassID, instructor
 }
 
 export default {
-  name: 'testregistration',
+  name: 'template',
   data () {
     return {
       scheduled_classes: [],
