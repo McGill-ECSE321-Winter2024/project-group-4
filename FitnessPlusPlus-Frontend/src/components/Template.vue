@@ -48,15 +48,6 @@ const AXIOS = axios.create({
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
 })
 
-function ScheduledClassDTO (startTime, endTime, date, offeredClassID, instructorID, scheduledClassID) {
-  this.startTime = startTime
-  this.endTime = endTime
-  this.date = date
-  this.offeredClassID = offeredClassID
-  this.instructorID = instructorID
-  this.scheduledClassID = scheduledClassID
-}
-
 export default {
   name: 'template',
   data () {
@@ -81,7 +72,7 @@ export default {
         this.scheduled_classes = response.data
       })
       .catch(e => {
-        this.errors.push(e)
+        this.errors.push = e.message
       })
   },
 
@@ -106,9 +97,7 @@ export default {
           }
         )
         .catch(e => {
-          const errorMsg = e.response.data.errors
-          console.log(errorMsg)
-          this.errors = errorMsg
+          this.errors = e.response.data.errors
         })
     }
   }
