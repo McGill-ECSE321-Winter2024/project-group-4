@@ -33,7 +33,8 @@ public class RegisteredUserController {
         registeredUser.getUsername(),
         registeredUser.getPassword(),
         registeredUser.getEmail(),
-        registeredUser.getAccountRole().getRoleId());
+        registeredUser.getAccountRole().getRoleId(),
+        registeredUser.getAccountRole().getClass().getSimpleName());
   }
 
   /**
@@ -53,7 +54,21 @@ public class RegisteredUserController {
         user.getUsername(),
         user.getPassword(),
         user.getEmail(),
-        user.getAccountRole().getRoleId());
+        user.getAccountRole().getRoleId(),
+        user.getAccountRole().getClass().getSimpleName());
+  }
+
+  @PostMapping(value = {"/login", "/login/"})
+  @ResponseStatus(HttpStatus.OK)
+  public RegisteredUserResponseDto loginRegisteredUser(@RequestBody RegisteredUserRequestDto dto) {
+    RegisteredUser user = registeredUserService.login(dto.getUsername(), dto.getPassword());
+    return new RegisteredUserResponseDto(
+            user.getUserId(),
+            user.getUsername(),
+            user.getPassword(),
+            user.getEmail(),
+            user.getAccountRole().getRoleId(),
+            user.getAccountRole().getClass().getSimpleName());
   }
 
   /**
@@ -73,7 +88,8 @@ public class RegisteredUserController {
               r.getUsername(),
               r.getPassword(),
               r.getEmail(),
-              r.getAccountRole().getRoleId()));
+              r.getAccountRole().getRoleId(),
+              r.getAccountRole().getClass().getSimpleName()));
     }
     return dto;
   }
@@ -95,6 +111,7 @@ public class RegisteredUserController {
         registeredUser.getUsername(),
         registeredUser.getPassword(),
         registeredUser.getEmail(),
-        registeredUser.getAccountRole().getRoleId());
+        registeredUser.getAccountRole().getRoleId(),
+        registeredUser.getAccountRole().getClass().getSimpleName());
   }
 }

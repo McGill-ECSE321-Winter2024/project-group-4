@@ -118,6 +118,26 @@ public class RegisteredUserService {
   }
 
   /**
+   * Checks if username and password match
+   *
+   * @return RegisteredUser
+   * @author Mathieu Pestel
+   */
+  @Transactional
+  public RegisteredUser login(String username, String password) {
+    try {
+      RegisteredUser account = getUserByUsername(username);
+      if (account.getPassword().equals(password)) {
+        return account;
+      } else {
+        throw new IllegalArgumentException("Username or Password is wrong!");
+      }
+    } catch (Exception e) {
+      throw new IllegalArgumentException("Username or Password is wrong!");
+    }
+  }
+
+  /**
    * Return all registered Users
    *
    * @return List<RegisteredUser>
@@ -161,6 +181,16 @@ public class RegisteredUserService {
   public RegisteredUser getUserByEmail(String aEmail) {
     for (RegisteredUser user : registeredUserRepository.findAll()) {
       if (user.getEmail().equals(aEmail)) {
+        return user;
+      }
+    }
+    return null;
+  }
+
+  @Transactional
+  public RegisteredUser getUserByUsername(String aUsername) {
+    for (RegisteredUser user : registeredUserRepository.findAll()) {
+      if (user.getUsername().equals(aUsername)) {
         return user;
       }
     }

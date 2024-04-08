@@ -131,7 +131,7 @@ public class IntegrationTests {
   @Order(4)
   public void promoteUser() {
     RegisteredUserResponseDto request =
-        new RegisteredUserResponseDto(USER_ID, CLIENT_PASS, CLIENT_NAME, CLIENT_EMAIL, ROLE_ID);
+        new RegisteredUserResponseDto(USER_ID, CLIENT_PASS, CLIENT_NAME, CLIENT_EMAIL, ROLE_ID, "Client");
     ResponseEntity<RegisteredUserResponseDto> response =
         client.postForEntity("/promote", request, RegisteredUserResponseDto.class);
     assertNotNull(response);

@@ -6,17 +6,19 @@ public class RegisteredUserResponseDto {
   private String password;
   private String email;
   private int accountRole;
+  private String roleType;
 
   @SuppressWarnings("unused")
   public RegisteredUserResponseDto() {}
 
   public RegisteredUserResponseDto(
-      int userId, String username, String password, String email, int accountRole) {
+      int userId, String username, String password, String email, int accountRole, String roleType) {
     this.userId = userId;
     this.username = username;
     this.password = password;
     this.email = email;
     this.accountRole = accountRole;
+    this.roleType = roleType;
   }
 
   public int getUserId() {
@@ -57,5 +59,13 @@ public class RegisteredUserResponseDto {
 
   public void setAccountRole(int accountRole) {
     this.accountRole = accountRole;
+  }
+
+  public String getRoleType() {
+    return roleType;
+  }
+
+  public void setRoleType(String roleType) {
+    this.roleType = roleType;
   }
 }
