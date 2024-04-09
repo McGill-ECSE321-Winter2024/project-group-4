@@ -1,53 +1,80 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-      <br>
-      <li><a href="http://vuejs-templates.github.io/webpack/" target="_blank">Docs for This Template</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
+  <div id="home">
+    <div id="logo">
+      <p>FitnessPlusPlus</p>
+      <img src="../assets/logo.png" alt="logo.png">
+    </div>
+    <button @click="login">Login</button>
+    <button @click="createAccount">Create Account</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'hello',
-  data () {
-    return {
-      msg: 'Welcome to Your Vue.js App'
+  name: 'HomePage',
+  methods: {
+    login() {
+      this.$router.push({ name: 'Login' });
+    },
+    createAccount() {
+      this.$router.push({ name: 'CreateAccount' }); // Note: route names are typically camelCase
     }
   }
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h1, h2 {
-  font-weight: normal;
+#home {
+  text-align: center; /* Center-align text */
+  background-color: #; /* Light grey background */
+  font-family: 'Arial', sans-serif; /* Font style for the text */
+  color: #333; /* Dark grey color for text */
+  height: 100vh; /* Full height of the viewport */
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center items vertically */
 }
 
-ul {
-  list-style-type: none;
-  padding: 0;
+#logo {
+  display: flex; /* Use flexbox for layout */
+  align-items: center; /* Align items vertically in the center */
+  justify-content: flex-start; /* Align items to the start (left) */
+  padding-top: 20px; /* Adjust the top padding to bring the text up */
+  padding-left: 20px; /* Adjust the left padding to bring the text towards the left */
 }
 
-li {
-  display: inline-block;
-  margin: 0 10px;
+#logo p {
+  font-family: 'Helvetica', sans-serif; /* New font family */
+  margin-right: 40px; /* Adds some space between the text and the logo */
+  font-size: 7em; /* Larger text for the FitnessPlusPlus */
+  margin-bottom: 0; /* Ensure there's no margin below the text pushing the logo down */
+  margin-left: 30px
 }
 
-a {
-  color: #42b983;
+#logo img {
+  width: 400px; /* Width of the logo */
+  height: auto; /* Keep aspect ratio of the logo */
+  margin-left: 50px;
+}
+
+button {
+  background-color: #9b7181; /* Color for the buttons */
+    color: black; /* Text color for the buttons */
+    border: none; /* No border */
+    padding: 10px 20px; /* Reduced padding inside the buttons */
+    margin-top: 20px; /* Space between buttons */
+    border-radius: 20px; /* Rounded corners for the buttons */
+    font-size: 2em; /* Text size inside the buttons */
+    cursor: pointer; /* Pointer cursor on hover */
+    outline: none; /* Remove the outline */
+    width: 500px; /* Default width behavior */
+    display: block; /* Display as block to enable margin auto */
+    margin-left: auto; /* Center the button horizontally */
+    margin-right: auto; /* Center the button horizontally */
+}
+
+button:hover {
+  background-color: #8b6574; /* Slightly darker color on hover */
 }
 </style>
+
