@@ -4,6 +4,7 @@ import Hello from '@/components/Hello'
 import Template from '@/components/Template'
 import Login from '@/components/Login'
 import CreateAccount from "@/components/CreateAccount";
+import ScheduledClass from '../components/ScheduledClass.vue'
 
 Vue.use(Router)
 
@@ -28,6 +29,11 @@ export default new Router({
       path: '/new-account',
       name: 'Create Account',
       component: CreateAccount
+    },
+    {
+      path: '/scheduled-class',
+      name: 'Create Scheduled Class',
+      component: ScheduledClass
     }
   ]
 })
