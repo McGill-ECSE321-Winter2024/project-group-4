@@ -121,7 +121,7 @@ body {
 }
 
 #createaccount #logo img {
-  width: 100px;
+  width: 80px;
   height: auto;
 }
 
