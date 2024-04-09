@@ -1,25 +1,48 @@
 <template>
   <div id="login">
-    <h2>Login</h2>
-    <table>
-      <!-- ... -->
-      <tr>
-        <td>
-          <input type="text" v-model="username" placeholder="Username">
-          <input type="password" v-model="password" placeholder="Password">
-        </td>
-        <td>
-          <button v-bind:disabled="!username || !password"
-                  @click="login()">Log In</button>
-        </td>
-      </tr>
-    </table>
-    <table>
-      <tr v-for="err in errors">
-        <td><p><span style="color:red">Error: {{err}}</span></p></td>
-      </tr>
-      <!-- ... -->
-    </table>
+    <div id="logo">
+      <p>FitnessPlusPlus</p>
+      <img src="../assets/logo.png" alt="logo.png">
+    </div>
+    <div id="login_panel">
+      <form>
+        <table>
+          <!-- ... -->
+          <tr>
+            <td>
+              <p>Username</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="text" v-model="username">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <p>Password</p>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="password" v-model="password">
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <input type="submit" v-bind:disabled="!username || !password"
+                     @click="login()" value="Log In">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+      <table>
+        <tr v-for="err in errors">
+          <td><p id="error">Error: {{err}}</p></td>
+        </tr>
+        <!-- ... -->
+      </table>
   </div>
 </template>
 
@@ -83,9 +106,105 @@ export default {
 </script>
 
 <style>
-  #login {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    color: #2c3e50;
-    background: #f2ece8;
+  body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
+
+  #login #login_panel {
+    width: 50%;
+    padding: 5%;
+    background: #f5f5f5;
+    border-radius: 8px;
+    margin: 10% auto;
+    position: relative;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+
+
+  #login #logo {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 10px;
+  }
+
+  #login #logo p {
+    font-size: 24px;
+    margin: 0;
+  }
+
+  #login #logo img {
+    width: 100px;
+    height: auto;
+  }
+
+  #login #login_panel form {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #login #login_panel p {
+    text-align: left;
+    padding: 0;
+    margin: 0 16% 0;
+    font-size: 24px;
+  }
+
+  #login #login_panel form input[type="text"],
+  #login #login_panel form input[type="password"] {
+    padding: 5px;
+    width: 390px;
+    margin-bottom: 40px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 18px;
+  }
+
+  #login #login_panel form input[type="submit"] {
+    padding: 10px;
+    width: 200px;
+    background-color: #8a2be2;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 18px;
+    cursor: pointer;
+  }
+
+  #login #login_panel form input[type="submit"]:disabled {
+    background-color: #B69DA7;
+    cursor: default;
+  }
+
+  #login #login_panel form table {
+    width: 100%;
+  }
+
+  #login table {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  #login #error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+    border-radius: 4px;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-size: 0.9em;
+    text-align: center;
+    border: 1px solid #D8000C;
+    box-shadow: 0 0 5px rgba(216, 0, 12, 0.3);
+    word-wrap: break-word;
+    width: 100%
+  }
+
 </style>
