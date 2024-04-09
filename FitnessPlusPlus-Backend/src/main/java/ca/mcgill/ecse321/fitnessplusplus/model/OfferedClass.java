@@ -15,6 +15,7 @@ public class OfferedClass {
   @Id @GeneratedValue private int offeredClassId;
   private String classType;
   private String description;
+  private boolean approval;
 
   // ------------------------
   // CONSTRUCTOR
@@ -23,6 +24,7 @@ public class OfferedClass {
   public OfferedClass(String aClassType, String aDescription) {
     classType = aClassType;
     description = aDescription;
+    approval = false;
   }
 
   public OfferedClass() {}
@@ -52,6 +54,13 @@ public class OfferedClass {
     return wasSet;
   }
 
+  public boolean setApproval(boolean aApproval) {
+    boolean wasSet = false;
+    approval = aApproval;
+    wasSet = true;
+    return wasSet;
+  }
+
   public String getClassType() {
     return this.classType;
   }
@@ -63,6 +72,8 @@ public class OfferedClass {
   public int getId() {
     return this.offeredClassId;
   }
+
+  public boolean getApproval() {return this.approval;}
 
   public void delete() {}
 }

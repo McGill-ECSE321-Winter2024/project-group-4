@@ -93,4 +93,24 @@ public class OfferedClassService {
     }
     return o;
   }
+
+  @Transactional
+  public OfferedClass approveOfferedClassById(int id) {
+    OfferedClass offeredClass =
+            offeredClassRepository.findOfferedClassByOfferedClassId(id);
+
+    if (offeredClass == null) {
+      throw new IllegalArgumentException("You cannot approve an offered class that does not exist");
+    }
+
+    offeredClass.setApproval(true);
+    offeredClassRepository.save(offeredClass);
+    return offeredClass;
+  }
+
+  @Transactional
+  public List<OfferedClass> getAllOfferedClassesByApproval(boolean approval) {
+
+      return new ArrayList<>(offeredClassRepository.findOfferedClassesByApproval(approval));
+  }
 }

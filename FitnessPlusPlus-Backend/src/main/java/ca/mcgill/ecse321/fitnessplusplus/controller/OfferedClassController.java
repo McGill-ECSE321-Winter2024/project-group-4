@@ -30,7 +30,7 @@ public class OfferedClassController {
     OfferedClass offeredClass =
         offeredClassService.requestClass(dto.getClassType(), dto.getDescription());
     return new OfferedClassResponseDto(
-        offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId());
+        offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId(), offeredClass.getApproval());
   }
 
   /**
@@ -44,7 +44,7 @@ public class OfferedClassController {
   public List<OfferedClassResponseDto> getAllRegisteredUser() throws Exception {
     List<OfferedClassResponseDto> dto = new ArrayList<>();
     for (OfferedClass c : offeredClassService.getAllOfferedClasses()) {
-      dto.add(new OfferedClassResponseDto(c.getClassType(), c.getDescription(), c.getId()));
+      dto.add(new OfferedClassResponseDto(c.getClassType(), c.getDescription(), c.getId(), c.getApproval()));
     }
     return dto;
   }
@@ -62,7 +62,27 @@ public class OfferedClassController {
     OfferedClass offeredClass = offeredClassService.getOfferedClassById(id);
 
     return new OfferedClassResponseDto(
-        offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId());
+        offeredClass.getClassType(),
+        offeredClass.getDescription(),
+        offeredClass.getId(),
+        offeredClass.getApproval());
+  }
+
+  @PostMapping(value = {"/offered-class-approval", "/offered-class-approval/"})
+  @ResponseStatus(HttpStatus.OK)
+  public List<OfferedClassResponseDto>  getOfferedClassByApproval(@RequestBody boolean approval) {
+    List<OfferedClassResponseDto> offeredClasses = new ArrayList<>();
+    for (OfferedClass c : offeredClassService.getAllOfferedClassesByApproval(approval)) {
+      offeredClasses.add(new OfferedClassResponseDto(c.getClassType(), c.getDescription(), c.getId(), c.getApproval()));
+    }
+    return offeredClasses;
+  }
+
+  @PostMapping(value = {"/approve-offered-class","/approve-offered-class/"})
+  @ResponseStatus(HttpStatus.OK)
+  public OfferedClassResponseDto approveOfferedClass(@RequestBody OfferedClassResponseDto dto) {
+    OfferedClass offeredClass = offeredClassService.approveOfferedClassById(dto.getOfferedClassId());
+    return new OfferedClassResponseDto(offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId(), offeredClass.getApproval());
   }
 
   /**
@@ -80,6 +100,9 @@ public class OfferedClassController {
     OfferedClass offeredClass = offeredClassService.removeOfferedClass(offeredClassId);
 
     return new OfferedClassResponseDto(
-        offeredClass.getClassType(), offeredClass.getDescription(), offeredClass.getId());
+        offeredClass.getClassType(),
+        offeredClass.getDescription(),
+        offeredClass.getId(),
+        offeredClass.getApproval());
   }
 }
