@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Hello from '@/components/Hello'
 import Template from '@/components/Template'
 import Login from '@/components/Login'
+import CreateAccount from "@/components/CreateAccount";
 
 Vue.use(Router)
 
@@ -22,6 +23,11 @@ export default new Router({
       path: '/login',
       name: 'Login',
       component: Login
+    },
+    {
+      path: '/new-account',
+      name: 'Create Account',
+      component: CreateAccount
     }
   ]
 })
