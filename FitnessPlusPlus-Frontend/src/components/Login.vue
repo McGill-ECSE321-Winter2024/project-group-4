@@ -7,37 +7,16 @@
     <div id="login_panel">
       <form>
         <table>
-          <!-- ... -->
-          <tr>
-            <td>
-              <p>Username</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input type="text" v-model="username">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <p>Password</p>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input type="password" v-model="password">
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <input type="submit" v-bind:disabled="!username || !password"
-                     @click="login()" value="Log In">
-            </td>
-          </tr>
+          <tr><td><p>Username</p></td></tr>
+          <tr><td><input type="text" v-model="username"></td></tr>
+          <tr><td><p>Password</p></td></tr>
+          <tr><td><input type="password" v-model="password"></td></tr>
+          <tr><td><input type="submit" v-bind:disabled="!username || !password"
+                     @click="login()" value="Log In"></td></tr>
         </table>
       </form>
     </div>
-      <table>
+      <table id="error_message">
         <tr v-for="err in errors">
           <td><p id="error">Error: {{err}}</p></td>
         </tr>
@@ -188,7 +167,7 @@ export default {
     width: 100%;
   }
 
-  #login table {
+  #login #error_message {
     margin-left: auto;
     margin-right: auto;
   }

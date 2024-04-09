@@ -1,39 +1,29 @@
 <template>
   <div id="createaccount">
-    <h2>Create Account</h2>
-    <form>
-      <table>
-        <tr>
-          <td>
-            <input type="text" v-model="username" placeholder="Username">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="text" v-model="email" placeholder="Email">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="password" v-model="password" placeholder="Password">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <input type="password" v-model="confirmPassword" placeholder="Confirm Password">
-          </td>
-        </tr>
-        <tr>
-          <td>
-            <button v-bind:disabled="!username || !email || !password || !confirmPassword"
-                    @click="createAccount()">Create Account</button>
-          </td>
-        </tr>
-      </table>
-    </form>
-    <table>
+    <div id="logo">
+      <p>FitnessPlusPlus</p>
+      <img src="../assets/logo.png" alt="logo.png">
+    </div>
+    <div id="new_account_panel">
+      <form>
+        <table>
+          <tr><td><p>Username</p></td></tr>
+          <tr><td><input type="text" v-model="username"></td></tr>
+          <tr><td><p>Email</p></td></tr>
+          <tr><td><input type="text" v-model="email"></td></tr>
+          <tr><td><p>Password</p></td></tr>
+          <tr><td><input type="password" v-model="password"></td></tr>
+          <tr><td><p>Confirm Password</p></td></tr>
+          <tr><td><input type="password" v-model="confirmPassword"></td></tr>
+          <tr><td><input type="submit" v-bind:disabled="!username || !email || !password || !confirmPassword"
+                      @click="createAccount()" value="Create Account"></td></tr>
+        </table>
+      </form>
+    </div>
+
+    <table id="error_message">
       <tr v-for="err in errors">
-        <td><p><span style="color:red">Error: {{err}}</span></p></td>
+        <td><p id="error">Error: {{err}}</p></td>
       </tr>
       <!-- ... -->
     </table>
@@ -94,12 +84,107 @@ export default {
 </script>
 
 <style>
-#createaccount {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  color: #2c3e50;
-  background: #f2ece8;
+
+body {
+  margin: 0;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#createaccount #new_account_panel {
+  width: 50%;
+  padding: 5%;
+  background: #f5f5f5;
+  border-radius: 8px;
+  margin: 4% auto;
+  position: relative;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+
+#createaccount #logo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+#createaccount #logo p {
+  font-size: 24px;
+  margin: 0;
+}
+
+#createaccount #logo img {
+  width: 100px;
+  height: auto;
+}
+
+#createaccount #new_account_panel form {
+  display: flex;
+  flex-direction: column;
+}
+
+#createaccount #new_account_panel p {
+  text-align: left;
+  padding: 0;
+  margin: 0 16% 0;
+  font-size: 24px;
+}
+
+#createaccount #new_account_panel form input[type="text"],
+#createaccount #new_account_panel form input[type="password"] {
+  padding: 5px;
+  width: 390px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 18px;
+}
+
+#createaccount #new_account_panel form input[type="submit"] {
+  padding: 10px;
+  width: 200px;
+  background-color: #8a2be2;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+#createaccount #new_account_panel form input[type="submit"]:disabled {
+  background-color: #B69DA7;
+  cursor: default;
+}
+
+#createaccount #new_account_panel form table {
   width: 100%;
-  height: 100%;
+}
+
+#createaccount #error_message {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#createaccount #error {
+  color: #D8000C;
+  background-color: #FFD2D2;
+  border-radius: 4px;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-size: 0.9em;
+  text-align: center;
+  border: 1px solid #D8000C;
+  box-shadow: 0 0 5px rgba(216, 0, 12, 0.3);
+  word-wrap: break-word;
+  width: 100%
 }
 
 
