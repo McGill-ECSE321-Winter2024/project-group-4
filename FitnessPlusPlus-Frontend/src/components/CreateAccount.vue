@@ -5,7 +5,7 @@
       <img src="../assets/logo.png" alt="logo.png">
     </div>
     <div id="new_account_panel">
-      <form>
+      <form @submit.prevent>
         <table>
           <tr><td><p>Username</p></td></tr>
           <tr><td><input type="text" v-model="username"></td></tr>

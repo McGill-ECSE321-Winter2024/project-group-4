@@ -14,6 +14,7 @@ export default {
 body, html {
   margin: 0;
   padding: 0;
+  background: #DAC7AC;
 }
 
 #app {
@@ -22,7 +23,6 @@ body, html {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #000000;
-  background: #DAC7AC;
   width: 100vw;
   height: 100vh;
 }
