@@ -5,8 +5,9 @@ import Template from '@/components/Template'
 import Login from '@/components/Login'
 import CreateAccount from '@/components/CreateAccount'
 import ScheduledClass from '../components/ScheduledClass.vue'
-import PromoteUser from "../components/PromoteUser.vue";
+import PromoteUser from "../components/PromoteUser.vue"
 import OfferClass from '@/components/OfferClass'
+import OwnerPage from '../components/OwnerPage.vue'
 
 Vue.use(Router)
 
@@ -46,6 +47,11 @@ export default new Router({
       path: '/offer-class',
       name: 'Offer a class',
       component: OfferClass
+    },
+    {
+      path: '/owner-page',
+      name: 'Owner Page',
+      component: OwnerPage
     }
   ]
 })
