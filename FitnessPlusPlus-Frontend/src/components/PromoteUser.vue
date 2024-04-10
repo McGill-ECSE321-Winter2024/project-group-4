@@ -1,22 +1,15 @@
 <template>
  <div id="content">
    <header id="header">
-     <h1>Promote User</h1>
      <div id="logo">
+       <p>FitnessPlusPlus</p>
        <img src="../assets/logo.png"/>
      </div>
+     <h2>Promote User</h2>
    </header>
 
    <main>
-      <section id="clients">
-        <ul>
-          <li>Client1</li>
-          <li>Client2</li>
-        </ul>
-      </section>
-      <section id="buttons">
 
-      </section>
    </main>
 
  </div>
@@ -25,56 +18,55 @@
 <style>
 
 main {
-  display: flex;
-  justify-content: space-between;
-  padding: 1em;
+  margin-top: 3%;
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 40fr 60fr;
+  grid-template-rows: auto 60px auto;
+  padding: 30px 30px 10px;
+  height: 100%;
 }
 
 #clients ul {
-  list-style: none;
-  padding: 0;
+
 }
 
 #clients li {
-  border-bottom: 1px solid #000;
-  padding: 0.5em;
-  margin-bottom: 0.5em;
+
 }
 
 
 #content{
-
-}
-#header {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 1em;
-}
-
-#header::before {
-  content: '';
-  display: block;
-
-  width: auto;
-  height: 8rem;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 16px;
+  margin: auto;
+  padding: 20px;
 }
 
 #header h1 {
-  margin: 0 auto;
-  font-size: 3vw;
-  line-height: 1;
+  margin-top: 20px;
+  grid-column: 1 / -1;
 }
 
 #logo {
   position: absolute;
-  right: 1em;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
 }
 
-  #logo img {
-    height: 8vw;
-    width: auto;
+#logo p {
+  font-size: 24px;
+  margin: 0;
+}
+
+#logo img {
+  width: 80px;
+  height: auto;
   }
+
 </style>
