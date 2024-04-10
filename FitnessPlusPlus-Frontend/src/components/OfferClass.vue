@@ -8,22 +8,72 @@
     <form @submit.prevent>
       <div id="type">
         <p>Type</p>
-        <input type="text">
+        <input type="text" v-model="type">
       </div>
       <div id="description">
         <p>Description</p>
-        <textarea id="description" name="description"></textarea>
+        <textarea id="description" name="description" v-model="description"></textarea>
       </div>
-        <input id="submit" type="submit" v-bind:disabled="false"
-                       @click="createAccount()" value="Save Changes">
-        <button id="previous" type="button">Previous Page</button>
+        <input id="submit" type="submit" v-bind:disabled="!type || !description"
+                       @click="offerClass()" value="Save Changes">
+        <button id="previous" type="button" @click="previousPage()">Previous Page</button>
     </form>
-    <button type="button" id="logout">Logout</button>
+    <button type="button" id="logout" @click="logout()">Logout</button>
   </div>
 </template>
 
 <script>
 
+import axios from 'axios'
+import config from '../../config'
+
+const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
+
+const AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+})
+
+export default {
+  name: 'login',
+  data () {
+    return {
+      type: '',
+      description: '',
+      errors: [],
+      response: []
+    }
+  },
+  //...
+
+  created: function () {
+  },
+
+  methods: {
+    offerClass: function () {
+
+      AXIOS.post('/offer-class', {
+        classType:  this.type,
+        description: this.description}, {})
+        .then(response => {
+          this.$router.push('/ManageSchedule')
+        })
+        .catch(e => {
+          this.errors = e.response.data.errors
+        })
+    },
+
+    previousPage: function () {
+      this.$router.back()
+    },
+
+    logout: function () {
+      localStorage.clear()
+      this.$router.push('/')
+    }
+  }
+}
 </script>
 
 <style>
@@ -87,7 +137,6 @@
   #offerclass #description {
     grid-column: 2/3;
     grid-row: 1/4;
-    padding-left: 30px;
   }
 
   #offerclass #submit {
