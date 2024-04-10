@@ -26,7 +26,6 @@ export default {
 <style scoped>
 #home {
   text-align: center; /* Center-align text */
-  background-color: #; /* Light grey background */
   font-family: 'Arial', sans-serif; /* Font style for the text */
   color: #333; /* Dark grey color for text */
   height: 100vh; /* Full height of the viewport */
