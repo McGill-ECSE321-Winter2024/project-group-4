@@ -58,7 +58,7 @@
 
   #offerclass h2 {
     margin-top: 20px;
-    grid-column: 1 / -1; /* Span the title across all columns */
+    grid-column: 1 / -1;
   }
 
   #offerclass form {
@@ -66,13 +66,14 @@
     grid-column: 1/-1;
     display: grid;
     grid-template-columns: 40fr 60fr;
-    grid-template-rows: auto;
-    padding: 30px;
+    grid-template-rows: auto 60px auto;
+    padding: 30px 30px 10px;
+    height: 100%;
   }
 
   #offerclass form p {
-    text-align: left; /* Right align the text */
-    align-self: start; /* Aligns the label vertically with the text area */
+    text-align: left;
+    align-self: start;
     margin: 0 0 0 5%;
     padding-bottom: 5px;
     font-size: 18px;
@@ -102,11 +103,11 @@
   #offerclass input[type="text"] {
     width: 90%;
     background-color: #F3ECDA;
-    border: 2px solid #a67f8e; /* Set the default border color */
-    padding: 8px 12px; /* Add some padding inside the text box */
-    border-radius: 8px; /* Rounded corners */
-    outline: none; /* Remove the default focus highlight */
-    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus effect */
+    border: 2px solid #a67f8e;
+    padding: 8px 12px;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
   #offerclass input[type="text"]:focus {
@@ -120,15 +121,15 @@
     resize: none;
     min-height: 60vh;
     background-color: #F3ECDA;
-    border: 2px solid #a67f8e; /* Set the default border color */
-    border-radius: 8px; /* Rounded corners */
-    outline: none; /* Remove the default focus highlight */
-    transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transition for focus effect */
+    border: 2px solid #a67f8e;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.3s, box-shadow 0.3s;
   }
 
   #offerclass textarea:focus {
-    border-color: #B580e6; /* Darker border color on focus */
-    box-shadow: 0 0 8px rgba(127, 34, 208, 0.5); /* Glowing effect on focus */
+    border-color: #B580e6;
+    box-shadow: 0 0 8px rgba(127, 34, 208, 0.5);
   }
 
   #offerclass button {
@@ -179,13 +180,12 @@
   }
 
   #offerclass #logout {
-    position: absolute;
-    bottom: 20px;
-    left: 20px;
+    grid-column: 1/2;
     text-align: center;
-    display: flex;
+    justify-self: start;
     justify-content: center;
     align-items: center;
+    align-self: end;
     gap: 10px;
   }
 </style>
