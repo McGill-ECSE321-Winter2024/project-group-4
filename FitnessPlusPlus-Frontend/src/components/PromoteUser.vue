@@ -6,11 +6,45 @@
        <img src="../assets/logo.png"/>
      </div>
    </header>
+
+   <main>
+      <section id="clients">
+        <ul>
+          <li>Client1</li>
+          <li>Client2</li>
+        </ul>
+      </section>
+      <section id="buttons">
+
+      </section>
+   </main>
+
  </div>
 </template>
 
 <style>
 
+main {
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+}
+
+#clients ul {
+  list-style: none;
+  padding: 0;
+}
+
+#clients li {
+  border-bottom: 1px solid #000;
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+
+#content{
+
+}
 #header {
   display: flex;
   align-items: center;
