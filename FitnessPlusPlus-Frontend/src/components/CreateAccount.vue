@@ -150,18 +150,24 @@ body {
 #createaccount #new_account_panel form input[type="submit"] {
   padding: 10px;
   width: 200px;
-  background-color: #8a2be2;
-  color: white;
+  background-color: #A276C5;
+  color: black;
   border: none;
   border-radius: 20px;
-  font-size: 18px;
+  font-size: 20px;
   cursor: pointer;
   margin-top: 10px;
 }
 
+#createaccount #new_account_panel form input[type="submit"]:hover {
+    background-color: #D1A5F3;
+}
+
 #createaccount #new_account_panel form input[type="submit"]:disabled {
   background-color: #B69DA7;
-  cursor: default;
+      color: #ccc;
+      cursor: default;
+      border: none;
 }
 
 #createaccount #new_account_panel form table {
