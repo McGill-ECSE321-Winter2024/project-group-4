@@ -62,7 +62,7 @@
   }
 
   #offerclass form {
-    margin-top: 5%;
+    margin-top: 3%;
     grid-column: 1/-1;
     display: grid;
     grid-template-columns: 40fr 60fr;
@@ -75,7 +75,7 @@
     align-self: start; /* Aligns the label vertically with the text area */
     margin: 0 0 0 5%;
     padding-bottom: 5px;
-
+    font-size: 18px;
   }
 
   #offerclass #type {
@@ -117,8 +117,8 @@
   #offerclass textarea {
     width: 90%;
     padding: 8px 12px;
-    resize: vertical;
-    min-height: 50vh;
+    resize: none;
+    min-height: 60vh;
     background-color: #F3ECDA;
     border: 2px solid #a67f8e; /* Set the default border color */
     border-radius: 8px; /* Rounded corners */
