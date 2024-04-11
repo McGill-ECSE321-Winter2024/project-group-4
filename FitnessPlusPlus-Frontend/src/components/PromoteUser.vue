@@ -134,8 +134,8 @@ main {
 }
 
 #clients li.placeholder {
-  height: 50px; /* Match the height of your user items */
-  border-bottom: 1px solid #e1e1e1; /* Light border to keep consistent with user items */
+  height: 50px;
+  border-bottom: 1px solid #e1e1e1;
   background-color: #f9f9f9
 }
 
@@ -231,5 +231,22 @@ footer {
 
 #promoteButton{
   margin-left: -100px;
+}
+
+button {
+  padding: 10px;
+  width: 200px;
+  background-color: #A276C5;
+  color: black;
+  border: none;
+  border-radius: 20px;
+  font-size: 20px;
+  cursor: pointer;
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+button:hover {
+  background-color: #D1A5F3;
 }
 </style>
