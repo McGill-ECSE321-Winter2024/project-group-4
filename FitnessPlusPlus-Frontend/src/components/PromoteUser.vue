@@ -45,10 +45,16 @@ export default {
     };
   },
   created() {
-
+    this.fetchRegisteredUser
   },
   methods: {
-
+    fetchRegisteredUser() {
+      AXIOS.get('/registered-users/').then(response => {
+        this.registered_user = response.data;
+      }).catch(error => {
+        this.errors.push(error.message || "Failed to load users");
+      });
+    }
   }
 };
 </script>
