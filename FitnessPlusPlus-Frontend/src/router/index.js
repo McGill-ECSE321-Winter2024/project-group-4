@@ -4,7 +4,6 @@ import Home from '@/components/Home'
 import Template from '@/components/Template'
 import Login from '@/components/Login'
 import CreateAccount from '@/components/CreateAccount'
-import ScheduledClass from '../components/ScheduledClass.vue'
 import PromoteUser from "../components/PromoteUser.vue"
 import OfferClass from '@/components/OfferClass'
 import OwnerPage from '../components/OwnerPage.vue'
@@ -35,11 +34,6 @@ export default new Router({
       component: CreateAccount
     },
     {
-      path: '/scheduled-class',
-      name: 'Create Scheduled Class',
-      component: ScheduledClass
-    },
-    {
       path: '/promote-user',
       name: 'Promote Registered User',
       component: PromoteUser
@@ -55,7 +49,7 @@ export default new Router({
       component: OwnerPage
     },
     {
-      path: '/schedule_classes',
+      path: '/schedule-classes',
       name: 'Schedule Classes',
       component: ScheduleClasses
     }

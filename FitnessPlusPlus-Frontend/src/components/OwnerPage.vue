@@ -24,6 +24,7 @@
 
     <button id="logout-button" @click="logout">Logout</button>
     <button id="promote-user-button" @click="promoteUser">Promote User</button>
+    <button id="scheduled-classes-button" @click="scheduleClass">Schedule Class</button>
 
     <div id="logo">
       <p>FitnessPlusPlus</p>
@@ -98,6 +99,9 @@ export default {
     },
     promoteUser() {
       this.$router.push({ name: 'PromoteUser' });
+    },
+    scheduleClass(){
+      this.$router.push({name: 'ScheduleClasses'})
     }
   }
 };
