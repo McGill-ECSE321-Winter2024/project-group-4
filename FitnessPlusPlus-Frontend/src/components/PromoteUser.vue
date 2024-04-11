@@ -20,12 +20,24 @@
         </ul>
       </section>
       <section id="buttons">
+
         <!-- Save Changes and Previous Page Button-->
+        <button @click="saveChanges">Save Changes</button>
+        <button @click="previousPage">Previous Page</button>
+
       </section>
    </main>
 
    <footer>
      <!-- Promote and Logout buttons -->
+     <div id="footerContainer">
+     <div id="promoteContainer">
+      <button @click="promote" id="promoteButton">Promote</button>
+     </div>
+     <div id="logoutContainer">
+      <button @click="logout" id="logoutButton">Logout</button>
+     </div>
+     </div>
    </footer>
 
  </div>
@@ -68,6 +80,18 @@ export default {
       }).catch(error => {
         this.errors.push(error.message || "Failed to load users");
       });
+    },
+    saveChanges() {
+
+    },
+    previousPage() {
+
+    },
+    promote() {
+
+    },
+    logout() {
+      this.$router.push({ name: 'Home' });
     }
   }
 };
@@ -169,4 +193,43 @@ main {
   height: auto;
   }
 
+#buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
+#logoutButton {
+  margin-left: auto;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+#footerContainer {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+#promoteContainer {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+
+#logoutContainer {
+  display: flex;
+  justify-content: flex-end;
+  flex-grow: 1;
+}
+
+#promoteButton{
+  margin-left: -100px;
+}
 </style>
