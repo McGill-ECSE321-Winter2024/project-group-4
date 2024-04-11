@@ -103,7 +103,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 #owner-page {
   width: 100vw;
   height: 100vh;

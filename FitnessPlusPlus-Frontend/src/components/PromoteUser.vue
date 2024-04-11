@@ -75,7 +75,7 @@ export default {
       this.$router.back()
     },
     promote() {
-      if(this.selectedUser === null) {
+      if(this.selectedUsername === null) {
         alert("Please select a user to promote.");
         return;
       }
@@ -110,7 +110,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 
 main {
   margin-top: 3%;

@@ -30,7 +30,7 @@
   </div>
 </template>
 
-<script>
+<script scoped>
 
 import axios from 'axios'
 import config from '../../config'

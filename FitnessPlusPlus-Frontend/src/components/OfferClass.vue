@@ -76,7 +76,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
   #offerclass {
     display: grid;
     grid-template-columns: 1fr 1fr;

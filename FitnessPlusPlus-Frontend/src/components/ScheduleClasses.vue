@@ -1,37 +1,48 @@
 <template>
-  <div class="row">
-    <div class="column">
-      <h2>Approved Classes</h2>
-      <ul id="class-list">
-        <li v-for="(offeredClass, index) in offered_classes" v-if"offeredClass.approved"
-          :key="offeredClass.offeredClassId">
-          <div class="class-description">
-            <span>
-              {{ offeredClass.classType }} - {{ offeredClass.description }}
-            </span>
-          </div>
-        </li>
-      </ul>
+  <div class="content">
+    <header id="header">
+      <div id="logo">
+        <p>FitnessPlusPlus</p>
+        <img src="../assets/logo.png"/>
+      </div>
+    </header>
+    <h2>Promote User</h2>
+
+    <main>
+      <section id="offered_class">
+        <ul>
+          <li v-for="offeredClass in offered_classes" v-if="offeredClass.approved" :class="{ 'is-selected': offeredClass.offeredClassId === newOfferedClassID }" class="noselect"
+            :key="offeredClass.offeredClassId" @click="selectOfferedClass(offeredClass.offeredClassId)">
+                {{ offeredClass.classType }} - {{ offeredClass.description }}
+          </li>
+          <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder noselect">
+            &nbsp;
+          </li>
+        </ul>
+      </section>
       <button style="float:left" @click="logout">Logout</button>
       <button style="float:right">Remove Class</button>
-    </div>
-    <div class="column">
-      <label for="startTime"><b>Start Time</b></label><br>
-      <input type="time" placeholder="Enter Start Time" id="startTime" required>
-      <br>
 
-      <label for="endTime"><b>End Time</b></label><br>
-      <input type="time" placeholder="Enter End Time" id="endTime" required>
-      <br>
+      <div class="column">
+        <form @submit.prevent>
+          <label for="startTime"><b>Start Time</b></label><br>
+          <input type="time" placeholder="Start Time" id="startTime" v-model="newStartTime" required>
 
-      <label for="date"><b>Date</b></label><br>
-      <input type="date" placeholder="Enter Date" id="date" required>
-      <br>
 
-      <button @click="getSchedule">Schedule Class</button>
-      <br><br>
-      <button @click="navRegisterClasses">Register for Classes</button>
-    </div>
+          <label for="endTime"><b>End Time</b></label><br>
+          <input type="time" placeholder="End Time" v-model="newEndTime" id="endTime" required>
+
+
+          <label for="date"><b>Date</b></label><br>
+          <input type="date" placeholder="Date" v-model="newDate" id="date" required>
+
+
+          <button @click="createScheduledClass">Schedule Class</button>
+
+        </form>
+        <button @click="previousPage">Previous Page</button>
+      </div>
+    </main>
   </div>
 </template>
 
@@ -58,103 +69,251 @@ export default {
       newDate: '',
       newOfferedClassID: '',
       newInstructorID: '',
+      desiredItemCount: 9,
       errors: [],
-      response: [],
-      startTime: '',
-      endTime: '',
-      date: '',
-      selectedClassId: ''
+      response: []
     }
   },
   //...
 
   created: function () {
-      // Initializing offeredClasses from backend
-      AXIOS.get('/offered-classes')
-        .then(response => {
-          this.offered_classes = response.data
-        })
-        .catch(e => {
-          this.errors.push = e.message
-        })
+      this.fetchOfferedClasses()
     },
 
+  computed: {
+    placeholders() {
+      const placeholdersCount = this.desiredItemCount - this.offered_classes.length;
+      return Array(placeholdersCount < 0 ? 0 : placeholdersCount).fill({});
+    },
+  },
+
   methods: {
-      createScheduledClass: function (startTime, endTime, date, offeredClassID, instructorID) {
+    fetchOfferedClasses() {
+      AXIOS.get('/offered-classes').then(response => {
+        this.offered_classes = response.data;
+      }).catch(error => {
+        this.errors.push(error.message || "Failed to load users");
+      });
+    },
 
-        AXIOS.post('/scheduled-class/', {
-          startTime: startTime.concat(":00"),
-          endTime: endTime.concat(":00"),
-          date: date,
-          offeredClassID: offeredClassID,
-          instructorID: instructorID}, {})
-          .then(response => {
-              // JSON responses are automatically parsed.
-              this.scheduled_classes.push(response.data)
-              this.errors = []
-              this.newStartTime= ''
-              this.newEndTime = ''
-              this.newDate = ''
-              this.newOfferedClassID = ''
-              this.newInstructorID = ''
-            }
-          )
-          .catch(e => {
-            this.errors = e.response.data.errors
-          })
-      },
+    createScheduledClass() {
 
-      logout() {
-            this.$router.push({ name: 'Home' });
-      },
+      AXIOS.post('/scheduled-class', {
+        startTime: this.newStartTime.concat(":00"),
+        endTime: this.newEndTime.concat(":00"),
+        date: this.newDate,
+        offeredClassID: this.newOfferedClassID,
+        instructorID: localStorage.getItem("accountRoleId")}, {})
+        .then(response => {
+          // JSON responses are automatically parsed.
+          this.errors = []
+          this.newStartTime= ''
+          this.newEndTime = ''
+          this.newDate = ''
+          this.newOfferedClassID = ''
+          this.newInstructorID = ''
+          alert("Successfully scheduled");
+        }
+      )
+      .catch(e => {
+        alert(error.response.data.errors);
+      })
+    },
 
-      navRegisterClasses() {
-        this.$router.push('/register');
+    logout() {
+      localStorage.clear()
+      this.$router.push({ name: 'Home' });
+    },
+
+    previousPage() {
+      this.$router.back();
+    },
+
+    selectOfferedClass(id) {
+      if (this.newOfferedClassID === id) {
+        this.newOfferedClassID = null
       }
-  }
-}
-
-document.querySelector('ul').addEventListener('click', function(e) {
-  var selected;
-
-  if(e.target.tagName === 'LI') {
-    selected= document.querySelector('li.selected');
-    if(selected) {
-      selected.className= '';
-      this.selectedClassId = selected.offeredClassId
+      else {
+        this.newOfferedClassID = id;
+      }
     }
-    e.target.className= 'selected';
   }
-}),
-
-function getSchedule() {
-  this.startTime = document.getElementById("startTime").value;
-  this.endTime = document.getElementById("endTime").value;
-  this.date = document.getElementById("date").value;
-  createScheduledClass(this.startTime, this.endTime, this.date, this.selectedClassId, localStorage.accountRoleId);
 }
-;
+
 </script>
 
 <style scoped>
-  .column {
-    float: left;
-    width: 50%;
-    padding: 10px;
-  }
 
-  .input {
-    alignment: center;
-  }
 
-  .selected {
-    background: lightblue;
-  }
+main {
+  margin-top: 3%;
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 40fr 60fr;
+  grid-template-rows: auto;
+  grid-gap: 16px;
+  padding: 30px 30px 10px;
+  height: 100%;
+}
 
-  .button {
-    border-radius: 5px;
-    padding: 5px 10px;
-    margin-right: 10px;
-  }
+#offered_class {
+  max-height: 490px;
+  overflow-y: auto;
+
+  grid-column: 2/3;
+  grid-row: 1/2;
+
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+#offered_class ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#offered_class li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e1e1e1;
+  background-color: #fff;
+  transition: background-color 0.3s;
+}
+
+#offered_class li.placeholder {
+  height: 50px;
+  border-bottom: 1px solid #e1e1e1;
+  background-color: #f9f9f9
+}
+
+#offered_class li:hover {
+  background-color: #f0f0f0;
+}
+
+#offered_class::-webkit-scrollbar {
+  width: 10px;
+}
+
+#offered_class::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#offered_class::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#offered_class::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+
+#content{
+  margin: auto;
+  padding: 20px;
+}
+
+h2 {
+  margin-top: 20px;
+  grid-column: 1 / -1;
+  grid-row: 1/2;
+}
+
+#logo {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  text-align: right;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+}
+
+#logo p {
+  font-size: 24px;
+  margin: 0;
+}
+
+#logo img {
+  width: 80px;
+  height: auto;
+}
+
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+#promoteContainer {
+  grid-row: 2/3;
+  grid-column: 2/3;
+}
+
+#logoutContainer {
+  margin-top: 50px;
+  grid-column: 1/2;
+  grid-row: 2/3;
+  text-align: center;
+  justify-self: start;
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+  gap: 10px;
+}
+
+button {
+  padding: 10px 30px 10px 30px;
+  margin-left: 0;
+  width: fit-content;
+  height: fit-content;
+  background-color: #8e6a7e;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  justify-self: center;
+  align-self: start;
+}
+
+button:hover:not(:disabled) {
+  background-color: #8a2be2;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#previousPage {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+}
+
+#offered_class li.is-selected {
+  background-color: #D1A5F3;
+  color: white;
+}
+
 
 </style>
