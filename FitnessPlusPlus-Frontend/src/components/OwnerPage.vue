@@ -1,34 +1,37 @@
 <template>
   <div id="owner-page">
-    <div id="offered-classes-container">
-      <h4>Offered Classes</h4>
-      <ul id="offered-classes-list">
-        <li v-for="(offeredClass, index) in offered_classes" :key="offeredClass.offeredClassId"
-            :class="{ 'approved': offeredClass.approved, 'not-approved': !offeredClass.approved }">
-          <div class="class-description">
-            <span :style="{ color: offeredClass.approved ? 'green' : 'red' }">
-              {{ offeredClass.classType }} - {{ offeredClass.description }}
-            </span>
-          </div>
-          <div class="button-container">
-            <button v-if="!offeredClass.approved" @click="approveOfferedClass(offeredClass)">
-              Approve
-            </button>
-            <button @click="removeOfferedClass(offeredClass.offeredClassId)">
-              Remove
-            </button>
-          </div>
-        </li>
-      </ul>
-    </div>
-
-    <button id="logout-button" @click="logout">Logout</button>
-    <button id="promote-user-button" @click="promoteUser">Promote User</button>
-    <button id="scheduled-classes-button" @click="scheduleClass">Schedule Class</button>
-
     <div id="logo">
       <p>FitnessPlusPlus</p>
       <img src="../assets/logo.png" alt="logo">
+    </div>
+
+    <div id="content">
+      <div id="offered-classes-container">
+        <h4>Offered Classes</h4>
+        <ul id="offered-classes-list">
+          <li v-for="(offeredClass, index) in offered_classes" :key="offeredClass.offeredClassId"
+              :class="{ 'approved': offeredClass.approved, 'not-approved': !offeredClass.approved }">
+            <div class="class-description">
+            <span :style="{ color: offeredClass.approved ? 'green' : 'red' }">
+              {{ offeredClass.classType }} - {{ offeredClass.description }}
+            </span>
+            </div>
+            <div class="button-container">
+              <button v-if="!offeredClass.approved" @click="approveOfferedClass(offeredClass)">
+                Approve
+              </button>
+              <button @click="removeOfferedClass(offeredClass.offeredClassId)">
+                Remove
+              </button>
+            </div>
+          </li>
+        </ul>
+      </div>
+      <div id="logoutContainer">
+        <button @click="logout" id="logoutButton">Logout</button>
+      </div>
+      <button id="promote-user-button" @click="promoteUser">Promote User</button>
+      <button id="scheduled-classes-button" @click="scheduleClass">Schedule Class</button>
     </div>
   </div>
 </template>
@@ -54,6 +57,29 @@ export default {
     };
   },
   created() {
+    // If not signed in
+    if (localStorage.getItem("username") === null || !localStorage.getItem("password") === null) {
+      this.$router.push('/login');
+      return
+    }
+
+    //Otherwise check valid account
+    AXIOS.post('/login', {
+      username: localStorage.getItem("username"),
+      password: localStorage.getItem("password")}, {})
+      .then(response => {
+        if (response.data.roleType === "Client") {
+          this.$router.push('/Dashboard');
+
+        } else if (response.data.roleType === "Instructor") {
+          this.$router.push('/ManageSchedule');
+
+        }
+      })
+      .catch(e => {
+        alert(e.message);
+      })
+
     this.fetchOfferedClasses();
   },
   methods: {
@@ -95,13 +121,14 @@ export default {
       });
     },
     logout() {
+      localStorage.clear()
       this.$router.push({ name: 'Home' });
     },
     promoteUser() {
-      this.$router.push({ name: 'PromoteUser' });
+      this.$router.push('/promote-user');
     },
     scheduleClass(){
-      this.$router.push({name: 'ScheduleClasses'})
+      this.$router.push('/schedule-classes')
     }
   }
 };
@@ -120,16 +147,32 @@ export default {
   position: relative;
 }
 
+#content {
+  display: grid;
+  grid-template-columns: auto 1fr auto;  /* Updated for simplicity and responsiveness */
+  grid-template-rows: auto 50px 50px; /* Ensure there's enough space for three rows */
+  grid-template-areas:
+    ". tabl ."
+    ". . promote"
+    "lout . schedule"; /* Updated for clarity and to match IDs correctly */
+  grid-gap: 20px;
+  margin-top: 100px;
+  height: 90vh;
+  width: 95vw;
+}
+
 #offered-classes-container {
-  width: 60%;
+  grid-area: tabl;
   max-height: 50vh;
   overflow-y: auto;
-  margin: 20px 0;
+  width: 60vw;
   padding: 20px;
   background-color: #f5f5f5;
   border: 1px solid #ccc;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  align-self: center;
+  justify-self: center;
 }
 
 #offered-classes-list {
@@ -154,20 +197,25 @@ export default {
   justify-content: center; /* Centers the text vertically in its container */
 }
 
-.button-container {
-  display: flex;
-}
-
 button {
-  padding: 10px 20px;
-  margin-left: 10px;
-  margin-top: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  background-color: #8a2be2;
+  padding: 10px 30px;
+  background-color: #8e6a7e;
   color: white;
   border: none;
   border-radius: 20px;
+  font-size: 18px;
+  cursor: pointer;
+  justify-self: center;
+  align-self: start;
+}
+
+button:hover:not(:disabled) {
+  background-color: #8a2be2;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }
 
 #owner-page #logo {
@@ -189,5 +237,37 @@ button {
 #owner-page #logo img {
   width: 80px;
   height: auto;
+
 }
+
+#logoutContainer {
+  text-align: center;
+  justify-self: start;
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+  grid-area: lout;
+}
+
+#promote-user-button {
+  grid-area: promote;
+  text-align: center;
+  justify-self: end;
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+
+}
+
+#scheduled-classes-button {
+  grid-area: schedule;
+  text-align: center;
+  justify-self: end;
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+
+}
+
+
 </style>

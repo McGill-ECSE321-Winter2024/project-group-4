@@ -48,6 +48,25 @@ export default {
   //...
 
   created: function () {
+    // If not signed in
+    if (localStorage.getItem("username") === null || !localStorage.getItem("password") === null) {
+      this.$router.push('/login');
+      return
+    }
+
+    //Otherwise check valid account
+    AXIOS.post('/login', {
+      username: localStorage.getItem("username"),
+      password: localStorage.getItem("password")}, {})
+      .then(response => {
+        if (response.data.roleType === "Client") {
+          this.$router.push('/Dashboard');
+
+        }
+      })
+      .catch(e => {
+        alert(e.message);
+      })
   },
 
   methods: {

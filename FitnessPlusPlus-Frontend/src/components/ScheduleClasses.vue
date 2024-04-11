@@ -28,15 +28,15 @@
       </div>
 
         <form @submit.prevent>
-          <label for="startTime"><b>Start Time</b></label><br>
+          <label for="startTime" class="noselect"><b>Start Time</b></label><br>
           <input type="time" placeholder="Start Time" id="startTime" v-model="newStartTime" required><br>
 
 
-          <label for="endTime"><b>End Time</b></label><br>
+          <label for="endTime" class="noselect"><b>End Time</b></label><br>
           <input type="time" placeholder="End Time" v-model="newEndTime" id="endTime" required><br>
 
 
-          <label for="date"><b>Date</b></label><br>
+          <label for="date" class="noselect"><b>Date</b></label><br>
           <input type="date" placeholder="Date" v-model="newDate" id="date" required><br><br>
 
 
@@ -80,12 +80,38 @@ export default {
   //...
 
   created: function () {
+    // If not signed in
+    if (localStorage.getItem("username") === null || !localStorage.getItem("password") === null) {
+      this.$router.push('/login');
+      return
+    }
+
+    //Otherwise check valid account
+    AXIOS.post('/login', {
+      username: localStorage.getItem("username"),
+      password: localStorage.getItem("password")}, {})
+      .then(response => {
+        if (response.data.roleType === "Client") {
+          this.$router.push('/Dashboard');
+
+        }
+      })
+      .catch(e => {
+        alert(e.message);
+      })
+
       this.fetchOfferedClasses()
     },
 
   computed: {
     placeholders() {
-      const placeholdersCount = this.desiredItemCount - this.offered_classes.length;
+      let n = this.offered_classes.length
+      for (let c in this.offered_classes) {
+        if (!c.approved) {
+          n = n - 1
+        }
+      }
+      const placeholdersCount = this.desiredItemCount - n;
       return Array(placeholdersCount < 0 ? 0 : placeholdersCount).fill({});
     },
   },
@@ -168,7 +194,7 @@ main {
 }
 
 #offered_class {
-  max-height: 490px;
+  height: 490px;
   overflow-y: auto;
 
   grid-column: 2/3;
@@ -239,6 +265,10 @@ h2 {
   margin-top: 20px;
   grid-column: 1 / -1;
   grid-row: 1/2;
+}
+
+label {
+  margin-top: 20px;
 }
 
 #logo {

@@ -51,6 +51,28 @@ export default {
   //...
 
   created: function () {
+
+    // If signed in
+    if (localStorage.getItem("username") !== null && !localStorage.getItem("password") !== null) {
+      //Redirect to right page
+      AXIOS.post('/login', {
+        username: localStorage.getItem("username"),
+        password: localStorage.getItem("password")}, {})
+        .then(response => {
+          if (response.data.roleType === "Client") {
+            this.$router.push('/Dashboard');
+
+          } else if (response.data.roleType === "Instructor") {
+            this.$router.push('/ManageSchedule');
+          } else if (response.data.roleType === "Owner") {
+            this.$router.push('/owner-page')
+          }
+        })
+        .catch(e => {
+          alert(e.message);
+        })
+    }
+
   },
 
   methods: {
@@ -72,7 +94,7 @@ export default {
           }else if(localStorage.getItem("accountRoleType").includes("Instructor")){
             this.$router.push('/ManageSchedule');
           } else if(localStorage.getItem("accountRoleType").includes("Owner")){
-            this.$router.push('/Admin');
+            this.$router.push('/owner-page');
           }
         })
         .catch(e => {
