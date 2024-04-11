@@ -183,6 +183,7 @@ export default {
 
   #offerclass button {
     padding: 10px 30px 10px 30px;
+    margin-left: 0;
     width: fit-content;
     height: fit-content;
     background-color: #8e6a7e;

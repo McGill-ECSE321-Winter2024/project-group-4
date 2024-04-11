@@ -5,56 +5,43 @@
        <p>FitnessPlusPlus</p>
        <img src="../assets/logo.png"/>
      </div>
-     <h2>Promote User</h2>
    </header>
+   <h2>Promote User</h2>
 
    <main>
       <section id="clients">
         <ul>
-          <li v-for="user in registered_user" :key="user.id" :class="{ 'is-selected': user.username === selectedUser }"
-              @click="selectUser(user.username, user.id, user.password, user.email, user.accountRole, user.roleType)">
-            {{ user.username }}
+          <li v-for="user in registered_user" :key="user.userId" :class="{ 'is-selected': user.username === selectedUsername }" class="noselect"
+              @click="selectUser(user.username, user.userId)">
+            {{ user.username }} - Role: {{ user.roleType}} | Email: {{user.email}} | ID: {{user.userId}}
           </li>
-          <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder">
+          <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder noselect">
             &nbsp;
           </li>
         </ul>
       </section>
-      <section id="buttons">
-
-        <!-- Save Changes and Previous Page Button-->
-        <button @click="saveChanges">Save Changes</button>
-        <button @click="previousPage">Previous Page</button>
-
-      </section>
-   </main>
-
-   <footer>
-     <!-- Promote and Logout buttons -->
-     <div id="footerContainer">
      <div id="promoteContainer">
-      <button @click="promote" id="promoteButton">Promote</button>
+       <button @click="promote" v-bind:disabled="!selectedUsername" id="promoteButton">Promote</button>
      </div>
      <div id="logoutContainer">
-      <button @click="logout" id="logoutButton">Logout</button>
+       <button @click="logout" id="logoutButton">Logout</button>
      </div>
-     </div>
-   </footer>
-
+   </main>
+   <button id="previousPage" @click="previousPage">Previous Page</button>
  </div>
 </template>
 
 <script>
-import axios from 'axios';
-import config from '../../config';
+import axios from 'axios'
+import config from '../../config'
 
-const frontendUrl = `http://${config.dev.host}:${config.dev.port}`;
-const backendUrl = `http://${config.dev.backendHost}:${config.dev.backendPort}`;
+const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
+const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
 
 const AXIOS = axios.create({
   baseURL: backendUrl,
   headers: { 'Access-Control-Allow-Origin': frontendUrl }
-});
+})
 
 export default {
   name: "PromoteUser",
@@ -63,12 +50,8 @@ export default {
       registered_user: [],
       errors: [],
       desiredItemCount: 11,
-      selectedUser: null,
-      selectedUserID: null,
-      selectedUserpassword: null,
-      selectedUseremail: null,
-      selectedUserRoleID: null,
-      selectedUserRoleType: null
+      selectedUsername: null,
+      selectedUserID: null
     };
   },
   created() {
@@ -88,11 +71,8 @@ export default {
         this.errors.push(error.message || "Failed to load users");
       });
     },
-    saveChanges() {
-
-    },
     previousPage() {
-
+      this.$router.back()
     },
     promote() {
       if(this.selectedUser === null) {
@@ -100,42 +80,30 @@ export default {
         return;
       }
 
-      const dto = {
-        userId: this.selectedUserID,
-        username: this.selectedUser,
-        password: this.selectedUserpassword,
-        email: this.selectedUseremail,
-        accountRole: this.selectedUserRoleID,
-        roleType: this.selectedUserRoleType
-      };
-
-      AXIOS.post('/promote/', dto)
+      AXIOS.post('/promote/', {
+        userId: this.selectedUserID
+      }, {})
         .then(response => {
-          alert("User promoted successfully!");
           this.fetchRegisteredUser();
         })
         .catch(error => {
           console.error("Failed to promote user:", error.message);
-          alert(error.message);
+          alert(error.response.data.errors);
         });
+
     },
     logout() {
+      localStorage.clear()
       this.$router.push({ name: 'Home' });
     },
-    selectUser(username, id, pswd, email, role, roleid) {
-      if (this.selectedUser === username) {
-        this.selectedUser = null
+    selectUser(username, id) {
+      if (this.selectedUsername === username) {
+        this.selectedUsername = null
         this.selectedUserID = null;
-        this.selectedUserpassword = null;
-        this.selectedUseremail = null;
       }
       else {
-        this.selectedUser = username;
+        this.selectedUsername = username;
         this.selectedUserID = id;
-        this.selectedUserpassword = pswd;
-        this.selectedUseremail = email;
-        this.selectedUserRoleID = role;
-        this.selectedUserRoleID = roleid;
       }
     }
   }
@@ -149,14 +117,18 @@ main {
   grid-column: 1/-1;
   display: grid;
   grid-template-columns: 40fr 60fr;
-  grid-template-rows: auto 60px auto;
+  grid-template-rows: auto;
+  grid-gap: 16px;
   padding: 30px 30px 10px;
   height: 100%;
 }
 
 #clients {
-  max-height: 500px;
+  max-height: 490px;
   overflow-y: auto;
+
+  grid-column: 2/3;
+  grid-row: 1/2;
 
   background-color: #f9f9f9;
   border-radius: 8px;
@@ -204,17 +176,25 @@ main {
   background: #555;
 }
 
+.noselect {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 
 #content{
-  grid-template-columns: 1fr 1fr;
-  grid-gap: 16px;
   margin: auto;
   padding: 20px;
 }
 
-#header h1 {
+h2 {
   margin-top: 20px;
   grid-column: 1 / -1;
+  grid-row: 1/2;
 }
 
 #logo {
@@ -238,16 +218,6 @@ main {
   height: auto;
   }
 
-#buttons {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100%;
-}
-
-#logoutButton {
-  margin-left: auto;
-}
 
 footer {
   display: flex;
@@ -255,48 +225,61 @@ footer {
   padding: 10px 20px;
 }
 
-#footerContainer {
-  display: flex;
-  justify-content: center;
-  width: 100%;
-}
-
 #promoteContainer {
-  position: relative;
-  flex-grow: 1;
-  display: flex;
-  justify-content: center;
+  grid-row: 2/3;
+  grid-column: 2/3;
 }
 
 #logoutContainer {
-  display: flex;
-  justify-content: flex-end;
-  flex-grow: 1;
-}
-
-#promoteButton{
-  margin-left: -100px;
+  margin-top: 50px;
+  grid-column: 1/2;
+  grid-row: 2/3;
+  text-align: center;
+  justify-self: start;
+  justify-content: center;
+  align-items: center;
+  align-self: end;
+  gap: 10px;
 }
 
 button {
-  padding: 10px;
-  width: 200px;
-  background-color: #A276C5;
-  color: black;
+  padding: 10px 30px 10px 30px;
+  margin-left: 0;
+  width: fit-content;
+  height: fit-content;
+  background-color: #8e6a7e;
+  color: white;
   border: none;
   border-radius: 20px;
-  font-size: 20px;
+  font-size: 18px;
   cursor: pointer;
-  margin-left: 10px;
-  margin-right: 10px;
+  justify-self: center;
+  align-self: start;
 }
 
-button:hover {
-  background-color: #D1A5F3;
+button:hover:not(:disabled) {
+  background-color: #8a2be2;
+}
+
+button:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+}
+
+#previousPage {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  text-align: center;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
 }
 
 #clients li.is-selected {
   background-color: #D1A5F3;
   color: white;
 }
+
 </style>
