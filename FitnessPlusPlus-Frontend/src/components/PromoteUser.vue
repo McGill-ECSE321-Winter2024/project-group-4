@@ -11,11 +11,12 @@
    <main>
       <section id="clients">
         <ul>
-          <li v-for="user in registered_user" :key="user.id">
-            {{ user.username }} <!-- Assuming 'name' is the property you want to display -->
+          <li v-for="user in registered_user" :key="user.id" :class="{ 'is-selected': user.username === selectedUser }"
+              @click="selectUser(user.username, user.id)">
+            {{ user.username }}
           </li>
           <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder">
-            &nbsp; <!-- Non-breaking space to ensure the item takes up space -->
+            &nbsp;
           </li>
         </ul>
       </section>
@@ -61,7 +62,9 @@ export default {
     return {
       registered_user: [],
       errors: [],
-      desiredItemCount: 11
+      desiredItemCount: 11,
+      selectedUser: null,
+      selectedUserID: null
     };
   },
   created() {
@@ -88,10 +91,37 @@ export default {
 
     },
     promote() {
+      if(this.selectedUser === null) {
+        alert("Please select a user to promote.");
+        return;
+      }
 
+      const dto = {
+        id: this.selectedUserID
+      };
+
+      AXIOS.post('/promote/', dto)
+        .then(response => {
+          alert("User promoted successfully!");
+          this.fetchRegisteredUser();
+        })
+        .catch(error => {
+          console.error("Failed to promote user:", error.message);
+          alert(error.message);
+        });
     },
     logout() {
       this.$router.push({ name: 'Home' });
+    },
+    selectUser(username, id) {
+      if (this.selectedUser === username) {
+        this.selectedUser = null
+        this.selectedUserID = null;
+      }
+      else {
+        this.selectedUser = username;
+        this.selectedUserID = id;
+      }
     }
   }
 };
@@ -248,5 +278,10 @@ button {
 
 button:hover {
   background-color: #D1A5F3;
+}
+
+#clients li.is-selected {
+  background-color: #D1A5F3;
+  color: white;
 }
 </style>
