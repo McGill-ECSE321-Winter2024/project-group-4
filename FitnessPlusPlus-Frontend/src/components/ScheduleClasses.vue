@@ -17,18 +17,20 @@
     </div>
     <div class="column">
       <label for="startTime"><b>Start Time</b></label><br>
-      <input type="time" placeholder="Enter Start Time" name="startTime" required>
+      <input type="time" placeholder="Enter Start Time" id="startTime" required>
       <br>
 
       <label for="endTime"><b>End Time</b></label><br>
-      <input type="time" placeholder="Enter End Time" name="endTime" required>
+      <input type="time" placeholder="Enter End Time" id="endTime" required>
       <br>
 
       <label for="date"><b>Date</b></label><br>
-      <input type="date" placeholder="Enter Date" name="date" required>
+      <input type="date" placeholder="Enter Date" id="date" required>
       <br>
 
-      <button>Schedule Class</button>
+      <button @click="createScheduledClass(this.startTime, this.endTime, this.date, this.selectedClassId,
+      localStorage.accountRoleId)"
+      >Schedule Class</button>
       <br><br>
       <button @click="navRegisterClasses">Register for Classes</button>
     </div>
