@@ -14,6 +14,9 @@
           <li v-for="user in registered_user" :key="user.id">
             {{ user.username }} <!-- Assuming 'name' is the property you want to display -->
           </li>
+          <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder">
+            &nbsp; <!-- Non-breaking space to ensure the item takes up space -->
+          </li>
         </ul>
       </section>
       <section id="buttons">
@@ -45,11 +48,18 @@ export default {
   data() {
     return {
       registered_user: [],
-      errors: []
+      errors: [],
+      desiredItemCount: 9
     };
   },
   created() {
     this.fetchRegisteredUser();
+  },
+  computed: {
+    placeholders() {
+      const placeholdersCount = this.desiredItemCount - this.registered_user.length;
+      return Array(placeholdersCount < 0 ? 0 : placeholdersCount).fill({});
+    },
   },
   methods: {
     fetchRegisteredUser() {
@@ -75,6 +85,15 @@ main {
   height: 100%;
 }
 
+#clients {
+  max-height: 500px;
+  overflow-y: auto;
+
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
 #clients ul {
   list-style-type: none;
   padding: 0;
@@ -85,8 +104,20 @@ main {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px;
-  border-bottom: 1px solid #000000;
+  padding: 15px 20px;
+  border-bottom: 1px solid #e1e1e1;
+  background-color: #fff;
+  transition: background-color 0.3s;
+}
+
+#clients li.placeholder {
+  height: 50px; /* Match the height of your user items */
+  border-bottom: 1px solid #e1e1e1; /* Light border to keep consistent with user items */
+  background-color: #f9f9f9
+}
+
+#clients li:hover {
+  background-color: #f0f0f0;
 }
 
 
