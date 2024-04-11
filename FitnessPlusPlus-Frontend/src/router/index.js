@@ -8,6 +8,7 @@ import ScheduledClass from '../components/ScheduledClass.vue'
 import PromoteUser from "../components/PromoteUser.vue"
 import OfferClass from '@/components/OfferClass'
 import OwnerPage from '../components/OwnerPage.vue'
+import ScheduleClasses from '@/components/ScheduleClasses.vue'
 
 Vue.use(Router)
 
@@ -52,6 +53,11 @@ export default new Router({
       path: '/owner-page',
       name: 'Owner Page',
       component: OwnerPage
+    },
+    {
+      path: '/schedule_classes',
+      name: 'Schedule Classes',
+      component: ScheduleClasses
     }
   ]
 })

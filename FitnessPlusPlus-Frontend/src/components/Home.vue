@@ -26,7 +26,6 @@ export default {
 <style scoped>
 #home {
   text-align: center; /* Center-align text */
-  background-color: #; /* Light grey background */
   font-family: 'Arial', sans-serif; /* Font style for the text */
   color: #333; /* Dark grey color for text */
   height: 100vh; /* Full height of the viewport */
@@ -40,7 +39,7 @@ export default {
   align-items: center;
   justify-content: flex-start;
   padding-top: 20px;
-  padding-left: 20px; 
+  padding-left: 20px;
 }
 
 #logo p {
@@ -58,7 +57,7 @@ export default {
 }
 
 button {
-  background-color: #8a2be2;
+  background-color: #A276C5;
     color: black;
     border: none;
     padding: 10px 20px;
@@ -74,7 +73,7 @@ button {
 }
 
 button:hover {
-  background-color: #7c27cb;
+  background-color: #D1A5F3;
 }
 </style>
 

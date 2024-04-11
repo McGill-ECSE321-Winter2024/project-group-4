@@ -150,18 +150,25 @@ export default {
   #login #login_panel form input[type="submit"] {
     padding: 10px;
     width: 200px;
-    background-color: #8a2be2;
-    color: white;
+    background-color: #A276C5;
+    color: black;
     border: none;
     border-radius: 20px;
-    font-size: 18px;
+    font-size: 20px;
     cursor: pointer;
+  }
+
+  #login #login_panel form input[type="submit"]:hover {
+    background-color: #D1A5F3; /* Same as the home page button hover */
   }
 
   #login #login_panel form input[type="submit"]:disabled {
     background-color: #B69DA7;
+    color: #ccc;
     cursor: default;
+    border: none;
   }
+
 
   #login #login_panel form table {
     width: 100%;
