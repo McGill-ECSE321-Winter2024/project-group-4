@@ -149,7 +149,7 @@ export default {
 
 #content {
   display: grid;
-  grid-template-columns: auto 1fr auto;  /* Updated for simplicity and responsiveness */
+  grid-template-columns: 1fr auto 1fr;  /* Updated for simplicity and responsiveness */
   grid-template-rows: auto 50px 50px; /* Ensure there's enough space for three rows */
   grid-template-areas:
     ". tabl ."
