@@ -10,7 +10,11 @@
 
    <main>
       <section id="clients">
-        <!-- Clients List -->
+        <ul>
+          <li v-for="user in registered_user" :key="user.id">
+            {{ user.username }} <!-- Assuming 'name' is the property you want to display -->
+          </li>
+        </ul>
       </section>
       <section id="buttons">
         <!-- Save Changes and Previous Page Button-->
@@ -45,7 +49,7 @@ export default {
     };
   },
   created() {
-    this.fetchRegisteredUser
+    this.fetchRegisteredUser();
   },
   methods: {
     fetchRegisteredUser() {
@@ -72,11 +76,17 @@ main {
 }
 
 #clients ul {
-
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
 #clients li {
-
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #000000;
 }
 
 
