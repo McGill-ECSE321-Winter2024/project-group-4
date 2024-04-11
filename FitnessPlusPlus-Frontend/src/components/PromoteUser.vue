@@ -49,7 +49,7 @@ export default {
     return {
       registered_user: [],
       errors: [],
-      desiredItemCount: 9
+      desiredItemCount: 11
     };
   },
   created() {
@@ -92,7 +92,6 @@ main {
   background-color: #f9f9f9;
   border-radius: 8px;
   box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  overflow: hidden;
 }
 #clients ul {
   list-style-type: none;
@@ -118,6 +117,22 @@ main {
 
 #clients li:hover {
   background-color: #f0f0f0;
+}
+
+#clients::-webkit-scrollbar {
+  width: 10px;
+}
+
+#clients::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#clients::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+#clients::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
 
 
