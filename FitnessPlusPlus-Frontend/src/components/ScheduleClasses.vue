@@ -6,9 +6,11 @@
         <img src="../assets/logo.png"/>
       </div>
     </header>
-    <h2>Promote User</h2>
+    <h2>Schedule Classes</h2>
 
     <main>
+      <div class="row">
+      <div class="column" style="float:left;">
       <section id="offered_class">
         <ul>
           <li v-for="offeredClass in offered_classes" v-if="offeredClass.approved" :class="{ 'is-selected': offeredClass.offeredClassId === newOfferedClassID }" class="noselect"
@@ -20,27 +22,31 @@
           </li>
         </ul>
       </section>
+      <br>
       <button style="float:left" @click="logout">Logout</button>
       <button style="float:right">Remove Class</button>
+      </div>
 
-      <div class="column">
+      <div class="column" style="float:right">
         <form @submit.prevent>
           <label for="startTime"><b>Start Time</b></label><br>
-          <input type="time" placeholder="Start Time" id="startTime" v-model="newStartTime" required>
+          <input type="time" placeholder="Start Time" id="startTime" v-model="newStartTime" required><br>
 
 
           <label for="endTime"><b>End Time</b></label><br>
-          <input type="time" placeholder="End Time" v-model="newEndTime" id="endTime" required>
+          <input type="time" placeholder="End Time" v-model="newEndTime" id="endTime" required><br>
 
 
           <label for="date"><b>Date</b></label><br>
-          <input type="date" placeholder="Date" v-model="newDate" id="date" required>
+          <input type="date" placeholder="Date" v-model="newDate" id="date" required><br><br>
 
 
-          <button @click="createScheduledClass">Schedule Class</button>
+          <button @click="createScheduledClass">Schedule Class</button><br>
 
         </form>
+        <br><br><br><br><br><br><br><br><br>
         <button @click="previousPage">Previous Page</button>
+      </div>
       </div>
     </main>
   </div>
@@ -144,17 +150,6 @@ export default {
 
 <style scoped>
 
-
-main {
-  margin-top: 3%;
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 40fr 60fr;
-  grid-template-rows: auto;
-  grid-gap: 16px;
-  padding: 30px 30px 10px;
-  height: 100%;
-}
 
 #offered_class {
   max-height: 490px;
@@ -315,5 +310,13 @@ button:disabled {
   color: white;
 }
 
+.column {
+  width: 50%;
+  padding: 75px;
+}
+
+.row {
+  width: 100%;
+}
 
 </style>
