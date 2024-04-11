@@ -1,5 +1,5 @@
 <template>
-  <div class="content">
+  <div id="content">
     <header id="header">
       <div id="logo">
         <p>FitnessPlusPlus</p>
@@ -9,25 +9,24 @@
     <h2>Schedule Classes</h2>
 
     <main>
-      <div class="row">
-      <div class="column" style="float:left;">
       <section id="offered_class">
         <ul>
-          <li v-for="offeredClass in offered_classes" v-if="offeredClass.approved" :class="{ 'is-selected': offeredClass.offeredClassId === newOfferedClassID }" class="noselect"
-            :key="offeredClass.offeredClassId" @click="selectOfferedClass(offeredClass.offeredClassId)">
-                {{ offeredClass.classType }} - {{ offeredClass.description }}
+          <li v-for="c in offered_classes" v-if="c.approved" :key="c.offeredClassId" :class="{ 'is-selected': c.offeredClassId === newOfferedClassID }" class="noselect"
+              @click="selectOfferedClass(c.offeredClassId)">
+            {{ c.classType }} - {{ c.description}}
           </li>
           <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder noselect">
             &nbsp;
           </li>
         </ul>
       </section>
-      <br>
-      <button style="float:left" @click="logout">Logout</button>
-      <button style="float:right">Remove Class</button>
+      <div id="removeContainer">
+        <button @click="remove" v-bind:disabled="!newOfferedClassID" id="removeButton">Remove</button>
+      </div>
+      <div id="logoutContainer">
+        <button @click="logout" id="logoutButton">Logout</button>
       </div>
 
-      <div class="column" style="float:right">
         <form @submit.prevent>
           <label for="startTime"><b>Start Time</b></label><br>
           <input type="time" placeholder="Start Time" id="startTime" v-model="newStartTime" required><br>
@@ -41,14 +40,12 @@
           <input type="date" placeholder="Date" v-model="newDate" id="date" required><br><br>
 
 
-          <button @click="createScheduledClass">Schedule Class</button><br>
+          <button @click="createScheduledClass" v-bind:disabled="!newOfferedClassID || !newStartTime || !newEndTime || !newDate">Schedule Class</button><br>
 
         </form>
-        <br><br><br><br><br><br><br><br><br>
-        <button @click="previousPage">Previous Page</button>
-      </div>
-      </div>
     </main>
+    <button id="previousPage" @click="previousPage">Previous Page</button>
+
   </div>
 </template>
 
@@ -66,7 +63,7 @@ const AXIOS = axios.create({
 })
 
 export default {
-  name: 'template',
+  name: 'ScheduleClasses',
   data () {
     return {
       offered_classes: [],
@@ -75,7 +72,7 @@ export default {
       newDate: '',
       newOfferedClassID: '',
       newInstructorID: '',
-      desiredItemCount: 9,
+      desiredItemCount: 11,
       errors: [],
       response: []
     }
@@ -122,7 +119,7 @@ export default {
         }
       )
       .catch(e => {
-        alert(error.response.data.errors);
+        alert(e.response.data.errors);
       })
     },
 
@@ -142,6 +139,16 @@ export default {
       else {
         this.newOfferedClassID = id;
       }
+      console.log(this.newOfferedClassID)
+    },
+    remove() {
+      AXIOS.delete('/offered-classes/'+this.newOfferedClassID)
+        .then(response => {
+          this.newOfferedClassID = null
+          this.fetchOfferedClasses()
+        }).catch(e => {
+        alert(e.response.data.errors);
+      })
     }
   }
 }
@@ -149,7 +156,16 @@ export default {
 </script>
 
 <style scoped>
-
+main {
+  margin-top: 3%;
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 40fr 60fr;
+  grid-template-rows: auto;
+  grid-gap: 16px;
+  padding: 30px 30px 10px;
+  height: 100%;
+}
 
 #offered_class {
   max-height: 490px;
@@ -253,7 +269,7 @@ footer {
   padding: 10px 20px;
 }
 
-#promoteContainer {
+#removeContainer {
   grid-row: 2/3;
   grid-column: 2/3;
 }
@@ -310,13 +326,37 @@ button:disabled {
   color: white;
 }
 
-.column {
-  width: 50%;
-  padding: 75px;
+input[type="time"] {
+  border: 1px solid #ccc;
+  width: 150px;
+  outline: 2px solid #8e6a7e;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  padding: 8px 8px;
+  background-color: #f8f8f8;
+  transition: outline 0.3s ease, background-color 0.3s ease;
+}
+input[type="time"]:focus {
+  outline: 3px solid #8a2be2;
+  background-color: white;
 }
 
-.row {
-  width: 100%;
+input[type="date"] {
+  border: 1px solid #ccc;
+  width: 150px;
+  outline: 2px solid #8e6a7e;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #333;
+  padding: 8px 12px;
+  background-color: #f8f8f8;
+  transition: outline 0.3s ease, background-color 0.3s ease;
 }
+input[type="date"]:focus {
+  outline: 3px solid #8a2be2;
+  background-color: white;
+}
+
 
 </style>
