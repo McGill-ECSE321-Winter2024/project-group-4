@@ -28,9 +28,7 @@
       <input type="date" placeholder="Enter Date" id="date" required>
       <br>
 
-      <button @click="createScheduledClass(this.startTime, this.endTime, this.date, this.selectedClassId,
-      localStorage.accountRoleId)"
-      >Schedule Class</button>
+      <button @click="getSchedule">Schedule Class</button>
       <br><br>
       <button @click="navRegisterClasses">Register for Classes</button>
     </div>
@@ -54,23 +52,27 @@ export default {
   name: 'template',
   data () {
     return {
-      scheduled_classes: [],
+      offered_classes: [],
       newStartTime: '',
       newEndTime: '',
       newDate: '',
       newOfferedClassID: '',
       newInstructorID: '',
       errors: [],
-      response: []
+      response: [],
+      startTime: '',
+      endTime: '',
+      date: '',
+      selectedClassId: ''
     }
   },
   //...
 
   created: function () {
-      // Initializing scheduledClasses from backend
-      AXIOS.get('/scheduled-classes')
+      // Initializing offeredClasses from backend
+      AXIOS.get('/offered-classes')
         .then(response => {
-          this.scheduled_classes = response.data
+          this.offered_classes = response.data
         })
         .catch(e => {
           this.errors.push = e.message
@@ -123,7 +125,15 @@ document.querySelector('ul').addEventListener('click', function(e) {
     }
     e.target.className= 'selected';
   }
-});
+}),
+
+function getSchedule() {
+  this.startTime = document.getElementById("startTime").value;
+  this.endTime = document.getElementById("endTime").value;
+  this.date = document.getElementById("date").value;
+  createScheduledClass(this.startTime, this.endTime, this.date, this.selectedClassId, localStorage.accountRoleId);
+}
+;
 </script>
 
 <style scoped>
