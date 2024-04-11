@@ -12,7 +12,7 @@
       <section id="clients">
         <ul>
           <li v-for="user in registered_user" :key="user.id" :class="{ 'is-selected': user.username === selectedUser }"
-              @click="selectUser(user.username, user.id)">
+              @click="selectUser(user.username, user.id, user.password, user.email, user.accountRole, user.roleType)">
             {{ user.username }}
           </li>
           <li v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder">
@@ -64,7 +64,11 @@ export default {
       errors: [],
       desiredItemCount: 11,
       selectedUser: null,
-      selectedUserID: null
+      selectedUserID: null,
+      selectedUserpassword: null,
+      selectedUseremail: null,
+      selectedUserRoleID: null,
+      selectedUserRoleType: null
     };
   },
   created() {
@@ -97,7 +101,12 @@ export default {
       }
 
       const dto = {
-        id: this.selectedUserID
+        userId: this.selectedUserID,
+        username: this.selectedUser,
+        password: this.selectedUserpassword,
+        email: this.selectedUseremail,
+        accountRole: this.selectedUserRoleID,
+        roleType: this.selectedUserRoleType
       };
 
       AXIOS.post('/promote/', dto)
@@ -113,14 +122,20 @@ export default {
     logout() {
       this.$router.push({ name: 'Home' });
     },
-    selectUser(username, id) {
+    selectUser(username, id, pswd, email, role, roleid) {
       if (this.selectedUser === username) {
         this.selectedUser = null
         this.selectedUserID = null;
+        this.selectedUserpassword = null;
+        this.selectedUseremail = null;
       }
       else {
         this.selectedUser = username;
         this.selectedUserID = id;
+        this.selectedUserpassword = pswd;
+        this.selectedUseremail = email;
+        this.selectedUserRoleID = role;
+        this.selectedUserRoleID = roleid;
       }
     }
   }
