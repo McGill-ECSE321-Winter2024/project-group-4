@@ -9,11 +9,49 @@
    </header>
 
    <main>
-
+      <section id="clients">
+        <!-- Clients List -->
+      </section>
+      <section id="buttons">
+        <!-- Save Changes and Previous Page Button-->
+      </section>
    </main>
+
+   <footer>
+     <!-- Promote and Logout buttons -->
+   </footer>
 
  </div>
 </template>
+
+<script>
+import axios from 'axios';
+import config from '../../config';
+
+const frontendUrl = `http://${config.dev.host}:${config.dev.port}`;
+const backendUrl = `http://${config.dev.backendHost}:${config.dev.backendPort}`;
+
+const AXIOS = axios.create({
+  baseURL: backendUrl,
+  headers: { 'Access-Control-Allow-Origin': frontendUrl }
+});
+
+export default {
+  name: "PromoteUser",
+  data() {
+    return {
+      registered_user: [],
+      errors: []
+    };
+  },
+  created() {
+
+  },
+  methods: {
+
+  }
+};
+</script>
 
 <style>
 
