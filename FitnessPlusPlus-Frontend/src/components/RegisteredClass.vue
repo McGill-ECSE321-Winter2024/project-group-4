@@ -6,26 +6,47 @@
       <table>
         <thead>
         <tr>
-          <th>Type</th>
+<!--          <th>Type</th>-->
           <th>Date</th>
           <th>Start Time</th>
           <th>End Time</th>
         </tr>
         </thead>
         <tbody>
-        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassId"
-            @click="selectClass(scheduledClass.scheduledClassId)">
-          <td>{{ scheduledClass.classType }}</td>
+        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
+            @click="selectClass(scheduledClass.scheduledClassID, scheduledClass.date)">
+<!--          <td>{{ scheduledClass.classType }}</td>-->
           <td>{{ scheduledClass.date }}</td>
           <td>{{ scheduledClass.startTime }}</td>
           <td>{{ scheduledClass.endTime }}</td>
         </tr>
         </tbody>
       </table>
+
+      <table>
+        <thead>
+        <tr>
+          <!--          <th>Type</th>-->
+          <th>Date</th>
+          <th>Start Time</th>
+          <th>End Time</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
+            @click="selectClass(scheduledClass.scheduledClassID, scheduledClass.date)">
+          <!--          <td>{{ scheduledClass.classType }}</td>-->
+          <td>{{ scheduledClass.date }}</td>
+          <td>{{ scheduledClass.startTime }}</td>
+          <td>{{ scheduledClass.endTime }}</td>
+        </tr>
+        </tbody>
+      </table>
+
       <button id="logout-button" @click="logout">Logout</button>
-      <button id="cancel-class-button" @click="removeScheduledClass(this.id)">Cancel Class</button>
+      <button id="cancel-class-button" v-bind:disabled="!id" @click="removeScheduledClass()">Cancel Class</button>
    </div>
-    <button id="reigster-button" @click="registerClass(this.id)">Register</button>
+    <button id="register-button" v-bind:disabled="!id" @click="registerClass()">Register</button>
 
   </div>
 </template>
@@ -46,24 +67,33 @@ const AXIOS = axios.create({
 
 
 export default {
-  name: 'ClientView',
+  name: 'registeredclass',
   data() {
     return {
       id: null,
+      date: null,
       scheduledClasses: [],
       instructorClasses: [],
       errors: []
     };
   },
-  register(){},
-  created() {
+  created: function () {
     this.fetchScheduledClasses();
+
   },
   methods: {
-    registerClass(scheduledClass) {
-      AXIOS.post('/scheduled-class', scheduledClass).then(response => {
-        this.scheduledClasses = response.data;
-      })
+    registerClass: function () {
+
+      AXIOS.post('/register', {
+        dateOfRegistration: this.date,
+        clientId: localStorage.getItem("accountRoleId"),
+        scheduledClassID: this.id}, {})
+        .then(response => {
+          alert("Successfully registered");
+        })
+        .catch(e => {
+          alert(e.response.data.errors)
+        })
     },
     fetchScheduledClasses() {
       AXIOS.get('/week-class').then(response => {
@@ -76,26 +106,35 @@ export default {
       const currentUserID = localStorage.getItem("accountRoleId"); // Implement this method to get current user's ID
       this.instructorClasses = this.scheduledClasses.filter(scheduledClass => scheduledClass.instructorId === currentUserID);
     },
-    removeScheduledClass(offeredClassId) {
-      AXIOS.delete(`/offered-classes/${offeredClassId}`)
+    removeScheduledClass : function() {
+      AXIOS.delete(`/registrations/${this.id}`)
         .then(() => {
+          alert("Succesfully deleted registration")
           this.offered_classes = this.offered_classes.filter(classItem => classItem.offeredClassId !== offeredClassId);
         })
         .catch(error => {
           this.errors.push(error.message || "Failed to remove class.");
         });
     },
-    selectClass(id) {
-      this.id = id;
+    selectClass(id, date) {
+      if (this.id === id) {
+        this.id = null
+        this.date = null
+      }
+      else {
+        this.id = id
+        this.date = date
+      }
     },
       logout() {
+      localStorage.clear()
       this.$router.push({ name: 'Home' });
     },
   }
 };
 </script>
 
-<style>
+<style scoped>
 .container {
   display: flex;
   justify-content: space-between;
@@ -137,7 +176,5 @@ th, td {
   font-size: 12px;
   padding-top: 10px;
 }
+
 </style>
-<script setup lang="ts">
-import {register} from "shelljs/src/common";
-</script>

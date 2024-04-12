@@ -77,6 +77,14 @@ public class RegistrationService {
     return list;
   }
 
+  @Transactional
+  public List<Registration> getAllRegistrationByClientId(int clientID) {
+
+      Client c = clientRepository.findClientByroleId(clientID);
+
+      return new ArrayList<>(registrationRepository.findAllByClient(c));
+  }
+
   /**
    * Returns a Registration by its ID
    *

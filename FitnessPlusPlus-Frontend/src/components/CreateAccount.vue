@@ -70,7 +70,7 @@ export default {
             this.$router.push('/Dashboard');
 
           } else if (response.data.roleType === "Instructor") {
-            this.$router.push('/ManageSchedule');
+            this.$router.push('/instructor-view');
           } else if (response.data.roleType === "Owner") {
             this.$router.push('/owner-page')
           }

@@ -76,7 +76,7 @@ export default {
         classType:  this.type,
         description: this.description}, {})
         .then(response => {
-          this.$router.push('/ManageSchedule')
+          this.$router.push('/instructor-view')
         })
         .catch(e => {
           this.errors = e.response.data.errors

@@ -63,7 +63,7 @@ export default {
             this.$router.push('/Dashboard');
 
           } else if (response.data.roleType === "Instructor") {
-            this.$router.push('/InstructorView');
+            this.$router.push('/instructor-view');
           } else if (response.data.roleType === "Owner") {
             this.$router.push('/owner-page')
           }
@@ -92,7 +92,7 @@ export default {
           if (localStorage.getItem("accountRoleType").includes("Client")) {
             this.$router.push('/Dashboard');
           }else if(localStorage.getItem("accountRoleType").includes("Instructor")){
-            this.$router.push('/InstructorView');
+            this.$router.push('/instructor-view');
           } else if(localStorage.getItem("accountRoleType").includes("Owner")){
             this.$router.push('/owner-page');
           }

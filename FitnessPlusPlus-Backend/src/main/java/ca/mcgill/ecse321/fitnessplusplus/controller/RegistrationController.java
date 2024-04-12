@@ -76,6 +76,23 @@ public class RegistrationController {
         registration.getRegistrationId());
   }
 
+  @GetMapping(value = {"/client-registrations/{id}", "/client-registrations/{id}/"})
+  @ResponseStatus(HttpStatus.OK)
+  public List<RegistrationResponseDto> getRegistrationByClient(@PathVariable("id") int clientID) {
+    List<RegistrationResponseDto> dto = new ArrayList<>();
+    List<Registration> registrations = registrationService.getAllRegistrationByClientId(clientID);
+    for (Registration r : registrations) {
+      dto.add(
+              new RegistrationResponseDto(
+                      r.getDateOfRegistration(),
+                      r.getClient().getRoleId(),
+                      r.getScheduledClass().getScheduledClassId(),
+                      r.getRegistrationId()));
+    }
+
+    return dto;
+  }
+
   /**
    * API Post Endpoint to remove a registration by its ID
    *

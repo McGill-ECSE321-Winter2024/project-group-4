@@ -1,15 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Home from '@/components/Home'
-import Template from '@/components/Template'
-import Login from '@/components/Login'
-import CreateAccount from '@/components/CreateAccount'
+import Home from '../components/Home.vue'
+import Template from '../components/Template.vue'
+import Login from '../components/Login.vue'
+import CreateAccount from '../components/CreateAccount.vue'
 import PromoteUser from "../components/PromoteUser.vue"
-import OfferClass from '@/components/OfferClass'
+import OfferClass from '../components/OfferClass.vue'
 import OwnerPage from '../components/OwnerPage.vue'
-import ScheduleClasses from '@/components/ScheduleClasses.vue'
+import ScheduleClasses from '../components/ScheduleClasses.vue'
 import InstructorView from "../components/InstructorView.vue";
-import ClientView from "../components/RegisteredClass.vue";
+import RegisteredClass from "../components/RegisteredClass.vue";
+
 Vue.use(Router)
 
 export default new Router({
@@ -62,7 +63,7 @@ export default new Router({
     {
       path: '/Dashboard',
       name: 'Dashboard',
-      component: ClientView
+      component: RegisteredClass
     }
   ]
 })

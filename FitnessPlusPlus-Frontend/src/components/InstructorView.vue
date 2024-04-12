@@ -6,16 +6,16 @@
     <table>
       <thead>
         <tr>
-          <th>Type</th>
+<!--          <th>Type</th>-->
           <th>Date</th>
           <th>Start Time</th>
           <th>End Time</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="scheduledClass in instructorClasses" :key="instructorClasses.scheduledClassId"
+        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassId"
             @click="selectClass(scheduledClass.scheduledClassId)">
-          <td>{{ scheduledClass.classType }}</td>
+<!--          <td>{{ scheduledClass.classType }}</td>-->
           <td>{{ scheduledClass.date }}</td>
           <td>{{ scheduledClass.startTime }}</td>
           <td>{{ scheduledClass.endTime }}</td>
@@ -34,16 +34,12 @@
 
 
 <script>
-import Vue from 'vue';
-import VCalendar from 'v-calendar';
 import axios from 'axios'
 import config from '../../config'
-import { VueCookies } from 'vue-cookies';
 
 
 const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-Vue.use(VCalendar);
 
 const AXIOS = axios.create({
   baseURL: backendUrl,
@@ -52,7 +48,7 @@ const AXIOS = axios.create({
 
 
 export default {
-  name: 'template',
+  name: 'instructorview',
   data() {
     return {
       id: null,
@@ -61,14 +57,14 @@ export default {
       errors: []
     };
   },
-  created() {
+  created () {
     this.checkUserType();
     this.fetchScheduledClasses();
   },
   methods: {
     checkUserType() {
       // Assuming you have stored the user type in cookies or Vuex state
-      const userType = this.$cookies.get('userType'); // Adjust this according to how you store user type
+      const userType = localStorage.getItem('accountRoleType'); // Adjust this according to how you store user type
       if (userType !== 'Instructor') {
         this.redirectToDashboard();
       }
@@ -76,7 +72,7 @@ export default {
 
     redirectToDashboard() {
       // Redirect to the dashboard route
-      this.$router.push({ name: '/Dashboard' });
+      this.$router.push('/Dashboard');
     },
     fetchScheduledClasses() {
       AXIOS.get('/week-class').then(response => {
@@ -87,14 +83,14 @@ export default {
       });
     },
     scheduleOfferedClass() {
-      this.$router.push({ name: '/schedule-classes' });
+      this.$router.push('/schedule-classes');
     },
     registerOfferedClass() {
-      this.$router.push({ name: '/Dashboard' });
+      this.$router.push('/Dashboard');
     },
     createOfferedClass() {
       // Open Offer Class component
-      this.$router.push({ name: '/offer-class' });
+      this.$router.push('/offer-class');
     },
     filterInstructorClasses(){
       const currentUserID = localStorage.getItem("accountRoleId"); // Implement this method to get current user's ID
@@ -114,13 +110,14 @@ export default {
     },
 
     logout() {
+      localStorage.clear()
       this.$router.push({ name: 'Home' });
     },
   }
 };
 </script>
 
-<style>
+<style scoped>
   .container {
     display: flex;
     justify-content: space-between;
