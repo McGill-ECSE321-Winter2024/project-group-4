@@ -92,7 +92,7 @@ export default {
       password: localStorage.getItem("password")}, {})
       .then(response => {
         if (response.data.roleType === "Client") {
-          this.$router.push('/Dashboard');
+          this.$router.push('/');
 
         }
       })

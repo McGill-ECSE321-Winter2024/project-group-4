@@ -90,7 +90,7 @@ export default {
       this.$router.push({ name: 'Dashboard' });
     },
     fetchScheduledClasses() {
-      AXIOS.get('/scheduled-classes').then(response => {
+      AXIOS.get('/week-class').then(response => {
         this.scheduledClasses = response.data;
         this.filterInstructorClasses();
       }).catch(error => {
