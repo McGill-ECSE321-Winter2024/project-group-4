@@ -3,6 +3,7 @@ package ca.mcgill.ecse321.fitnessplusplus.controller;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassRequestDTO;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassResponseDTO;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+import ca.mcgill.ecse321.fitnessplusplus.service.OfferedClassService;
 import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 public class ScheduledClassController {
   @Autowired ScheduledClassService scheduledClassService;
+  @Autowired OfferedClassService offeredClassService;
 
   /**
    * API GET: endpoint to get a list of all scheduled classes
@@ -50,12 +52,14 @@ public class ScheduledClassController {
             dto.getOfferedClassID(),
             dto.getInstructorID());
     return new ScheduleClassResponseDTO(
-        scheduledClass.getScheduledClassId(),
-        scheduledClass.getStartTime(),
-        scheduledClass.getEndTime(),
-        scheduledClass.getDate(),
-        scheduledClass.getOfferedClass().getId(),
-        scheduledClass.getInstructor().getRoleId());
+            scheduledClass.getScheduledClassId(),
+            scheduledClass.getStartTime(),
+            scheduledClass.getEndTime(),
+            scheduledClass.getDate(),
+            scheduledClass.getOfferedClass().getId(),
+            scheduledClass.getInstructor().getRoleId(),
+            scheduledClass.getOfferedClass().getClassType(),
+            scheduledClass.getOfferedClass().getDescription());
   }
 
   /**
@@ -119,6 +123,8 @@ public class ScheduledClassController {
         o.getEndTime(),
         o.getDate(),
         o.getOfferedClass().getId(),
-        o.getInstructor().getRoleId());
+        o.getInstructor().getRoleId(),
+        o.getOfferedClass().getDescription(),
+        o.getOfferedClass().getClassType());
   }
 }

@@ -10,6 +10,8 @@ public class ScheduleClassResponseDTO {
   private LocalDate date;
   private int offeredClassID;
   private int intrusctorID;
+  private String type;
+  private String description;
 
   public ScheduleClassResponseDTO(
       int aScheduleClassID,
@@ -17,13 +19,17 @@ public class ScheduleClassResponseDTO {
       Time aEndTime,
       LocalDate aDate,
       int aofferedClassID,
-      int aInstructorID) {
+      int aInstructorID,
+      String aType,
+      String aDescription) {
     this.scheduledClassID = aScheduleClassID;
     this.startTime = aStartTime;
     this.endTime = aEndTime;
     this.date = aDate;
     this.offeredClassID = aofferedClassID;
     this.intrusctorID = aInstructorID;
+    this.type = aType;
+    this.description = aDescription;
   }
 
   public Time getStartTime() {
@@ -73,4 +79,9 @@ public class ScheduleClassResponseDTO {
   public void setScheduledClassID(Integer aScheduleID) {
     this.scheduledClassID = aScheduleID;
   }
+
+  public String getDescription(){return description;}
+  public String getType(){return type;}
+  public void setDescription(String aDescription){ this.description = aDescription;}
+  public void setType(String aType){ this.type = aType;}
 }
