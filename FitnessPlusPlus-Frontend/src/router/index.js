@@ -54,8 +54,8 @@ export default new Router({
       component: ScheduleClasses
     },
     {
-      path: '/schedule_class',
-      name: 'Schedule Class',
+      path: '/schedule_class_view',
+      name: 'Schedule Class Calendar',
       component: ScheduleClass
     }
   ]

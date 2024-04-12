@@ -28,7 +28,7 @@
   <!-- Right Panel -->
     <div>
       <!-- Build a calendar with scheduledClasses -->
-      <v-calendar v-model="selectedDate" :events="scheduledClasses" title-position="right" :min-date="new Date()">
+      <v-calendar :events="scheduledClasses" title-position="right" :min-date="new Date()">
       <ul>
         <li v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduleClassID">
           {{ scheduledClass.startTime }} - {{ scheduledClass.endTime }}: {{ scheduledClass.date }} (Class ID: {{ scheduledClass.scheduleClassID }})
@@ -66,6 +66,7 @@ export default {
   },
   created() {
     this.fetchScheduledClasses();
+
   },
   methods: {
     fetchScheduledClasses() {
