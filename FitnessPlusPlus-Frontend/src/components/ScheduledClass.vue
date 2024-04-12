@@ -28,12 +28,13 @@
   <!-- Right Panel -->
     <div>
       <!-- Build a calendar with scheduledClasses -->
-      <v-calendar v-model="selectedDate" :events="scheduledClasses" title-position="right" :min-date="new Date()"/>
+      <v-calendar v-model="selectedDate" :events="scheduledClasses" title-position="right" :min-date="new Date()">
       <ul>
         <li v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduleClassID">
           {{ scheduledClass.startTime }} - {{ scheduledClass.endTime }}: {{ scheduledClass.date }} (Class ID: {{ scheduledClass.scheduleClassID }})
         </li>
       </ul>
+      </v-calendar>
     </div>
 </div>
 </template>
@@ -42,7 +43,6 @@
 <script>
 import Vue from 'vue';
 import VCalendar from 'v-calendar';
-import 'v-calendar/style.css';
 import axios from 'axios'
 import config from '../../config'
 

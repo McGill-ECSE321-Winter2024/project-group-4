@@ -59,6 +59,7 @@
     <button id="previousPage" @click="previousPage">Previous Page</button>
 
   </div>
+  </div>
 </template>
 
 <script>
