@@ -13,7 +13,8 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="scheduledClass in instructorClasses" :key="instructorClasses.scheduledClassId">
+        <tr v-for="scheduledClass in instructorClasses" :key="instructorClasses.scheduledClassId"
+            @click="selectClass(scheduledClass.scheduledClassId)">
           <td>{{ scheduledClass.classType }}</td>
           <td>{{ scheduledClass.date }}</td>
           <td>{{ scheduledClass.startTime }}</td>
@@ -22,26 +23,13 @@
       </tbody>
     </table>
       <button id="logout-button" @click="logout">Logout</button>
-      <button id="cancel-class-button" @click="removeScheduledClass(scheduledClass.scheduledClassID)">Cancel Class</button>
-  </div>
+      <button id="cancel-class-button" @click="removeScheduledClass(this.id)">Cancel Class</button>
+      <button id="schedule-class-button" @click="scheduleOfferedClass">Schedule Class</button>
+      <button id="register-class-button" @click="registerOfferedClass">Register for Class</button>
+      <button id="create-class-button" @click="createOfferedClass">Create New Class</button>
 
-  <!-- Right Panel -->
-    <div class="right-panel">
-      <!-- Build a calendar with scheduledClasses -->
-      <v-calendar :events="scheduledClasses" title-position="right" :min-date="new Date()">
-      <ul>
-        <li v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduleClassID">
-          {{ scheduledClass.startTime }} - {{ scheduledClass.endTime }}: {{ scheduledClass.date }} (Class ID: {{ scheduledClass.scheduleClassID }})
-        </li>
-      </ul>
-      </v-calendar>
-      <div id="right-panel-buttons">
-        <button id="schedule-class-button" @click="scheduleOfferedClass">Schedule Class</button>
-        <button id="register-class-button" @click="registerOfferedClass">Register for Class</button>
-        <button id="create-class-button" @click="createOfferedClass">Create New Class</button>
-      </div>
     </div>
-</div>
+  </div>
 </template>
 
 
@@ -67,13 +55,14 @@ export default {
   name: 'template',
   data() {
     return {
+      id: null,
       scheduledClasses: [],
       instructorClasses: [],
       errors: []
     };
   },
   created() {
-    // this.checkUserType();
+    this.checkUserType();
     this.fetchScheduledClasses();
   },
   methods: {
@@ -87,7 +76,7 @@ export default {
 
     redirectToDashboard() {
       // Redirect to the dashboard route
-      this.$router.push({ name: 'Dashboard' });
+      this.$router.push({ name: '/Dashboard' });
     },
     fetchScheduledClasses() {
       AXIOS.get('/week-class').then(response => {
@@ -101,7 +90,7 @@ export default {
       this.$router.push({ name: '/schedule-classes' });
     },
     registerOfferedClass() {
-      this.$router.push({ name: 'RegisterdClass' });
+      this.$router.push({ name: '/Dashboard' });
     },
     createOfferedClass() {
       // Open Offer Class component
@@ -120,6 +109,10 @@ export default {
           this.errors.push(error.message || "Failed to remove class.");
         });
     },
+    selectClass(id) {
+      this.id = id;
+    },
+
     logout() {
       this.$router.push({ name: 'Home' });
     },

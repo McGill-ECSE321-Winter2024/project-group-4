@@ -13,7 +13,8 @@
         </tr>
         </thead>
         <tbody>
-        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassId">
+        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassId"
+            @click="selectClass(scheduledClass.scheduledClassId)">
           <td>{{ scheduledClass.classType }}</td>
           <td>{{ scheduledClass.date }}</td>
           <td>{{ scheduledClass.startTime }}</td>
@@ -22,9 +23,9 @@
         </tbody>
       </table>
       <button id="logout-button" @click="logout">Logout</button>
-      <button id="cancel-class-button" @click="removeScheduledClass(scheduledClass.scheduledClassID)">Cancel Class</button>
+      <button id="cancel-class-button" @click="removeScheduledClass(this.id)">Cancel Class</button>
    </div>
-    <button id="reigster-button" @click="registerClass(scheduledClass.scheduledClassID)">Register</button>
+    <button id="reigster-button" @click="registerClass(this.id)">Register</button>
 
   </div>
 </template>
@@ -48,6 +49,7 @@ export default {
   name: 'ClientView',
   data() {
     return {
+      id: null,
       scheduledClasses: [],
       instructorClasses: [],
       errors: []
@@ -83,7 +85,10 @@ export default {
           this.errors.push(error.message || "Failed to remove class.");
         });
     },
-    logout() {
+    selectClass(id) {
+      this.id = id;
+    },
+      logout() {
       this.$router.push({ name: 'Home' });
     },
   }
