@@ -13,7 +13,7 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClasses.scheduledClassId">
+        <tr v-for="scheduledClass in instructorClasses" :key="instructorClasses.scheduledClassId">
           <td>{{ scheduledClass.classType }}</td>
           <td>{{ scheduledClass.date }}</td>
           <td>{{ scheduledClass.startTime }}</td>
@@ -26,7 +26,7 @@
   </div>
 
   <!-- Right Panel -->
-    <div>
+    <div class="right-panel">
       <!-- Build a calendar with scheduledClasses -->
       <v-calendar :events="scheduledClasses" title-position="right" :min-date="new Date()">
       <ul>
@@ -35,6 +35,11 @@
         </li>
       </ul>
       </v-calendar>
+      <div id="right-panel-buttons">
+        <button id="schedule-class-button" @click="scheduleOfferedClass">Schedule Class</button>
+        <button id="register-class-button" @click="registerOfferedClass">Register for Class</button>
+        <button id="create-class-button" @click="createOfferedClass">Create New Class</button>
+      </div>
     </div>
 </div>
 </template>
@@ -45,6 +50,8 @@ import Vue from 'vue';
 import VCalendar from 'v-calendar';
 import axios from 'axios'
 import config from '../../config'
+import { VueCookies } from 'vue-cookies';
+
 
 const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
@@ -61,30 +68,48 @@ export default {
   data() {
     return {
       scheduledClasses: [],
+      instructorClasses: [],
       errors: []
     };
   },
   created() {
+    // this.checkUserType();
     this.fetchScheduledClasses();
-
   },
   methods: {
+    checkUserType() {
+      // Assuming you have stored the user type in cookies or Vuex state
+      const userType = this.$cookies.get('userType'); // Adjust this according to how you store user type
+      if (userType !== 'Instructor') {
+        this.redirectToDashboard();
+      }
+    },
+
+    redirectToDashboard() {
+      // Redirect to the dashboard route
+      this.$router.push({ name: 'Dashboard' });
+    },
     fetchScheduledClasses() {
       AXIOS.get('/scheduled-classes').then(response => {
         this.scheduledClasses = response.data;
+        this.filterInstructorClasses();
       }).catch(error => {
         this.errors.push(error.message || "Failed to fetch classes.");
       });
     },
     scheduleOfferedClass() {
-      this.$router.push({ name: 'ScheduleClasses' });
+      this.$router.push({ name: '/schedule-classes' });
     },
     registerOfferedClass() {
       this.$router.push({ name: 'RegisterdClass' });
     },
     createOfferedClass() {
       // Open Offer Class component
-      this.$router.push({ name: 'OfferClass' });
+      this.$router.push({ name: '/offer-class' });
+    },
+    filterInstructorClasses(){
+      const currentUserID = localStorage.getItem("accountRoleId"); // Implement this method to get current user's ID
+      this.instructorClasses = this.scheduledClasses.filter(scheduledClass => scheduledClass.instructorId === currentUserID);
     },
     removeScheduledClass(offeredClassId) {
       AXIOS.delete(`/offered-classes/${offeredClassId}`)
