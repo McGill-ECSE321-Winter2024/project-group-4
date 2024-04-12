@@ -1,24 +1,12 @@
 <template>
-  <div class="row">
-    <div class="column">
-      <h2>Approved Classes</h2>
-      <ul id="class-list">
-        <li v-for="(offeredClass, index) in offered_classes" v-if="offeredClass.approved">
-          :key="offeredClass.offeredClassId">
-          <div class="class-description">
-            <span>
-              {{ offeredClass.classType }} - {{ offeredClass.description }}
-            </span>
-          </div>
-        </li>
-      </ul>
-      <button style="float:left" @click="logout">Logout</button>
-      <button style="float:right">Remove Class</button>
-    </div>
-    <div class="column">
-      <label for="startTime"><b>Start Time</b></label><br>
-      <input type="time" placeholder="Enter Start Time" id="startTime" required>
-      <br>
+  <div id="content">
+    <header id="header">
+      <div id="logo">
+        <p>FitnessPlusPlus</p>
+        <img src="../assets/logo.png"/>
+      </div>
+    </header>
+    <h2>Schedule Classes</h2>
 
     <main>
       <section id="offered_class">
@@ -58,7 +46,6 @@
     </main>
     <button id="previousPage" @click="previousPage">Previous Page</button>
 
-  </div>
   </div>
 </template>
 
