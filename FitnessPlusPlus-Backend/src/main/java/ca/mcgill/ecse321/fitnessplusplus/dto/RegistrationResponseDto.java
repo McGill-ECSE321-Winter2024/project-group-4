@@ -1,5 +1,7 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
+import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
+
 import java.time.LocalDate;
 
 public class RegistrationResponseDto {
@@ -9,15 +11,18 @@ public class RegistrationResponseDto {
   private int scheduledClassID;
   private int registrationId;
 
+  private ScheduleClassResponseDTO scheduleClass;
+
   @SuppressWarnings("unused")
   public RegistrationResponseDto() {}
 
   public RegistrationResponseDto(
-      LocalDate aDateOfRegistration, int clientId, int scheduledClassID, int registrationId) {
+          LocalDate aDateOfRegistration, int clientId, int scheduledClassID, int registrationId, ScheduleClassResponseDTO scheduledClass) {
     this.dateOfRegistration = aDateOfRegistration;
     this.clientId = clientId;
     this.scheduledClassID = scheduledClassID;
     this.registrationId = registrationId;
+    this.scheduleClass = scheduledClass;
   }
 
   public LocalDate getDateOfRegistration() {
@@ -50,5 +55,13 @@ public class RegistrationResponseDto {
 
   public void setRegistrationId(int registrationId) {
     this.registrationId = registrationId;
+  }
+
+  public ScheduleClassResponseDTO getScheduleClass() {
+    return scheduleClass;
+  }
+
+  public void setScheduleClass(ScheduleClassResponseDTO scheduleClass) {
+    this.scheduleClass = scheduleClass;
   }
 }

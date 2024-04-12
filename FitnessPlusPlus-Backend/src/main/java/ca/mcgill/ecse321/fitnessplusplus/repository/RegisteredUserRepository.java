@@ -7,4 +7,6 @@ public interface RegisteredUserRepository extends CrudRepository<RegisteredUser,
   public RegisteredUser findRegisteredUserByUsername(String username);
 
   public RegisteredUser findRegisteredUserByUserId(int userId);
+
+  public RegisteredUser findRegisteredUserByAccountRole_RoleId(int roleId);
 }

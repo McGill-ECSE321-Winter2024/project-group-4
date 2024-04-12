@@ -2,51 +2,67 @@
   <div class="container">
     <!-- Left Panel -->
     <div class="left-panel">
-      <h2>Scheduled Classes</h2>
-      <table>
-        <thead>
-        <tr>
-<!--          <th>Type</th>-->
-          <th>Date</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
-            @click="selectClass(scheduledClass.scheduledClassID, scheduledClass.date)">
-<!--          <td>{{ scheduledClass.classType }}</td>-->
-          <td>{{ scheduledClass.date }}</td>
-          <td>{{ scheduledClass.startTime }}</td>
-          <td>{{ scheduledClass.endTime }}</td>
-        </tr>
-        </tbody>
-      </table>
+      <h2>Dashboard</h2>
+      <div class="scheduled_class_container">
+        <p>Available classes</p>
+        <table>
+          <thead>
+            <tr>
+              <!--          <th>Type</th>-->
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Instructor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
+                @click="selectClass(scheduledClass.scheduledClassID, scheduledClass.date)">
+              <td>{{ scheduledClass.date }}</td>
+              <td>{{ scheduledClass.startTime }}</td>
+              <td>{{ scheduledClass.endTime }}</td>
+              <td>{{scheduledClass.type}}</td>
+              <td>{{scheduledClass.description}}</td>
+              <td>{{scheduledClass.instructorUsername}}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-      <table>
-        <thead>
-        <tr>
-          <!--          <th>Type</th>-->
-          <th>Date</th>
-          <th>Start Time</th>
-          <th>End Time</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
-            @click="selectClass(scheduledClass.scheduledClassID, scheduledClass.date)">
-          <!--          <td>{{ scheduledClass.classType }}</td>-->
-          <td>{{ scheduledClass.date }}</td>
-          <td>{{ scheduledClass.startTime }}</td>
-          <td>{{ scheduledClass.endTime }}</td>
-        </tr>
-        </tbody>
-      </table>
+      <div class="registrations_container">
+        <p>Your registrations</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Start Time</th>
+              <th>End Time</th>
+              <th>Type</th>
+              <th>Description</th>
+              <th>Instructor</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="reg in registrations" :key="reg.registrationId"
+                @click="selectRegistration(reg.registrationId)">
+              <!--          <td>{{ scheduledClass.classType }}</td>-->
+              <td>{{ reg.scheduleClass.date }}</td>
+              <td>{{ reg.scheduleClass.startTime }}</td>
+              <td>{{ reg.scheduleClass.endTime }}</td>
+              <td>{{ reg.scheduleClass.type }}</td>
+              <td>{{ reg.scheduleClass.description }}</td>
+              <td>{{ reg.scheduleClass.instructorUsername }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
       <button id="logout-button" @click="logout">Logout</button>
-      <button id="cancel-class-button" v-bind:disabled="!id" @click="removeScheduledClass()">Cancel Class</button>
+      <button id="cancel-class-button" v-bind:disabled="!registrationId" @click="removeRegistration()">Cancel Class</button>
    </div>
-    <button id="register-button" v-bind:disabled="!id" @click="registerClass()">Register</button>
+    <button id="register-button" v-bind:disabled="!classId" @click="registerClass()">Register</button>
 
   </div>
 </template>
@@ -70,16 +86,17 @@ export default {
   name: 'registeredclass',
   data() {
     return {
-      id: null,
+      classId: null,
+      registrationId: null,
       date: null,
       scheduledClasses: [],
-      instructorClasses: [],
+      registrations: [],
       errors: []
     };
   },
   created: function () {
     this.fetchScheduledClasses();
-
+    this.fetchRegistrations()
   },
   methods: {
     registerClass: function () {
@@ -87,9 +104,9 @@ export default {
       AXIOS.post('/register', {
         dateOfRegistration: this.date,
         clientId: localStorage.getItem("accountRoleId"),
-        scheduledClassID: this.id}, {})
+        scheduledClassID: this.classId}, {})
         .then(response => {
-          alert("Successfully registered");
+          this.fetchRegistrations()
         })
         .catch(e => {
           alert(e.response.data.errors)
@@ -102,28 +119,40 @@ export default {
         this.errors.push(error.message || "Failed to fetch classes.");
       });
     },
-    filterInstructorClasses(){
-      const currentUserID = localStorage.getItem("accountRoleId"); // Implement this method to get current user's ID
-      this.instructorClasses = this.scheduledClasses.filter(scheduledClass => scheduledClass.instructorId === currentUserID);
+    fetchRegistrations() {
+      AXIOS.get('/client-registrations/'+localStorage.getItem("accountRoleId"))
+        .then(response => {
+        this.registrations = response.data;
+      }).catch(error => {
+        this.errors.push(error.message || "Failed to fetch registrations");
+      });
     },
-    removeScheduledClass : function() {
-      AXIOS.delete(`/registrations/${this.id}`)
+
+    removeRegistration : function() {
+      AXIOS.delete(`/registrations/${this.registrationId}`)
         .then(() => {
-          alert("Succesfully deleted registration")
-          this.offered_classes = this.offered_classes.filter(classItem => classItem.offeredClassId !== offeredClassId);
+          this.fetchRegistrations()
         })
         .catch(error => {
           this.errors.push(error.message || "Failed to remove class.");
         });
     },
     selectClass(id, date) {
-      if (this.id === id) {
-        this.id = null
+      if (this.classId === id) {
+        this.classId = null
         this.date = null
       }
       else {
-        this.id = id
+        this.classId = id
         this.date = date
+      }
+    },
+    selectRegistration(id) {
+      if (this.registrationId === id) {
+        this.registrationId = null
+      }
+      else {
+        this.registrationId = id
       }
     },
       logout() {

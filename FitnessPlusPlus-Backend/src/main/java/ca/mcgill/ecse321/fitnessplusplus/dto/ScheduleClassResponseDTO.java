@@ -9,7 +9,8 @@ public class ScheduleClassResponseDTO {
   private Time endTime;
   private LocalDate date;
   private int offeredClassID;
-  private int intrusctorID;
+  private int instructorID;
+  private String instructorUsername;
   private String type;
   private String description;
 
@@ -18,18 +19,20 @@ public class ScheduleClassResponseDTO {
       Time aStartTime,
       Time aEndTime,
       LocalDate aDate,
-      int aofferedClassID,
+      int aOfferedClassID,
       int aInstructorID,
       String aType,
-      String aDescription) {
+      String aDescription,
+      String aInstructorUsername) {
     this.scheduledClassID = aScheduleClassID;
     this.startTime = aStartTime;
     this.endTime = aEndTime;
     this.date = aDate;
-    this.offeredClassID = aofferedClassID;
-    this.intrusctorID = aInstructorID;
+    this.offeredClassID = aOfferedClassID;
+    this.instructorID = aInstructorID;
     this.type = aType;
     this.description = aDescription;
+    this.instructorUsername = aInstructorUsername;
   }
 
   public Time getStartTime() {
@@ -65,23 +68,32 @@ public class ScheduleClassResponseDTO {
   }
 
   public int getInstructorID() {
-    return intrusctorID;
+    return instructorID;
   }
 
   public void setInstructorID(Integer aInstructorID) {
-    this.intrusctorID = aInstructorID;
+    this.instructorID = aInstructorID;
   }
 
   public int getScheduledClassID() {
     return scheduledClassID;
   }
-
-  public void setScheduledClassID(Integer aScheduleID) {
-    this.scheduledClassID = aScheduleID;
-  }
+  
 
   public String getDescription(){return description;}
   public String getType(){return type;}
   public void setDescription(String aDescription){ this.description = aDescription;}
   public void setType(String aType){ this.type = aType;}
+
+  public void setScheduledClassID(int scheduledClassID) {
+    this.scheduledClassID = scheduledClassID;
+  }
+
+  public String getInstructorUsername() {
+    return instructorUsername;
+  }
+
+  public void setInstructorUsername(String instructorUsername) {
+    this.instructorUsername = instructorUsername;
+  }
 }

@@ -4,6 +4,7 @@ import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassRequestDTO;
 import ca.mcgill.ecse321.fitnessplusplus.dto.ScheduleClassResponseDTO;
 import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
 import ca.mcgill.ecse321.fitnessplusplus.service.OfferedClassService;
+import ca.mcgill.ecse321.fitnessplusplus.service.RegisteredUserService;
 import ca.mcgill.ecse321.fitnessplusplus.service.ScheduledClassService;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class ScheduledClassController {
   @Autowired ScheduledClassService scheduledClassService;
   @Autowired OfferedClassService offeredClassService;
+  @Autowired
+  RegisteredUserService registeredUserService;
 
   /**
    * API GET: endpoint to get a list of all scheduled classes
@@ -44,6 +47,9 @@ public class ScheduledClassController {
   @PostMapping(value = {"/scheduled-class", "/scheduled-class/"})
   public ScheduleClassResponseDTO createScheduledClass(@RequestBody ScheduleClassRequestDTO dto)
       throws Exception {
+
+    String instructorName = registeredUserService.getRegisteredUserByRoleId(dto.getInstructorID()).getUsername();
+
     ScheduledClass scheduledClass =
         scheduledClassService.createScheduledClass(
             dto.getStartTime(),
@@ -59,7 +65,8 @@ public class ScheduledClassController {
             scheduledClass.getOfferedClass().getId(),
             scheduledClass.getInstructor().getRoleId(),
             scheduledClass.getOfferedClass().getClassType(),
-            scheduledClass.getOfferedClass().getDescription());
+            scheduledClass.getOfferedClass().getDescription(),
+            instructorName);
   }
 
   /**
@@ -117,6 +124,11 @@ public class ScheduledClassController {
     if (o == null) {
       throw new IllegalArgumentException("Scheduled Class does not exist.");
     }
+    String instructorName =
+        registeredUserService
+            .getRegisteredUserByRoleId(o.getInstructor().getRoleId())
+            .getUsername();
+
     return new ScheduleClassResponseDTO(
         o.getScheduledClassId(),
         o.getStartTime(),
@@ -125,6 +137,7 @@ public class ScheduledClassController {
         o.getOfferedClass().getId(),
         o.getInstructor().getRoleId(),
         o.getOfferedClass().getDescription(),
-        o.getOfferedClass().getClassType());
+        o.getOfferedClass().getClassType(),
+            instructorName);
   }
 }

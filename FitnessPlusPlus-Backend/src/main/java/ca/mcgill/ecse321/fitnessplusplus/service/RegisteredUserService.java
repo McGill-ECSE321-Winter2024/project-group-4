@@ -170,6 +170,15 @@ public class RegisteredUserService {
     return r;
   }
 
+  @Transactional
+  public RegisteredUser getRegisteredUserByRoleId(int id) {
+    RegisteredUser r = registeredUserRepository.findRegisteredUserByAccountRole_RoleId(id);
+    if (r == null) {
+      throw new IllegalArgumentException("RegisteredUser with roleId " + id + " not found.");
+    }
+    return r;
+  }
+
   /**
    * Return a certain user
    *
