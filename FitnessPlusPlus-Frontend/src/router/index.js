@@ -9,6 +9,7 @@ import OfferClass from '@/components/OfferClass'
 import OwnerPage from '../components/OwnerPage.vue'
 import ScheduleClasses from '@/components/ScheduleClasses.vue'
 import InstructorView from "../components/InstructorView.vue";
+import ClientView from "../components/RegisteredClass.vue";
 Vue.use(Router)
 
 export default new Router({
@@ -57,6 +58,11 @@ export default new Router({
       path: '/instructor-view',
       name: 'Instructor View',
       component: InstructorView
+    },
+    {
+      path: '/Dashboard',
+      name: 'Dashboard',
+      component: ClientView
     }
   ]
 })

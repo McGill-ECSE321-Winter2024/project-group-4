@@ -24,21 +24,19 @@
       <button id="logout-button" @click="logout">Logout</button>
       <button id="cancel-class-button" @click="removeScheduledClass(scheduledClass.scheduledClassID)">Cancel Class</button>
    </div>
+    <button id="reigster-button" @click="registerClass(scheduledClass.scheduledClassID)">Register</button>
+
   </div>
 </template>
 
 
 <script>
-import Vue from 'vue';
-import VCalendar from 'v-calendar';
 import axios from 'axios'
 import config from '../../config'
-import { VueCookies } from 'vue-cookies';
 
 
 const frontendUrl = 'http://' + config.dev.host + ':' + config.dev.port
 const backendUrl = 'http://' + config.dev.backendHost + ':' + config.dev.backendPort
-Vue.use(VCalendar);
 
 const AXIOS = axios.create({
   baseURL: backendUrl,
@@ -47,7 +45,7 @@ const AXIOS = axios.create({
 
 
 export default {
-  name: 'template',
+  name: 'ClientView',
   data() {
     return {
       scheduledClasses: [],
@@ -55,10 +53,16 @@ export default {
       errors: []
     };
   },
+  register(){},
   created() {
     this.fetchScheduledClasses();
   },
   methods: {
+    registerClass(scheduledClass) {
+      AXIOS.post('/scheduled-class', scheduledClass).then(response => {
+        this.scheduledClasses = response.data;
+      })
+    },
     fetchScheduledClasses() {
       AXIOS.get('/week-class').then(response => {
         this.scheduledClasses = response.data;
@@ -129,3 +133,6 @@ th, td {
   padding-top: 10px;
 }
 </style>
+<script setup lang="ts">
+import {register} from "shelljs/src/common";
+</script>
