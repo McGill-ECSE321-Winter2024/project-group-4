@@ -392,7 +392,7 @@ public class IntegrationTests {
 
 
   @Test
-  @Order(19)
+  @Order(17)
   public void readValidScheduleClass() {
     // Set up
     String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
@@ -412,7 +412,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(20)
+  @Order(18)
   public void readInvalidScheduleClass() {
     // Set up
     String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
@@ -427,7 +427,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(21)
+  @Order(19)
   public void testGetAllScheduledClass() {
     // Set up
     String url = "/scheduled-classes";
@@ -455,7 +455,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(22)
+  @Order(20)
   public void testGetWeekly() {
     // Set up
     String url = "/week-class";
@@ -472,7 +472,7 @@ public class IntegrationTests {
   ;
 
   @Test
-  @Order(23)
+  @Order(21)
   public void testCancelClassInvalid() {
     // Set up
     String url = "/scheduled-classes/" + this.INVALID_SCHEDULE_CLASS_ID;
@@ -491,7 +491,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(24)
+  @Order(22)
   public void createRegistration() {
     RegisteredUserRequestDto request =
         new RegisteredUserRequestDto("John Doe", "Password", "client@gmail.com");
@@ -520,7 +520,7 @@ public class IntegrationTests {
 
 
   @Test
-  @Order(26)
+  @Order(23)
   public void createRegistrationInvalidClient() {
     RegistrationRequestDto request =
         new RegistrationRequestDto(SCHEDULE_CLASS_DATE, INVALID_USER_ID, VALID_SCHEDULE_CLASS_ID);
@@ -536,7 +536,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(27)
+  @Order(24)
   public void createRegistrationDuplicate() {
     RegistrationRequestDto request =
         new RegistrationRequestDto(SCHEDULE_CLASS_DATE, CLIENT_ROLE_ID, VALID_SCHEDULE_CLASS_ID);
@@ -552,7 +552,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(28)
+  @Order(25)
   public void listRegistrations() {
     ResponseEntity<List<RegistrationResponseDto>> response =
         client.exchange(
@@ -576,7 +576,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(29)
+  @Order(26)
   public void findRegistrationById() {
     ResponseEntity<RegistrationResponseDto> response =
         client.getForEntity("/registrations/" + REGISTRATION_ID, RegistrationResponseDto.class);
@@ -592,7 +592,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(30)
+  @Order(27)
   public void findRegistrationByInvalidId() {
     ResponseEntity<ErrorDto> response =
         client.getForEntity("/registrations/" + INVALID_USER_ID, ErrorDto.class);
@@ -607,7 +607,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(31)
+  @Order(28)
   public void removeRegistration() {
 
     ResponseEntity<RegistrationResponseDto> response =
@@ -641,7 +641,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(32)
+  @Order(29)
   public void removeRegistrationInvalidId() {
     ResponseEntity<ErrorDto> response =
         client.exchange(
@@ -656,7 +656,7 @@ public class IntegrationTests {
   }
 
   @Test
-  @Order(33)
+  @Order(30)
   public void testCancelClassValid() {
     // Set up
     String url = "/scheduled-classes/" + this.VALID_SCHEDULE_CLASS_ID;
