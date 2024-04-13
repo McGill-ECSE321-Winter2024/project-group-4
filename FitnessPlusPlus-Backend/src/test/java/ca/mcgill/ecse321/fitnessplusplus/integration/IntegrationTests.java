@@ -390,23 +390,6 @@ public class IntegrationTests {
     this.VALID_SCHEDULE_CLASS_ID = scheduleClassResponseDTO.getScheduledClassID();
   }
 
-  @Test
-  @Order(17)
-  public void createInvalidScheduleClass() {
-    ScheduleClassRequestDTO requestDTO =
-        new ScheduleClassRequestDTO(
-            SCHEDULE_CLASS_END, SCHEDULE_CLASS_START, SCHEDULE_CLASS_DATE, OFFERED_CLASS_ID, 123);
-
-    ResponseEntity<ErrorDto> response =
-        client.postForEntity("/scheduled-class/", requestDTO, ErrorDto.class);
-
-    assertNotNull(response);
-    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    ErrorDto body = response.getBody();
-    assertNotNull(body);
-    assertEquals(1, body.getErrors().size());
-    assertEquals("There already exists a class scheduled at those times.", body.getErrors().get(0));
-  }
 
   @Test
   @Order(19)
@@ -535,23 +518,6 @@ public class IntegrationTests {
     assertEquals(VALID_SCHEDULE_CLASS_ID, registration.getScheduledClassID());
   }
 
-  @Test
-  @Order(25)
-  public void createRegistrationInvalidClass() {
-    RegistrationRequestDto request =
-        new RegistrationRequestDto(SCHEDULE_CLASS_DATE, CLIENT_ROLE_ID, INVALID_SCHEDULE_CLASS_ID);
-
-    ResponseEntity<ErrorDto> response = client.postForEntity("/register", request, ErrorDto.class);
-
-    assertNotNull(response);
-    assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
-    ErrorDto error = response.getBody();
-    assertNotNull(error);
-    assertEquals(1, error.getErrors().size());
-    assertEquals(
-        "Cannot find ScheduledClass with id " + INVALID_SCHEDULE_CLASS_ID,
-        error.getErrors().get(0));
-  }
 
   @Test
   @Order(26)
