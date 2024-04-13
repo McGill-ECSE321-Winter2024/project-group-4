@@ -20,23 +20,23 @@
             </tr>
             </thead>
             <tbody>
-            <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
-                @click="selectClass(scheduledClass.scheduledClassID)" :class="[{ 'is-mine': scheduledClass.instructorID === currentRoleId }, { 'is-selected': scheduledClass.scheduledClassID === classId }]">
-              <td>{{ scheduledClass.date }}</td>
-              <td>{{ scheduledClass.startTime }}</td>
-              <td>{{ scheduledClass.endTime }}</td>
-              <td>{{scheduledClass.type}}</td>
-              <td>{{scheduledClass.description}}</td>
-              <td>{{scheduledClass.instructorUsername}}</td>
-            </tr>
-            <tr v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder noselect">
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
+              <tr v-for="scheduledClass in scheduledClasses" :key="scheduledClass.scheduledClassID"
+                  @click="selectClass(scheduledClass.scheduledClassID)" :class="[{ 'is-mine': scheduledClass.instructorID === currentRoleId }, { 'is-selected': scheduledClass.scheduledClassID === classId }]">
+                <td>{{ scheduledClass.date }}</td>
+                <td>{{ scheduledClass.startTime }}</td>
+                <td>{{ scheduledClass.endTime }}</td>
+                <td>{{scheduledClass.type}}</td>
+                <td>{{scheduledClass.description}}</td>
+                <td>{{scheduledClass.instructorUsername}}</td>
+              </tr>
+              <tr v-for="(placeholder, index) in placeholders" :key="`placeholder-${index}`" class="placeholder noselect">
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
             </tbody>
           </table>
       </div>
@@ -216,7 +216,6 @@ export default {
 
   .classtable table{
     table-layout: fixed;
-    height: 50px;
     overflow-y: auto;
     font-family: 'Arial', sans-serif;
     border-collapse: collapse;

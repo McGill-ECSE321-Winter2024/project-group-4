@@ -1,12 +1,12 @@
 <template>
   <div class="page">
-    <div class="container noselect">
+    <div id="container" class="noselect">
       <div id="logo">
         <p>FitnessPlusPlus</p>
         <img src="../assets/logo.png" alt="logo.png">
       </div>
-      <h2>Dashboard</h2>
-      <h3>Available classes</h3>
+      <h2 class="dashboard-title">Dashboard</h2>
+      <h3 class="class-title">Available classes</h3>
       <div class="scheduled_class_container">
         <table>
           <thead>
@@ -29,12 +29,20 @@
               <td>{{scheduledClass.description}}</td>
               <td>{{scheduledClass.instructorUsername}}</td>
             </tr>
+            <tr v-for="(placeholder, index) in placeholders_class" :key="`placeholder-${index}`" class="placeholder noselect">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
       </div>
 
+      <h3 class="reg-title">Your registrations</h3>
       <div class="registrations_container">
-        <p>Your registrations</p>
         <table>
           <thead>
             <tr>
@@ -57,16 +65,24 @@
               <td>{{ reg.scheduleClass.description }}</td>
               <td>{{ reg.scheduleClass.instructorUsername }}</td>
             </tr>
+            <tr v-for="(placeholder, index) in placeholders_reg" :key="`placeholder-${index}`" class="placeholder noselect">
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
           </tbody>
         </table>
       </div>
 
-        <button id="logout-button" @click="logout">Logout</button>
-        <button id="cancel-class-button" v-bind:disabled="!registrationId" @click="removeRegistration()">Cancel Class</button>
-     </div>
+      <button id="logout-button" @click="logout">Logout</button>
+      <button id="cancel-class-button" v-bind:disabled="!registrationId" @click="removeRegistration()">Cancel Class</button>
       <button id="register-button" v-bind:disabled="!classId" @click="registerClass()">Register</button>
 
     </div>
+  </div>
 </template>
 
 
@@ -93,6 +109,7 @@ export default {
       date: null,
       scheduledClasses: [],
       registrations: [],
+      desiredItemCount: 7,
       errors: []
     };
   },
@@ -104,6 +121,16 @@ export default {
 
     this.fetchScheduledClasses();
     this.fetchRegistrations()
+  },
+  computed: {
+    placeholders_class() {
+      const placeholdersCount = this.desiredItemCount - this.scheduledClasses.length;
+      return Array(placeholdersCount < 0 ? 0 : placeholdersCount).fill({});
+    },
+    placeholders_reg() {
+      const placeholdersCount = this.desiredItemCount - this.registrations.length;
+      return Array(placeholdersCount < 0 ? 0 : placeholdersCount).fill({});
+    },
   },
   methods: {
     registerClass: function () {
@@ -183,14 +210,14 @@ export default {
   width: 100vw;
   height: 95vh;
   display: grid;
-  grid-template-columns: 60fr 40fr;
-  grid-template-rows: 40px 40px auto auto 50px 50px;
-  grid-template-areas:"head head""tablehead .""t schedule""t offer""cancel .""logout .";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 100px 100px auto 50px 50px;
+  grid-template-areas:"head head""classhead reghead""classtable regtable""regbutton cancelbutton""logout .";
   grid-gap: 15px;
 
   justify-content: center;
   align-items: center;
-  padding: 20px;
+  padding-right: 30px;
 }
 
 #logo {
@@ -214,49 +241,58 @@ export default {
   height: auto;
 }
 
-.tablehead {
-  grid-area: tablehead;
-}
 
-.instructorhome {
+.dashboard-title {
   grid-area: head;
-}
-
-#cancel-class-button {
-  grid-area: cancel;
-}
-
-#schedule-class-button {
-  grid-area: schedule;
   align-self: end;
 }
 
-#create-class-button {
-  grid-area: offer;
+.class-title {
+  grid-area: classhead;
+  align-self: end;
 }
 
-.classtable {
-  grid-area: t;
+.reg-title {
+  grid-area: reghead;
+  align-self: end;
+}
+
+#cancel-class-button {
+  grid-area: cancelbutton;
+}
+
+#register-button {
+  grid-area: regbutton;
+}
+
+.scheduled_class_container {
+  grid-area: classtable;
+}
+
+.registrations_container {
+  grid-area: regtable;
+}
+
+.scheduled_class_container, .registrations_container {
   height: 390px;  /* Fixed height */
   overflow-y: auto;  /* Enables vertical scrolling */
   width: 100%;  /* Optional: fits the container width */
 }
 
-.classtable table{
+.scheduled_class_container table, .registrations_container table{
   table-layout: fixed;
-  height: 50px;
   overflow-y: auto;
   font-family: 'Arial', sans-serif;
   border-collapse: collapse;
   width: 100%;
 }
 
-.classtable th, .classtable td {
+.scheduled_class_container th, .registrations_container th, .scheduled_class_container td, .registrations_container td {
   padding: 15px 10px; /* Increased padding for more vertical and horizontal space */
   text-align: left; /* Ensures content alignment is consistent */
 }
 
-.classtable td {
+.scheduled_class_container td, .registrations_container td {
   height: 50px;
   width: 200px; /* Fixed width for demonstration */
   padding: 5px; /* Padding for text */
@@ -265,7 +301,7 @@ export default {
   word-break: break-word; /* Use for aggressive word breaking */
 }
 
-.classtable tr {
+.scheduled_class_container tr, .registrations_container tr {
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid #e1e1e1;
@@ -274,43 +310,35 @@ export default {
   min-height: 50px;
 }
 
-.classtable tr:hover {
+.scheduled_class_container tr:hover, .registrations_container tr:hover {
   background-color: #f0f0f0;
 }
 
 
-.classtable th {
+.scheduled_class_container th, .registrations_container th {
   background-color: #f4f4f4;
   font-weight: bold;
   text-align: left;
 }
 
-.classtable td {
+.scheduled_class_container td, .registrations_container td {
   text-align: left;
 }
 
-.classtable::-webkit-scrollbar {
+.scheduled_class_container::-webkit-scrollbar, .registrations_container::-webkit-scrollbar {
   width: 10px;
 }
 
-.classtable::-webkit-scrollbar-track {
+.scheduled_class_container::-webkit-scrollbar-track, .registrations_container::-webkit-scrollbar-track {
   background: #f1f1f1;
 }
 
-.classtable::-webkit-scrollbar-thumb {
+.scheduled_class_container::-webkit-scrollbar-thumb, .registrations_container::-webkit-scrollbar-thumb {
   background: #888;
 }
 
-.classtable::-webkit-scrollbar-thumb:hover {
+.scheduled_class_container::-webkit-scrollbar-thumb:hover, .registrations_container::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
-
-tr.is-mine {
-  background-color: #FFEEDD;
-}
-
-tr.is-mine:hover {
-  background-color: #ffd8b6;
 }
 
 tr.is-selected {
@@ -322,8 +350,6 @@ tr.is-selected:hover {
   background-color: #ca98ef;
   color: white;
 }
-
-
 
 .noselect {
   -webkit-touch-callout: none;
