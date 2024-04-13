@@ -50,7 +50,7 @@ export default {
   created: function () {
     // If not signed in
     if (localStorage.getItem("username") === null || !localStorage.getItem("password") === null) {
-      this.$router.push('/login');
+      this.$router.push('/');
       return
     }
 

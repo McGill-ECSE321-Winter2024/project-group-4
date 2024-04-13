@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from '../components/Home.vue'
-import Template from '../components/Template.vue'
 import Login from '../components/Login.vue'
 import CreateAccount from '../components/CreateAccount.vue'
 import PromoteUser from "../components/PromoteUser.vue"
@@ -19,11 +18,6 @@ export default new Router({
       path: '/',
       name: 'Home',
       component: Home
-    },
-    {
-      path: '/template',
-      name: 'Template',
-      component: Template
     },
     {
       path: '/login',
