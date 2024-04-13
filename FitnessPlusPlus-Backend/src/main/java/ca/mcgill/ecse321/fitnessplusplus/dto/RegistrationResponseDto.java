@@ -1,7 +1,5 @@
 package ca.mcgill.ecse321.fitnessplusplus.dto;
 
-import ca.mcgill.ecse321.fitnessplusplus.model.ScheduledClass;
-
 import java.time.LocalDate;
 
 public class RegistrationResponseDto {
