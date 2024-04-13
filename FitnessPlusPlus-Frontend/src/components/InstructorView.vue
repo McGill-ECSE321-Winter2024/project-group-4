@@ -156,7 +156,7 @@ export default {
     height: 95vh;
     display: grid;
     grid-template-columns: 60fr 40fr;
-    grid-template-rows: 40px 40px auto auto 50px 50px;
+    grid-template-rows: 100px 40px auto auto 50px 50px;
     grid-template-areas:"head head""tablehead .""t schedule""t offer""cancel .""logout .";
     grid-gap: 15px;
 
@@ -188,6 +188,7 @@ export default {
 
   .tablehead {
     grid-area: tablehead;
+    align-self: end;
   }
 
   .instructorhome {
