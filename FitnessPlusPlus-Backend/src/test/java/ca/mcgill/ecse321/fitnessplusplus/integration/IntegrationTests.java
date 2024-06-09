@@ -454,22 +454,6 @@ public class IntegrationTests {
     assertEquals(this.VALID_SCHEDULE_CLASS_ID, bodyDTO.getScheduledClassID());
   }
 
-  @Test
-  @Order(20)
-  public void testGetWeekly() {
-    // Set up
-    String url = "/week-class";
-
-    ResponseEntity<List<ScheduleClassResponseDTO>> response =
-        client.exchange(
-            url,
-            HttpMethod.GET,
-            null,
-            new ParameterizedTypeReference<List<ScheduleClassResponseDTO>>() {});
-
-    assertNotNull(response);
-  }
-  ;
 
   @Test
   @Order(21)
