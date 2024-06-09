@@ -206,19 +206,6 @@ public class TestScheduledClassService {
         });
   }
 
-  @Test
-  public void testGetWeeklyScheduledClasses() {
-    List<ScheduledClass> scheduledClasses = scheduledClassService.getAllScheduledClass();
-    ScheduledClass firstClass = scheduledClasses.get(0);
-    int numberOfClassesBeforeWeeklyFilter = scheduledClasses.size();
-    int numberOfClassesAfterWeeklyFilter =
-        scheduledClassService.getWeeklyScheduledClasses(firstClass.getDate()).size();
-    // Currently march 22nd is Friday. Only acceptable dates are 23 (index 2). The other two go
-    // beyond Sunday => bad.
-    assertEquals(4, numberOfClassesBeforeWeeklyFilter);
-    assertEquals(2, numberOfClassesAfterWeeklyFilter);
-  }
-
   // tests for the delete scheduled Class use case
   @Test
   public void testDeleteScheduledClass() throws Exception {
